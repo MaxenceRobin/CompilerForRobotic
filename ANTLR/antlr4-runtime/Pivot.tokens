@@ -1,0 +1,6 @@
+WHITESPACE=1
+FORWARD=2
+DURATION=3
+NEWLINE=4
+' '=1
+'forward'=2

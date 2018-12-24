@@ -1,0 +1,7 @@
+WHITESPACE=1
+FORWARD=2
+DURATION=3
+WHILE=4
+' '=1
+'forward'=2
+'while'=4
