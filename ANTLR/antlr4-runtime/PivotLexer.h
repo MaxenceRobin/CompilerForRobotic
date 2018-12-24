@@ -12,7 +12,7 @@
 class  PivotLexer : public antlr4::Lexer {
 public:
   enum {
-    WHITESPACE = 1, FORWARD = 2, DURATION = 3, WHILE = 4
+    WHITESPACE = 1, FORWARD = 2, DURATION = 3, WHILE = 4, UNTIL = 5
   };
 
   PivotLexer(antlr4::CharStream *input);

@@ -37,3 +37,4 @@ WHITESPACE  : ' ' -> skip;
 FORWARD     : 'forward';
 DURATION    : NUMBER;
 WHILE       : 'while';
+UNTIL       : 'until';

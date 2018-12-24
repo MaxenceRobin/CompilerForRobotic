@@ -9,6 +9,7 @@ statement           : action;
 // Possible actions
 action              : FORWARD DURATION
                     | FORWARD WHILE boolean_expression
+                    | FORWARD UNTIL boolean_expression
                     ;
 
 // Boolean expressions
