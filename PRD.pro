@@ -63,3 +63,6 @@ LIBS += -L$$PWD/'../../../../ANTLR/RUNTIME/antlr4-cpp-runtime-4.7.1-vs2015/lib/v
 
 INCLUDEPATH += $$PWD/'../../../../ANTLR/RUNTIME/antlr4-cpp-runtime-4.7.1-vs2015/lib/vs-2015/x64/Release DLL'
 DEPENDPATH += $$PWD/'../../../../ANTLR/RUNTIME/antlr4-cpp-runtime-4.7.1-vs2015/lib/vs-2015/x64/Release DLL'
+
+RESOURCES += \
+    resources.qrc
