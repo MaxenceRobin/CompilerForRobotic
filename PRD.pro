@@ -41,7 +41,8 @@ SOURCES += \
     ANTLR/antlr4-runtime/PivotLexer.cpp \
     ANTLR/antlr4-runtime/PivotLexerLexer.cpp \
     ANTLR/antlr4-runtime/PivotParser.cpp \
-    ANTLR/antlr4-runtime/PivotVisitor.cpp
+    ANTLR/antlr4-runtime/PivotVisitor.cpp \
+    mainwindowviewcontroller.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -49,7 +50,8 @@ HEADERS += \
     ANTLR/antlr4-runtime/PivotLexer.h \
     ANTLR/antlr4-runtime/PivotLexerLexer.h \
     ANTLR/antlr4-runtime/PivotParser.h \
-    ANTLR/antlr4-runtime/PivotVisitor.h
+    ANTLR/antlr4-runtime/PivotVisitor.h \
+    mainwindowviewcontroller.h
 
 FORMS += \
         mainwindow.ui
