@@ -7,7 +7,4 @@
         <file alias="robot">resources/icons/robot.png</file>
         <file alias="send">resources/icons/envoyer.png</file>
     </qresource>
-    <qresource prefix="/blockly">
-        <file alias="blocklyMain">Blockly/main.html</file>
-    </qresource>
 </RCC>
