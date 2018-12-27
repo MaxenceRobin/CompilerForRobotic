@@ -37,7 +37,6 @@ protected:
 
 private:
     Ui::MainWindow *ui;
-    QWebEngineView webView;
 };
 
 #endif // MAINWINDOW_H

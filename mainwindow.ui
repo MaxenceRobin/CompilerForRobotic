@@ -20,6 +20,16 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
+     <widget class="QWebEngineView" name="webView" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+     </widget>
+    </item>
+    <item>
      <widget class="QTextEdit" name="codeInput">
       <property name="tabStopWidth">
        <number>20</number>
@@ -89,7 +99,7 @@
    <addaction name="openProgramAction"/>
    <addaction name="saveAction"/>
    <addaction name="separator"/>
-   <addaction name="actionEnvoyer_vers_le_robot"/>
+   <addaction name="sendProgramAction"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="openProgramAction">
@@ -134,7 +144,7 @@
     <string>Quitter</string>
    </property>
   </action>
-  <action name="actionEnvoyer_vers_le_robot">
+  <action name="sendProgramAction">
    <property name="icon">
     <iconset resource="resources.qrc">
      <normaloff>:/icons/send</normaloff>:/icons/send</iconset>
@@ -145,6 +155,14 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>QWebEngineView</class>
+   <extends>QWidget</extends>
+   <header>qwebengineview.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="resources.qrc"/>
  </resources>
