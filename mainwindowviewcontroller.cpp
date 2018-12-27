@@ -1,14 +1,21 @@
 #include "mainwindowviewcontroller.h"
 
+#include <QAction>
+#include <QDebug>
+
 /**
  * @brief Constructor of the main controller
  */
 MainWindowViewController::MainWindowViewController()
+    : MainWindow()
 {
     // Settings
 
-    // Connection
+    // Connections
     connect(&getTranslateButton(), &QPushButton::clicked, this, &MainWindowViewController::translateCode);
+
+    connect(&getQuitAction(), &QAction::triggered, this, &MainWindowViewController::close);
+    connect(this, &MainWindowViewController::closeRequested, this, &MainWindowViewController::processBeforeQuitting);
 }
 
 /**
@@ -17,5 +24,18 @@ MainWindowViewController::MainWindowViewController()
  */
 void MainWindowViewController::translateCode()
 {
-    getCodeOutput().setPlainText(getCodeInput().toPlainText());
+    getCodeOutput().setPlainText(
+                QString::fromStdString(
+                    microPythonCompiler.compile(getCodeInput().toPlainText().toStdString())
+                    )
+                );
+}
+
+/**
+ * @brief Process important tasks before quitting the application
+ */
+void MainWindowViewController::processBeforeQuitting()
+{
+    // Things to do
+    // ...
 }

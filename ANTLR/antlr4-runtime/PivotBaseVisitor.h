@@ -27,6 +27,22 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitBoolean_expression(PivotParser::Boolean_expressionContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitBoolean_and(PivotParser::Boolean_andContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitBoolean_not(PivotParser::Boolean_notContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitBoolean_atom(PivotParser::Boolean_atomContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
 
 };
 

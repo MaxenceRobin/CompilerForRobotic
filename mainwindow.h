@@ -21,12 +21,17 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    // Special access for the view controller
+    void closeEvent(QCloseEvent* event);
+
+signals:
+    void closeRequested();
+
+    // Special access for the controller
 protected:
     QTextEdit& getCodeInput();
     QTextEdit& getCodeOutput();
     QPushButton& getTranslateButton();
-
+    QAction& getQuitAction();
 
 private:
     Ui::MainWindow *ui;

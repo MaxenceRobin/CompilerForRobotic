@@ -1,16 +1,54 @@
-parser grammar Pivot;
-import PivotLexer;
+grammar Pivot;
 
-file                : (statement NEWLINE)* (statement NEWLINE?)?;
+// Lexer ##########################################################################################
+
+// Numbers
+fragment DIGIT          : [0-9];
+fragment NON_NULL_DIGIT : [1-9];
+fragment INTEGER_PART   : (NON_NULL_DIGIT DIGIT* | '0');
+fragment DECIMAL_PART   : '.' DIGIT+ ([eE] [+-]? DIGIT+)?;
+NUMBER                  : INTEGER_PART (DECIMAL_PART)?;
+
+// Booleans
+TRUE    : 'true';
+FALSE   : 'false';
+EQU     : '==';
+DIF     : '!=';
+LT      : '<';
+GT      : '>';
+LEQ     : '<=';
+GEQ     : '>=';
+AND     : '&&';
+OR      : '||';
+NOT     : '!';
+
+// Symbols
+LPAR    : '(';
+RPAR    : ')';
+
+
+// Specials
+NEWLINE : ('\r'? '\n' | '\r')+;
+
+WHITESPACE  : (' ' | '\t')+ -> skip;
+
+// Keywords
+FORWARD     : 'forward';
+WHILE       : 'while';
+UNTIL       : 'until';
+
+// Parser #########################################################################################
+
+file    : (statement NEWLINE)* (statement NEWLINE?)? EOF;
 
 // Statements types
-statement           : action;
+statement   : action;
 
 // Possible actions
-action              : FORWARD DURATION
-                    | FORWARD WHILE boolean_expression
-                    | FORWARD UNTIL boolean_expression
-                    ;
+action  : FORWARD NUMBER
+        | FORWARD WHILE boolean_expression
+        | FORWARD UNTIL boolean_expression
+        ;
 
 // Boolean expressions
 boolean_expression  : boolean_and (OR boolean_and)*;

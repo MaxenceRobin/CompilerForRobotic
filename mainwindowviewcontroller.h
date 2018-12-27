@@ -1,6 +1,9 @@
 #ifndef MAINWINDOWVIEWCONTROLLER_H
 #define MAINWINDOWVIEWCONTROLLER_H
 
+// This inclusion goes first, to avoid the conflict between Qt "emit" keyword and the emit method of the Lexer class
+#include "compilers/micropython/micropythoncompiler.h"
+
 #include "mainwindow.h"
 
 /**
@@ -16,6 +19,12 @@ public:
 
 public slots:
     void translateCode();
+
+private slots:
+    void processBeforeQuitting();
+
+private:
+    MicroPythonCompiler microPythonCompiler;
 };
 
 #endif // MAINWINDOWVIEWCONTROLLER_H

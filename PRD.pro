@@ -39,19 +39,21 @@ SOURCES += \
         mainwindow.cpp \
     ANTLR/antlr4-runtime/PivotBaseVisitor.cpp \
     ANTLR/antlr4-runtime/PivotLexer.cpp \
-    ANTLR/antlr4-runtime/PivotLexerLexer.cpp \
     ANTLR/antlr4-runtime/PivotParser.cpp \
     ANTLR/antlr4-runtime/PivotVisitor.cpp \
-    mainwindowviewcontroller.cpp
+    mainwindowviewcontroller.cpp \
+    compilers/micropython/micropythoncompiler.cpp \
+    compilers/basecompiler.cpp
 
 HEADERS += \
         mainwindow.h \
     ANTLR/antlr4-runtime/PivotBaseVisitor.h \
     ANTLR/antlr4-runtime/PivotLexer.h \
-    ANTLR/antlr4-runtime/PivotLexerLexer.h \
     ANTLR/antlr4-runtime/PivotParser.h \
     ANTLR/antlr4-runtime/PivotVisitor.h \
-    mainwindowviewcontroller.h
+    mainwindowviewcontroller.h \
+    compilers/micropython/micropythoncompiler.h \
+    compilers/basecompiler.h
 
 FORMS += \
         mainwindow.ui

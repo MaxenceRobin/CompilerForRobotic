@@ -1,5 +1,5 @@
 
-// Generated from d:\Programmes\Qt\Projets\PRD\PRD\ANTLR/PivotLexer.g4 by ANTLR 4.7.1
+// Generated from d:\Programmes\Qt\Projets\PRD\PRD\ANTLR\Pivot.g4 by ANTLR 4.7.1
 
 #pragma once
 
@@ -12,7 +12,9 @@
 class  PivotLexer : public antlr4::Lexer {
 public:
   enum {
-    WHITESPACE = 1, FORWARD = 2, DURATION = 3, WHILE = 4, UNTIL = 5
+    NUMBER = 1, TRUE = 2, FALSE = 3, EQU = 4, DIF = 5, LT = 6, GT = 7, LEQ = 8, 
+    GEQ = 9, AND = 10, OR = 11, NOT = 12, LPAR = 13, RPAR = 14, NEWLINE = 15, 
+    WHITESPACE = 16, FORWARD = 17, WHILE = 18, UNTIL = 19
   };
 
   PivotLexer(antlr4::CharStream *input);

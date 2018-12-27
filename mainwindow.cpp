@@ -20,31 +20,53 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+// Special methods --------------------------------------------------------------------------------
+
+/**
+ * @brief Handles the event of closing the window
+ * This method overrides the parent closeEvent method, to emit a signal that can be reused more easily
+ * @param event : The info about the closing event
+ */
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    emit closeRequested();
+    QMainWindow::closeEvent(event);
+}
+
 // Methods ----------------------------------------------------------------------------------------
 
 /**
- * @brief Returns the code input area
- * @return the code input area
+ * @brief Grants access to the code input editor
+ * @return The code input editor
  */
 QTextEdit& MainWindow::getCodeInput()
 {
-    return *ui->codeInput;
+    return *(ui->codeInput);
 }
 
 /**
- * @brief Returns the code output display
- * @return the code output display
+ * @brief Grants access to the code output editor
+ * @return The code output editor
  */
 QTextEdit& MainWindow::getCodeOutput()
 {
-    return *ui->codeOutput;
+    return *(ui->codeOutput);
 }
 
 /**
- * @brief Returns the translation button
+ * @brief Grants access to the translation button
  * @return The translation button
  */
 QPushButton& MainWindow::getTranslateButton()
 {
-    return *ui->translateButton;
+    return *(ui->translateButton);
+}
+
+/**
+ * @brief Grants access to the quit actino
+ * @return The quit action
+ */
+QAction& MainWindow::getQuitAction()
+{
+    return *(ui->quitAction);
 }
