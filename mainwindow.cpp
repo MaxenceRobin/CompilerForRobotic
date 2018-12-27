@@ -10,6 +10,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    // Settings
+    ui->centralWidget->addAction(ui->toggleDebugMode);
 }
 
 /**
@@ -71,7 +74,16 @@ QAction& MainWindow::getQuitAction()
     return *(ui->quitAction);
 }
 
+/**
+ * @brief Grants access to the web view
+ * @return The web view
+ */
 QWebEngineView& MainWindow::getWebView()
 {
     return *(ui->webView);
+}
+
+QAction& MainWindow::getDebugModeAction()
+{
+    return *(ui->toggleDebugMode);
 }

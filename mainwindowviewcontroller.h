@@ -19,9 +19,11 @@ public:
 
 public slots:
     void translateCode();
+    void sendProgram();
 
 private slots:
     void processBeforeQuitting();
+    void toggleDebugMode();
 
 private:
     MicroPythonCompiler microPythonCompiler;

@@ -153,6 +153,14 @@
     <string>Envoyer le programme vers le robot</string>
    </property>
   </action>
+  <action name="toggleDebugMode">
+   <property name="text">
+    <string>toggle debug mode</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+T, Ctrl+D</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>

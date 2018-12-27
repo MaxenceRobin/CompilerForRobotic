@@ -12,14 +12,19 @@
 MainWindowViewController::MainWindowViewController()
     : MainWindow()
 {
-    // Settings
+    // Settings ---------------------------------
     getWebView().load(QUrl(URI("Blockly/main.html")));
 
-    // Connections
+    // The debug mode is setted to off by default
+    toggleDebugMode();
+
+    // Connections ------------------------------
     connect(&getTranslateButton(), &QPushButton::clicked, this, &MainWindowViewController::translateCode);
 
     connect(&getQuitAction(), &QAction::triggered, this, &MainWindowViewController::close);
     connect(this, &MainWindowViewController::closeRequested, this, &MainWindowViewController::processBeforeQuitting);
+
+    connect(&getDebugModeAction(), &QAction::triggered, this, &MainWindowViewController::toggleDebugMode);
 }
 
 /**
@@ -36,6 +41,15 @@ void MainWindowViewController::translateCode()
 }
 
 /**
+ * @brief Sends the program to the robot
+ */
+void MainWindowViewController::sendProgram()
+{
+    // Trying to get the code from blockly
+    translateCode();
+}
+
+/**
  * @brief Process important tasks before quitting the application
  */
 void MainWindowViewController::processBeforeQuitting()
@@ -43,3 +57,15 @@ void MainWindowViewController::processBeforeQuitting()
     // Things to do
     // ...
 }
+
+/**
+ * @brief Toggle the visibility of the code input editor and the translate button
+ */
+void MainWindowViewController::toggleDebugMode()
+{
+    const bool visibility = !getCodeInput().isHidden();
+
+    getCodeInput().setHidden(visibility);
+    getTranslateButton().setHidden(visibility);
+}
+

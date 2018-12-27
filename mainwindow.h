@@ -34,6 +34,7 @@ protected:
     QPushButton& getTranslateButton();
     QAction& getQuitAction();
     QWebEngineView& getWebView();
+    QAction& getDebugModeAction();
 
 private:
     Ui::MainWindow *ui;
