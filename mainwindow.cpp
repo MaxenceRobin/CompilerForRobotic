@@ -10,6 +10,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    // Inserting other widgets
+    static_cast<QHBoxLayout*>(ui->centralWidget->layout())->insertWidget(0, &webView);
 }
 
 /**
@@ -69,4 +72,9 @@ QPushButton& MainWindow::getTranslateButton()
 QAction& MainWindow::getQuitAction()
 {
     return *(ui->quitAction);
+}
+
+QWebEngineView& MainWindow::getWebView()
+{
+    return webView;
 }

@@ -3,6 +3,9 @@
 #include <QAction>
 #include <QDebug>
 
+#include <QApplication>
+#define URI(path) QApplication::applicationDirPath() + "/" + path
+
 /**
  * @brief Constructor of the main controller
  */
@@ -10,6 +13,7 @@ MainWindowViewController::MainWindowViewController()
     : MainWindow()
 {
     // Settings
+    getWebView().load(QUrl(URI("Blockly/main.html")));
 
     // Connections
     connect(&getTranslateButton(), &QPushButton::clicked, this, &MainWindowViewController::translateCode);

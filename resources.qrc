@@ -1,9 +1,13 @@
 <RCC>
-    <qresource prefix="/">
+    <qresource prefix="/icons">
         <file alias="create">resources/icons/create.png</file>
         <file alias="open">resources/icons/open.png</file>
         <file alias="quit">resources/icons/quit.png</file>
         <file alias="save">resources/icons/save.png</file>
         <file alias="robot">resources/icons/robot.png</file>
+        <file alias="send">resources/icons/envoyer.png</file>
+    </qresource>
+    <qresource prefix="/blockly">
+        <file alias="blocklyMain">Blockly/main.html</file>
     </qresource>
 </RCC>

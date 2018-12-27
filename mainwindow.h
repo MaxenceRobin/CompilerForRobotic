@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QTextEdit>
 #include <QPushButton>
+#include <QWebEngineView>
 
 namespace Ui {
 class MainWindow;
@@ -32,9 +33,11 @@ protected:
     QTextEdit& getCodeOutput();
     QPushButton& getTranslateButton();
     QAction& getQuitAction();
+    QWebEngineView& getWebView();
 
 private:
     Ui::MainWindow *ui;
+    QWebEngineView webView;
 };
 
 #endif // MAINWINDOW_H

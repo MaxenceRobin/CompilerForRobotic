@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="resources.qrc">
-    <normaloff>:/robot</normaloff>:/robot</iconset>
+    <normaloff>:/icons/robot</normaloff>:/icons/robot</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
@@ -73,6 +73,12 @@
      <height>0</height>
     </size>
    </property>
+   <property name="iconSize">
+    <size>
+     <width>50</width>
+     <height>50</height>
+    </size>
+   </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>
@@ -82,12 +88,14 @@
    <addaction name="createNewProgramAction"/>
    <addaction name="openProgramAction"/>
    <addaction name="saveAction"/>
+   <addaction name="separator"/>
+   <addaction name="actionEnvoyer_vers_le_robot"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="openProgramAction">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/open</normaloff>:/open</iconset>
+     <normaloff>:/icons/open</normaloff>:/icons/open</iconset>
    </property>
    <property name="text">
     <string>Ouvrir un programme</string>
@@ -99,7 +107,7 @@
   <action name="createNewProgramAction">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/create</normaloff>:/create</iconset>
+     <normaloff>:/icons/create</normaloff>:/icons/create</iconset>
    </property>
    <property name="text">
     <string>Créer un nouveau programme</string>
@@ -111,7 +119,7 @@
   <action name="saveAction">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/save</normaloff>:/save</iconset>
+     <normaloff>:/icons/save</normaloff>:/icons/save</iconset>
    </property>
    <property name="text">
     <string>Enregistrer</string>
@@ -120,10 +128,19 @@
   <action name="quitAction">
    <property name="icon">
     <iconset resource="resources.qrc">
-     <normaloff>:/quit</normaloff>:/quit</iconset>
+     <normaloff>:/icons/quit</normaloff>:/icons/quit</iconset>
    </property>
    <property name="text">
     <string>Quitter</string>
+   </property>
+  </action>
+  <action name="actionEnvoyer_vers_le_robot">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/send</normaloff>:/icons/send</iconset>
+   </property>
+   <property name="text">
+    <string>Envoyer le programme vers le robot</string>
    </property>
   </action>
  </widget>
