@@ -35,6 +35,7 @@ protected:
     QAction& getQuitAction();
     QWebEngineView& getWebView();
     QAction& getDebugModeAction();
+    QAction& getSendAction();
 
 private:
     Ui::MainWindow *ui;

@@ -6,6 +6,8 @@
 #include <QApplication>
 #define URI(path) QApplication::applicationDirPath() + "/" + path
 
+#define JS_COMMAND_GET_BLOCKLY_CODE "Blockly.JavaScript.workspaceToCode(workspace);"
+
 /**
  * @brief Constructor of the main controller
  */
@@ -20,6 +22,7 @@ MainWindowViewController::MainWindowViewController()
 
     // Connections ------------------------------
     connect(&getTranslateButton(), &QPushButton::clicked, this, &MainWindowViewController::translateCode);
+    connect(&getSendAction(), &QAction::triggered, this, &MainWindowViewController::sendProgram);
 
     connect(&getQuitAction(), &QAction::triggered, this, &MainWindowViewController::close);
     connect(this, &MainWindowViewController::closeRequested, this, &MainWindowViewController::processBeforeQuitting);
@@ -45,7 +48,12 @@ void MainWindowViewController::translateCode()
  */
 void MainWindowViewController::sendProgram()
 {
+    QTextEdit& codeInput = getCodeInput();
+
     // Trying to get the code from blockly
+    getWebView().page()->runJavaScript(JS_COMMAND_GET_BLOCKLY_CODE,
+                                       [&codeInput](const QVariant& value) { codeInput.setPlainText(value.toString()); }
+                                       );
     translateCode();
 }
 

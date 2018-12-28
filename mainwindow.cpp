@@ -83,7 +83,20 @@ QWebEngineView& MainWindow::getWebView()
     return *(ui->webView);
 }
 
+/**
+ * @brief Grants access to the debug mode action
+ * @return The debug mode action
+ */
 QAction& MainWindow::getDebugModeAction()
 {
     return *(ui->toggleDebugMode);
+}
+
+/**
+ * @brief Grants access to the program sending action
+ * @return The program sending action
+ */
+QAction& MainWindow::getSendAction()
+{
+    return *(ui->sendProgramAction);
 }
