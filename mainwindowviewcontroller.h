@@ -6,6 +6,8 @@
 
 #include "mainwindow.h"
 
+#include <QClipboard>
+
 /**
  * @brief The MainWindowViewController class
  * This class is the controller of the main window.
@@ -27,6 +29,7 @@ private slots:
 
 private:
     MicroPythonCompiler microPythonCompiler;
+    QClipboard* clipboard;
 };
 
 #endif // MAINWINDOWVIEWCONTROLLER_H

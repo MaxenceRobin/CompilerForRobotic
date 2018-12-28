@@ -12,7 +12,8 @@
  * @brief Constructor of the main controller
  */
 MainWindowViewController::MainWindowViewController()
-    : MainWindow()
+    : MainWindow(),
+      clipboard(QApplication::clipboard())
 {
     // Settings ---------------------------------
     getWebView().load(QUrl(URI("Blockly/main.html")));
@@ -36,11 +37,10 @@ MainWindowViewController::MainWindowViewController()
  */
 void MainWindowViewController::translateCode()
 {
-    getCodeOutput().setPlainText(
-                QString::fromStdString(
-                    microPythonCompiler.compile(getCodeInput().toPlainText().toStdString())
-                    )
-                );
+    const QString result = QString::fromStdString(microPythonCompiler.compile(getCodeInput().toPlainText().toStdString()));
+
+    getCodeOutput().setPlainText(result);
+    clipboard->setText(result);
 }
 
 /**
@@ -75,5 +75,6 @@ void MainWindowViewController::toggleDebugMode()
 
     getCodeInput().setHidden(visibility);
     getTranslateButton().setHidden(visibility);
+    getCodeOutput().setHidden(visibility);
 }
 

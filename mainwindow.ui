@@ -101,7 +101,6 @@
    <addaction name="separator"/>
    <addaction name="sendProgramAction"/>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
   <action name="openProgramAction">
    <property name="icon">
     <iconset resource="resources.qrc">
