@@ -16,7 +16,7 @@ MainWindowViewController::MainWindowViewController()
       clipboard(QApplication::clipboard())
 {
     // Settings ---------------------------------
-    getWebView().load(QUrl(URI("Blockly/main.html")));
+    getWebView().load(QUrl(URI("Blockly/neutralrobot.html")));
 
     // The debug mode is setted to off by default
     toggleDebugMode();

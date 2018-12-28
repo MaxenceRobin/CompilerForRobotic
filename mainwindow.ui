@@ -68,9 +68,6 @@
     <property name="title">
      <string>Menu</string>
     </property>
-    <addaction name="createNewProgramAction"/>
-    <addaction name="openProgramAction"/>
-    <addaction name="saveAction"/>
     <addaction name="separator"/>
     <addaction name="quitAction"/>
    </widget>
@@ -97,6 +94,7 @@
    </attribute>
    <addaction name="createNewProgramAction"/>
    <addaction name="openProgramAction"/>
+   <addaction name="closeProgramAction"/>
    <addaction name="saveAction"/>
    <addaction name="separator"/>
    <addaction name="sendProgramAction"/>
@@ -158,6 +156,18 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+T, Ctrl+D</string>
+   </property>
+  </action>
+  <action name="closeProgramAction">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/icons/close</normaloff>:/icons/close</iconset>
+   </property>
+   <property name="text">
+    <string>Fermer le programme en corus</string>
+   </property>
+   <property name="toolTip">
+    <string>Fermer le programme en corus</string>
    </property>
   </action>
  </widget>

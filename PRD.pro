@@ -45,7 +45,11 @@ SOURCES += \
     ANTLR/antlr4-runtime/PivotVisitor.cpp \
     mainwindowviewcontroller.cpp \
     compilers/micropython/micropythoncompiler.cpp \
-    compilers/basecompiler.cpp
+    compilers/basecompiler.cpp \
+    editors/baseeditor.cpp \
+    models/programfile.cpp \
+    executors/baseexecutor.cpp \
+    models/projecttypelist.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -55,7 +59,12 @@ HEADERS += \
     ANTLR/antlr4-runtime/PivotVisitor.h \
     mainwindowviewcontroller.h \
     compilers/micropython/micropythoncompiler.h \
-    compilers/basecompiler.h
+    compilers/basecompiler.h \
+    editors/baseeditor.h \
+    models/programfile.h \
+    executors/baseexecutor.h \
+    models/projecttype.h \
+    models/projecttypelist.h
 
 FORMS += \
         mainwindow.ui

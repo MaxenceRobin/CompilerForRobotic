@@ -5,6 +5,7 @@
         <file alias="quit">resources/icons/quit.png</file>
         <file alias="save">resources/icons/save.png</file>
         <file alias="robot">resources/icons/robot.png</file>
-        <file alias="send">resources/icons/envoyer.png</file>
+        <file alias="send">resources/icons/send.png</file>
+        <file alias="close">resources/icons/close.png</file>
     </qresource>
 </RCC>
