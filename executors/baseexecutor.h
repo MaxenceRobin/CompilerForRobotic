@@ -10,6 +10,7 @@ class BaseExecutor : public QWidget
 {
 public:
     BaseExecutor();
+    virtual ~BaseExecutor();
 
     virtual void execute(const QString& pivot) = 0;
 };

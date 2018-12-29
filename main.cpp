@@ -1,4 +1,4 @@
-#include "mainwindowviewcontroller.h"
+#include "controllers/mainwindowviewcontroller.h"
 
 #include <QApplication>
 

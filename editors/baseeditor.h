@@ -12,6 +12,7 @@ class BaseEditor : public QWidget
 {
 public:
     BaseEditor(ProgramFile& file);
+    virtual ~BaseEditor();
 
     virtual QString getPivot() = 0;
 

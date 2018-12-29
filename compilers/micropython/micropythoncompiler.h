@@ -1,19 +1,23 @@
 #ifndef MICROPYTHONCOMPILER_H
 #define MICROPYTHONCOMPILER_H
 
-#include "compilers/basecompiler.h"
+#include "ANTLR/antlr4-runtime/PivotBaseVisitor.h"
 
 using antlrcpp::Any;
+using std::string;
 
 /**
  * @brief MicroPython code generator from pivot code input
  * This class is a compiler for pivot code that generates MicroPython code as output
  */
-class MicroPythonCompiler : public BaseCompiler
+class MicroPythonCompiler : public PivotBaseVisitor
 {
 public:
     MicroPythonCompiler();
 
+    string getMicroPythonFromPivot(const string& pivot);
+
+private:
     virtual Any visitFile(PivotParser::FileContext* context) override;
     virtual Any visitStatement(PivotParser::StatementContext* context) override;
     virtual Any visitAction(PivotParser::ActionContext* context) override;

@@ -4,7 +4,7 @@
 // This inclusion goes first, to avoid the conflict between Qt "emit" keyword and the emit method of the Lexer class
 #include "compilers/micropython/micropythoncompiler.h"
 
-#include "mainwindow.h"
+#include "views/mainwindow.h"
 
 #include <QClipboard>
 

@@ -1,14 +1,35 @@
+#include "ANTLR/antlr4-runtime/PivotLexer.h"
 #include "micropythoncompiler.h"
+
+using namespace antlr4;
 
 /**
  * @brief Constructor of the MicroPython compiler class
  */
 MicroPythonCompiler::MicroPythonCompiler()
-    : BaseCompiler()
+    : PivotBaseVisitor()
 {
 }
 
 // Methods ----------------------------------------------------------------------------------------
+
+/**
+ * @brief Returns the MicroPython code for the given pivot code
+ * @param pivot : The code to translate into MicroPython
+ * @return The MicroPython code for the given pivot code
+ */
+string MicroPythonCompiler::getMicroPythonFromPivot(const string &pivot)
+{
+    ANTLRInputStream stream(pivot);
+    PivotLexer lexer(&stream);
+    CommonTokenStream tokens(&lexer);
+    PivotParser parser(&tokens);
+
+    PivotParser::FileContext* tree = parser.file();
+    string result = visitFile(tree).as<string>();
+
+    return result;
+}
 
 /**
  * @brief Returns the MicroPython representation of a file
