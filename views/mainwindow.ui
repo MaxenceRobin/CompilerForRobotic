@@ -14,44 +14,28 @@
    <string>MicroBotix</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="resources.qrc">
+   <iconset resource="../resources.qrc">
     <normaloff>:/icons/robot</normaloff>:/icons/robot</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
     <item>
-     <widget class="QWebEngineView" name="webView" native="true">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QTextEdit" name="codeInput">
-      <property name="tabStopWidth">
-       <number>20</number>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="translateButton">
-      <property name="text">
-       <string>-&gt;</string>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QTextEdit" name="codeOutput">
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-      <property name="tabStopWidth">
-       <number>20</number>
-      </property>
-     </widget>
+     <layout class="QHBoxLayout" name="centralLayout"/>
     </item>
    </layout>
   </widget>
@@ -101,7 +85,7 @@
   </widget>
   <action name="openProgramAction">
    <property name="icon">
-    <iconset resource="resources.qrc">
+    <iconset resource="../resources.qrc">
      <normaloff>:/icons/open</normaloff>:/icons/open</iconset>
    </property>
    <property name="text">
@@ -113,7 +97,7 @@
   </action>
   <action name="createNewProgramAction">
    <property name="icon">
-    <iconset resource="resources.qrc">
+    <iconset resource="../resources.qrc">
      <normaloff>:/icons/create</normaloff>:/icons/create</iconset>
    </property>
    <property name="text">
@@ -125,7 +109,7 @@
   </action>
   <action name="saveAction">
    <property name="icon">
-    <iconset resource="resources.qrc">
+    <iconset resource="../resources.qrc">
      <normaloff>:/icons/save</normaloff>:/icons/save</iconset>
    </property>
    <property name="text">
@@ -134,7 +118,7 @@
   </action>
   <action name="quitAction">
    <property name="icon">
-    <iconset resource="resources.qrc">
+    <iconset resource="../resources.qrc">
      <normaloff>:/icons/quit</normaloff>:/icons/quit</iconset>
    </property>
    <property name="text">
@@ -143,24 +127,16 @@
   </action>
   <action name="sendProgramAction">
    <property name="icon">
-    <iconset resource="resources.qrc">
+    <iconset resource="../resources.qrc">
      <normaloff>:/icons/send</normaloff>:/icons/send</iconset>
    </property>
    <property name="text">
     <string>Envoyer le programme vers le robot</string>
    </property>
   </action>
-  <action name="toggleDebugMode">
-   <property name="text">
-    <string>toggle debug mode</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+T, Ctrl+D</string>
-   </property>
-  </action>
   <action name="closeProgramAction">
    <property name="icon">
-    <iconset resource="resources.qrc">
+    <iconset resource="../resources.qrc">
      <normaloff>:/icons/close</normaloff>:/icons/close</iconset>
    </property>
    <property name="text">
@@ -172,16 +148,8 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <customwidgets>
-  <customwidget>
-   <class>QWebEngineView</class>
-   <extends>QWidget</extends>
-   <header>qwebengineview.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources>
-  <include location="resources.qrc"/>
+  <include location="../resources.qrc"/>
  </resources>
  <connections/>
 </ui>

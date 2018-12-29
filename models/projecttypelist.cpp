@@ -1,8 +1,9 @@
+// This include must go first because it is dependant of the MicroPythonCompiler file
+#include "executors/micropythongeneratorexecutor.h"
+
 #include "projecttypelist.h"
 
 #include "editors/blocklyneutralroboteditor.h"
-
-#include "executors/micropythongeneratorexecutor.h"
 
 /**
  * @brief Constructor of the list
@@ -36,7 +37,7 @@ ProjectTypeList& ProjectTypeList::getSingleton()
 
 // Methods ----------------------------------------------------------------------------------------
 
-const QList<ProjectTypeInterface*> &ProjectTypeList::getTypesList() const
+const QList<AbstractProjectType*> &ProjectTypeList::getTypesList() const
 {
     return types;
 }
@@ -46,7 +47,7 @@ const QList<ProjectTypeInterface*> &ProjectTypeList::getTypesList() const
  * @param name : The name of the seeked project type
  * @return The project type with the corresponding name
  */
-const ProjectTypeInterface* ProjectTypeList::getTypeByName(const QString &name) const
+const AbstractProjectType* ProjectTypeList::getTypeByName(const QString &name) const
 {
     for (auto& type : types)
     {
@@ -64,7 +65,7 @@ const ProjectTypeInterface* ProjectTypeList::getTypeByName(const QString &name) 
  * @param extension : The extension of the seeked project type
  * @return The project type with the corresponding extension
  */
-const ProjectTypeInterface* ProjectTypeList::getTypeByExtension(const QString &extension) const
+const AbstractProjectType* ProjectTypeList::getTypeByExtension(const QString &extension) const
 {
     for (auto& type : types)
     {

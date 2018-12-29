@@ -13,7 +13,10 @@
 BlocklyNeutralRobotEditor::BlocklyNeutralRobotEditor(ProgramFile &file)
     : BaseEditor(file)
 {
+    // Initialization
     view.load(QUrl(URI(BLOCKLY_NEUTRAL_ROBOT_PATH)));
+    layout.addWidget(&view);
+    setLayout(&layout);
 }
 
 /**

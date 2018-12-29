@@ -1,5 +1,7 @@
 #include "mainwindowviewcontroller.h"
 
+#include "models/projecttypelist.h"
+
 #include <QAction>
 #include <QDebug>
 
@@ -13,34 +15,20 @@
  */
 MainWindowViewController::MainWindowViewController()
     : MainWindow(),
-      clipboard(QApplication::clipboard())
+      clipboard(QApplication::clipboard()),
+      testFile(URI("test/test.txt"))
 {
     // Settings ---------------------------------
-    getWebView().load(QUrl(URI("Blockly/neutralrobot.html")));
 
-    // The debug mode is setted to off by default
-    toggleDebugMode();
+    const ProjectTypeList& list = ProjectTypeList::getSingleton();
+    const AbstractProjectType* testType = list.getTypeByName("test");
+    setEnvironment(testType->getNewEditor(testFile), testType->getNewExecutor());
 
     // Connections ------------------------------
-    connect(&getTranslateButton(), &QPushButton::clicked, this, &MainWindowViewController::translateCode);
     connect(&getSendAction(), &QAction::triggered, this, &MainWindowViewController::sendProgram);
 
     connect(&getQuitAction(), &QAction::triggered, this, &MainWindowViewController::close);
     connect(this, &MainWindowViewController::closeRequested, this, &MainWindowViewController::processBeforeQuitting);
-
-    connect(&getDebugModeAction(), &QAction::triggered, this, &MainWindowViewController::toggleDebugMode);
-}
-
-/**
- * @brief Translate the pivot code into traget code
- * This method translate the pivot code into target code, by calling the compiler
- */
-void MainWindowViewController::translateCode()
-{
-    const QString result = QString::fromStdString(microPythonCompiler.compile(getCodeInput().toPlainText().toStdString()));
-
-    getCodeOutput().setPlainText(result);
-    clipboard->setText(result);
 }
 
 /**
@@ -48,13 +36,6 @@ void MainWindowViewController::translateCode()
  */
 void MainWindowViewController::sendProgram()
 {
-    QTextEdit& codeInput = getCodeInput();
-
-    // Trying to get the code from blockly
-    getWebView().page()->runJavaScript(JS_COMMAND_GET_BLOCKLY_CODE,
-                                       [&codeInput](const QVariant& value) { codeInput.setPlainText(value.toString()); }
-                                       );
-    translateCode();
 }
 
 /**
@@ -64,17 +45,5 @@ void MainWindowViewController::processBeforeQuitting()
 {
     // Things to do
     // ...
-}
-
-/**
- * @brief Toggle the visibility of the code input editor and the translate button
- */
-void MainWindowViewController::toggleDebugMode()
-{
-    const bool visibility = !getCodeInput().isHidden();
-
-    getCodeInput().setHidden(visibility);
-    getTranslateButton().setHidden(visibility);
-    getCodeOutput().setHidden(visibility);
 }
 

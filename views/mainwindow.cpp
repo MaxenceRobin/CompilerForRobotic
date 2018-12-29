@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "editors/blocklyneutralroboteditor.h"
+
 /**
  * @brief Constructor of the main window
  * @param parent : The hierachical parent of the window
@@ -12,7 +14,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     // Settings
-    ui->centralWidget->addAction(ui->toggleDebugMode);
+
+    // Initialization of the environment
+    editor = new QWidget;
+    executor = new QWidget;
+    ui->centralLayout->addWidget(editor);
+    ui->centralLayout->addWidget(executor);
 }
 
 /**
@@ -39,33 +46,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
 // Methods ----------------------------------------------------------------------------------------
 
 /**
- * @brief Grants access to the code input editor
- * @return The code input editor
- */
-QTextEdit& MainWindow::getCodeInput()
-{
-    return *(ui->codeInput);
-}
-
-/**
- * @brief Grants access to the code output editor
- * @return The code output editor
- */
-QTextEdit& MainWindow::getCodeOutput()
-{
-    return *(ui->codeOutput);
-}
-
-/**
- * @brief Grants access to the translation button
- * @return The translation button
- */
-QPushButton& MainWindow::getTranslateButton()
-{
-    return *(ui->translateButton);
-}
-
-/**
  * @brief Grants access to the quit actino
  * @return The quit action
  */
@@ -75,28 +55,30 @@ QAction& MainWindow::getQuitAction()
 }
 
 /**
- * @brief Grants access to the web view
- * @return The web view
- */
-QWebEngineView& MainWindow::getWebView()
-{
-    return *(ui->webView);
-}
-
-/**
- * @brief Grants access to the debug mode action
- * @return The debug mode action
- */
-QAction& MainWindow::getDebugModeAction()
-{
-    return *(ui->toggleDebugMode);
-}
-
-/**
  * @brief Grants access to the program sending action
  * @return The program sending action
  */
 QAction& MainWindow::getSendAction()
 {
     return *(ui->sendProgramAction);
+}
+
+/**
+ * @brief Replaces the developpment environment with a new one, defined by an editor and an executor
+ * @param newEditor : The new editor
+ * @param newExecutor : The new executor
+ */
+void MainWindow::setEnvironment(BaseEditor *newEditor, BaseExecutor *newExecutor)
+{
+    QWidget* oldEditor = editor;
+    QWidget* oldExecutor = executor;
+
+    ui->centralLayout->replaceWidget(oldEditor, newEditor);
+    ui->centralLayout->replaceWidget(oldExecutor, newExecutor);
+
+    delete oldEditor;
+    delete oldExecutor;
+
+    editor = newEditor;
+    executor = newExecutor;
 }

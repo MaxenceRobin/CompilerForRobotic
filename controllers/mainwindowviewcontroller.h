@@ -20,16 +20,16 @@ public:
     MainWindowViewController();
 
 public slots:
-    void translateCode();
     void sendProgram();
 
 private slots:
     void processBeforeQuitting();
-    void toggleDebugMode();
 
 private:
     MicroPythonCompiler microPythonCompiler;
     QClipboard* clipboard;
+
+    ProgramFile testFile;
 };
 
 #endif // MAINWINDOWVIEWCONTROLLER_H

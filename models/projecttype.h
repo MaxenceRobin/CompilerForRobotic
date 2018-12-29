@@ -9,16 +9,13 @@
 /**
  * @brief Interface need to be able to store ProjectType object in a collection
  */
-class ProjectTypeInterface
+class AbstractProjectType
 {
 public:
-    ProjectTypeInterface();
-    virtual ~ProjectTypeInterface();
-
     virtual QString getName() const = 0;
     virtual QString getExtension() const = 0;
     virtual QString getIcon() const = 0;
-    virtual BaseEditor* getNewEditor(const ProgramFile& file) const = 0;
+    virtual BaseEditor* getNewEditor(ProgramFile& file) const = 0;
     virtual BaseExecutor* getNewExecutor() const = 0;
 };
 
@@ -26,16 +23,17 @@ public:
  * @brief Data storage class to represent a type of project
  */
 template <class Editor, class Executor>
-class ProjectType : public ProjectTypeInterface
+class ProjectType : public AbstractProjectType
 {
 public:
     ProjectType(const QString& _name, const QString& _extension, const QString& _icon = "");
+    virtual ~ProjectType();
 
-    QString getName() const;
-    QString getExtension() const;
-    QString getIcon() const;
-    BaseEditor* getNewEditor(const ProgramFile& file) const;
-    BaseExecutor* getNewExecutor() const;
+    virtual QString getName() const override;
+    virtual QString getExtension() const override;
+    virtual QString getIcon() const override;
+    virtual BaseEditor* getNewEditor(ProgramFile &file) const override;
+    virtual BaseExecutor* getNewExecutor() const override;
 
 private:
     QString name;
@@ -53,11 +51,19 @@ private:
  */
 template <class Editor, class Executor>
 ProjectType<Editor, Executor>::ProjectType(const QString& _name, const QString& _extension, const QString& _icon)
-    : name(_name),
+    : AbstractProjectType(),
+      name(_name),
       extension(_extension),
       icon(_icon)
 {
 }
+
+template <class Editor, class Executor>
+ProjectType<Editor, Executor>::~ProjectType()
+{
+}
+
+// Methods ----------------------------------------------------------------------------------------
 
 /**
  * @brief Returns the name of the project type
@@ -94,7 +100,7 @@ QString ProjectType<Editor, Executor>::getIcon() const
  * @return A new editor associated to the given file
  */
 template <class Editor, class Executor>
-BaseEditor* ProjectType<Editor, Executor>::getNewEditor(const ProgramFile& file) const
+BaseEditor* ProjectType<Editor, Executor>::getNewEditor(ProgramFile& file) const
 {
     return new Editor(file);
 }

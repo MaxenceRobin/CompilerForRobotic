@@ -1,6 +1,9 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "editors/baseeditor.h"
+#include "executors/baseexecutor.h"
+
 #include <QMainWindow>
 #include <QTextEdit>
 #include <QPushButton>
@@ -23,22 +26,21 @@ public:
     ~MainWindow();
 
     void closeEvent(QCloseEvent* event);
+    void setEnvironment(BaseEditor* newEditor, BaseExecutor* newExecutor);
 
 signals:
     void closeRequested();
 
     // Special access for the controller
 protected:
-    QTextEdit& getCodeInput();
-    QTextEdit& getCodeOutput();
-    QPushButton& getTranslateButton();
     QAction& getQuitAction();
-    QWebEngineView& getWebView();
-    QAction& getDebugModeAction();
     QAction& getSendAction();
 
 private:
     Ui::MainWindow *ui;
+
+    QWidget* editor;
+    QWidget* executor;
 };
 
 #endif // MAINWINDOW_H
