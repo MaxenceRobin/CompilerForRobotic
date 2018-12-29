@@ -14,14 +14,14 @@ public:
     static ProjectTypeList& getSingleton();
     ~ProjectTypeList();
 
-    const QList<ProjectType<BaseEditor, BaseExecutor>*>& getTypesList() const;
-    const ProjectType<BaseEditor, BaseExecutor> *getTypeByName(const QString& name) const;
-    const ProjectType<BaseEditor, BaseExecutor> *getTypeByExtension(const QString& extension) const;
+    const QList<ProjectTypeInterface*>& getTypesList() const;
+    const ProjectTypeInterface *getTypeByName(const QString& name) const;
+    const ProjectTypeInterface *getTypeByExtension(const QString& extension) const;
 
 private:
     ProjectTypeList(); // Private for the singleton
 
-    QList<ProjectType<BaseEditor, BaseExecutor>*> types;
+    QList<ProjectTypeInterface*> types;
 };
 
 #endif // PROJECTTYPELIST_H

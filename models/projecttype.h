@@ -7,10 +7,26 @@
 #include <QString>
 
 /**
+ * @brief Interface need to be able to store ProjectType object in a collection
+ */
+class ProjectTypeInterface
+{
+public:
+    ProjectTypeInterface();
+    virtual ~ProjectTypeInterface();
+
+    virtual QString getName() const = 0;
+    virtual QString getExtension() const = 0;
+    virtual QString getIcon() const = 0;
+    virtual BaseEditor* getNewEditor(const ProgramFile& file) const = 0;
+    virtual BaseExecutor* getNewExecutor() const = 0;
+};
+
+/**
  * @brief Data storage class to represent a type of project
  */
 template <class Editor, class Executor>
-class ProjectType
+class ProjectType : public ProjectTypeInterface
 {
 public:
     ProjectType(const QString& _name, const QString& _extension, const QString& _icon = "");

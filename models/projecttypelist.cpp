@@ -1,12 +1,16 @@
 #include "projecttypelist.h"
 
+#include "editors/blocklyneutralroboteditor.h"
+
+#include "executors/micropythongeneratorexecutor.h"
+
 /**
  * @brief Constructor of the list
  */
 ProjectTypeList::ProjectTypeList()
 {
     // Creation of the types
-    types   << new ProjectType<BaseEditor, BaseExecutor>("test", "tst");
+    types   << new ProjectType<BlocklyNeutralRobotEditor, MicroPythonGeneratorExecutor>("test", "tst", "osef");
 }
 
 /**
@@ -32,7 +36,7 @@ ProjectTypeList& ProjectTypeList::getSingleton()
 
 // Methods ----------------------------------------------------------------------------------------
 
-const QList<ProjectType<BaseEditor, BaseExecutor>*>& ProjectTypeList::getTypesList() const
+const QList<ProjectTypeInterface*> &ProjectTypeList::getTypesList() const
 {
     return types;
 }
@@ -42,7 +46,7 @@ const QList<ProjectType<BaseEditor, BaseExecutor>*>& ProjectTypeList::getTypesLi
  * @param name : The name of the seeked project type
  * @return The project type with the corresponding name
  */
-const ProjectType<BaseEditor, BaseExecutor>* ProjectTypeList::getTypeByName(const QString &name) const
+const ProjectTypeInterface* ProjectTypeList::getTypeByName(const QString &name) const
 {
     for (auto& type : types)
     {
@@ -60,7 +64,7 @@ const ProjectType<BaseEditor, BaseExecutor>* ProjectTypeList::getTypeByName(cons
  * @param extension : The extension of the seeked project type
  * @return The project type with the corresponding extension
  */
-const ProjectType<BaseEditor, BaseExecutor>* ProjectTypeList::getTypeByExtension(const QString &extension) const
+const ProjectTypeInterface* ProjectTypeList::getTypeByExtension(const QString &extension) const
 {
     for (auto& type : types)
     {
