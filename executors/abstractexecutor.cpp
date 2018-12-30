@@ -1,9 +1,9 @@
-#include "baseexecutor.h"
+#include "abstractexecutor.h"
 
 /**
  * @brief Constructor of the executor
  */
-BaseExecutor::BaseExecutor()
+AbstractExecutor::AbstractExecutor()
     : QWidget()
 {
 }
@@ -11,7 +11,7 @@ BaseExecutor::BaseExecutor()
 /**
  * @brief Destructor of the executor
  */
-BaseExecutor::~BaseExecutor()
+AbstractExecutor::~AbstractExecutor()
 {
     // Nothing to destroy
 }

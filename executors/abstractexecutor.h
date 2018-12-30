@@ -6,11 +6,11 @@
 /**
  * @brief Base class for all executors
  */
-class BaseExecutor : public QWidget
+class AbstractExecutor : public QWidget
 {
 public:
-    BaseExecutor();
-    virtual ~BaseExecutor();
+    AbstractExecutor();
+    virtual ~AbstractExecutor();
 
     virtual void execute(const QString& pivot) = 0;
 };

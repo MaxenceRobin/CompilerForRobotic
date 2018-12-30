@@ -1,8 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "editors/baseeditor.h"
-#include "executors/baseexecutor.h"
+#include "editors/abstracteditor.h"
+#include "executors/abstractexecutor.h"
 
 #include <QMainWindow>
 #include <QTextEdit>
@@ -26,7 +26,7 @@ public:
     ~MainWindow();
 
     void closeEvent(QCloseEvent* event);
-    void setEnvironment(BaseEditor* newEditor, BaseExecutor* newExecutor);
+    void setEnvironment(AbstractEditor* newEditor, AbstractExecutor* newExecutor);
 
 signals:
     void closeRequested();

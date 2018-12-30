@@ -1,7 +1,7 @@
 #ifndef BLOCKLYNEUTRALROBOTEDITOR_H
 #define BLOCKLYNEUTRALROBOTEDITOR_H
 
-#include "baseeditor.h"
+#include "abstracteditor.h"
 
 #include <QWebEngineView>
 #include <QHBoxLayout>
@@ -9,7 +9,7 @@
 /**
  * @brief An editor using the Blockly interface with blocks describing basic robot actions, not associated to a specific kind of robot
  */
-class BlocklyNeutralRobotEditor : public BaseEditor
+class BlocklyNeutralRobotEditor : public AbstractEditor
 {
 public:
     BlocklyNeutralRobotEditor(ProgramFile& file);

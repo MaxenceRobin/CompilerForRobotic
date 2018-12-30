@@ -4,14 +4,14 @@
 // This include must go first because of the conflict between the emit method of Lexer and the Qt emit keyword
 #include "compilers/micropython/micropythoncompiler.h"
 
-#include "baseexecutor.h"
+#include "abstractexecutor.h"
 
 #include <QClipboard>
 
 /**
  * @brief
  */
-class MicroPythonGeneratorExecutor : public BaseExecutor
+class MicroPythonGeneratorExecutor : public AbstractExecutor
 {
 public:
     MicroPythonGeneratorExecutor();

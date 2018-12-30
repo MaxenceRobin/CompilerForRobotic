@@ -11,7 +11,7 @@
  * @param file : The file associated with the editor
  */
 BlocklyNeutralRobotEditor::BlocklyNeutralRobotEditor(ProgramFile &file)
-    : BaseEditor(file)
+    : AbstractEditor(file)
 {
     // Initialization
     view.load(QUrl(URI(BLOCKLY_NEUTRAL_ROBOT_PATH)));

@@ -3,7 +3,7 @@
 #include <QApplication>
 
 MicroPythonGeneratorExecutor::MicroPythonGeneratorExecutor()
-    : BaseExecutor(),
+    : AbstractExecutor(),
       clipboard(QApplication::clipboard())
 {
     hide();

@@ -37,7 +37,11 @@ ProjectTypeList& ProjectTypeList::getSingleton()
 
 // Methods ----------------------------------------------------------------------------------------
 
-const QList<AbstractProjectType*> &ProjectTypeList::getTypesList() const
+/**
+ * @brief Returns the list of all the existing project types
+ * @return All the existing project types
+ */
+const QList<AbstractProjectType*>& ProjectTypeList::getTypesList() const
 {
     return types;
 }

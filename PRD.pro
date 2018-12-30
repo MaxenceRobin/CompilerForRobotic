@@ -37,39 +37,40 @@ DEPENDPATH += \
 CONFIG += c++11
 
 SOURCES += \
-        main.cpp \
-        views/mainwindow.cpp \
+    main.cpp \
+    views/mainwindow.cpp \
     ANTLR/antlr4-runtime/PivotBaseVisitor.cpp \
     ANTLR/antlr4-runtime/PivotLexer.cpp \
     ANTLR/antlr4-runtime/PivotParser.cpp \
     ANTLR/antlr4-runtime/PivotVisitor.cpp \
     controllers/mainwindowviewcontroller.cpp \
     compilers/micropython/micropythoncompiler.cpp \
-    editors/baseeditor.cpp \
     models/programfile.cpp \
-    executors/baseexecutor.cpp \
     models/projecttypelist.cpp \
     editors/blocklyneutralroboteditor.cpp \
-    executors/micropythongeneratorexecutor.cpp
+    executors/micropythongeneratorexecutor.cpp \
+    editors/abstracteditor.cpp \
+    executors/abstractexecutor.cpp \
+    models/projecttype.cpp
 
 HEADERS += \
-        views/mainwindow.h \
+    views/mainwindow.h \
     ANTLR/antlr4-runtime/PivotBaseVisitor.h \
     ANTLR/antlr4-runtime/PivotLexer.h \
     ANTLR/antlr4-runtime/PivotParser.h \
     ANTLR/antlr4-runtime/PivotVisitor.h \
     controllers/mainwindowviewcontroller.h \
     compilers/micropython/micropythoncompiler.h \
-    editors/baseeditor.h \
     models/programfile.h \
-    executors/baseexecutor.h \
     models/projecttype.h \
     models/projecttypelist.h \
     editors/blocklyneutralroboteditor.h \
-    executors/micropythongeneratorexecutor.h
+    executors/micropythongeneratorexecutor.h \
+    editors/abstracteditor.h \
+    executors/abstractexecutor.h
 
 FORMS += \
-        views/mainwindow.ui
+    views/mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

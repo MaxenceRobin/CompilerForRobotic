@@ -68,7 +68,7 @@ QAction& MainWindow::getSendAction()
  * @param newEditor : The new editor
  * @param newExecutor : The new executor
  */
-void MainWindow::setEnvironment(BaseEditor *newEditor, BaseExecutor *newExecutor)
+void MainWindow::setEnvironment(AbstractEditor *newEditor, AbstractExecutor *newExecutor)
 {
     QWidget* oldEditor = editor;
     QWidget* oldExecutor = executor;

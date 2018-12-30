@@ -1,10 +1,10 @@
-#include "baseeditor.h"
+#include "abstracteditor.h"
 
 /**
  * @brief Constructor of the BaseEditor object
  * @param file
  */
-BaseEditor::BaseEditor(ProgramFile &file)
+AbstractEditor::AbstractEditor(ProgramFile &file)
     : QWidget(),
       programFile(&file)
 {
@@ -13,7 +13,7 @@ BaseEditor::BaseEditor(ProgramFile &file)
 /**
  * @brief Destructor of the BaseEditor object
  */
-BaseEditor::~BaseEditor()
+AbstractEditor::~AbstractEditor()
 {
     // The program file object is destroyed outside of this class
 }
@@ -24,7 +24,7 @@ BaseEditor::~BaseEditor()
  * @brief Grants access to the file for children
  * @return The internal ProgramFile object as a reference
  */
-ProgramFile& BaseEditor::getFile()
+ProgramFile& AbstractEditor::getFile()
 {
     return *programFile;
 }

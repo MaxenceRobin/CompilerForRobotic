@@ -8,11 +8,11 @@
 /**
  * @brief Base class for all the editors
  */
-class BaseEditor : public QWidget
+class AbstractEditor : public QWidget
 {
 public:
-    BaseEditor(ProgramFile& file);
-    virtual ~BaseEditor();
+    AbstractEditor(ProgramFile& file);
+    virtual ~AbstractEditor();
 
     virtual QString getPivot() = 0;
 
