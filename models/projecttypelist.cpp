@@ -11,7 +11,7 @@
 ProjectTypeList::ProjectTypeList()
 {
     // Creation of the types
-    types   << new ProjectType<BlocklyNeutralRobotEditor, MicroPythonGeneratorExecutor>("test", "tst", "osef");
+    types   << new ProjectType<BlocklyNeutralRobotEditor, MicroPythonGeneratorExecutor>("Blockly for MicroPython", "bkmp");
 }
 
 /**

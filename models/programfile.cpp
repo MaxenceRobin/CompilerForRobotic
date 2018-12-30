@@ -1,6 +1,7 @@
 #include "programfile.h"
 
 #include <QDataStream>
+#include <QDebug>
 
 /**
  * @brief Constructor of the ProgramFile object
@@ -18,8 +19,11 @@ ProgramFile::ProgramFile(const QString& name)
  */
 ProgramFile::~ProgramFile()
 {
+    qDebug() << "Destruction du fichier";
+
     if (isOpen())
     {
+        qDebug() << "fermeture du fichier";
         close();
     }
 }

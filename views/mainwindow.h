@@ -4,6 +4,8 @@
 #include "editors/abstracteditor.h"
 #include "executors/abstractexecutor.h"
 
+#include "models/programfile.h"
+
 #include <QMainWindow>
 #include <QTextEdit>
 #include <QPushButton>
@@ -29,15 +31,23 @@ private:
     void closeEvent(QCloseEvent* event);
 
     void processBeforeQuitting();
-    void setEnvironment(AbstractEditor* newEditor, AbstractExecutor* newExecutor);
-    void closeProject();
     void replaceEnvironment(QWidget* newEditor, QWidget* newExecutor);
+    void loadProgram(const QString& fileName);
+
+private slots:
+    void createProgram();
+    void openProgram();
+    void closeProgram();
+    void saveProgram();
+    void sendProgram();
 
 private:
     Ui::MainWindow *ui;
 
     QWidget* editor;
     QWidget* executor;
+
+    ProgramFile* currentFile;
 };
 
 #endif // MAINWINDOW_H
