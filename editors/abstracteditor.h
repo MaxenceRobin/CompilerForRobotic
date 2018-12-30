@@ -11,16 +11,15 @@
 class AbstractEditor : public QWidget
 {
 public:
-    AbstractEditor(ProgramFile& file);
+    AbstractEditor(const QString& fileName);
     virtual ~AbstractEditor();
+
+    ProgramFile& getFile();
 
     virtual QString getPivot() = 0;
 
-protected:
-    ProgramFile& getFile();
-
 private:
-    ProgramFile* programFile;
+    ProgramFile programFile;
 };
 
 #endif // BASEEDITOR_H

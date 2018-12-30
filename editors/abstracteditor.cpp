@@ -4,9 +4,9 @@
  * @brief Constructor of the BaseEditor object
  * @param file
  */
-AbstractEditor::AbstractEditor(ProgramFile &file)
+AbstractEditor::AbstractEditor(const QString &fileName)
     : QWidget(),
-      programFile(&file)
+      programFile(fileName)
 {
 }
 
@@ -21,10 +21,10 @@ AbstractEditor::~AbstractEditor()
 // Methods ----------------------------------------------------------------------------------------
 
 /**
- * @brief Grants access to the file for children
+ * @brief Grants access to the file
  * @return The internal ProgramFile object as a reference
  */
 ProgramFile& AbstractEditor::getFile()
 {
-    return *programFile;
+    return programFile;
 }

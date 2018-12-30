@@ -12,7 +12,7 @@
 class BlocklyNeutralRobotEditor : public AbstractEditor
 {
 public:
-    BlocklyNeutralRobotEditor(ProgramFile& file);
+    BlocklyNeutralRobotEditor(const QString &fileName);
     virtual ~BlocklyNeutralRobotEditor() override;
 
     virtual QString getPivot() override;

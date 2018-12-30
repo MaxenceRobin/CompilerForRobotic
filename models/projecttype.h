@@ -18,7 +18,7 @@ public:
     virtual QString getName() const;
     virtual QString getExtension() const;
     virtual QString getIcon() const;
-    virtual AbstractEditor* getNewEditor(ProgramFile& file) const = 0;
+    virtual AbstractEditor* getNewEditor(const QString& fileName) const = 0;
     virtual AbstractExecutor* getNewExecutor() const = 0;
 
 private:
@@ -40,7 +40,7 @@ public:
     ProjectType(const QString& name, const QString& extension, const QString& icon = "");
     virtual ~ProjectType() override;
 
-    virtual AbstractEditor* getNewEditor(ProgramFile &file) const override;
+    virtual AbstractEditor* getNewEditor(const QString &fileName) const override;
     virtual AbstractExecutor* getNewExecutor() const override;
 };
 
@@ -73,9 +73,9 @@ ProjectType<Editor, Executor>::~ProjectType()
  * @return A new editor associated to the given file
  */
 template <class Editor, class Executor>
-AbstractEditor* ProjectType<Editor, Executor>::getNewEditor(ProgramFile& file) const
+AbstractEditor* ProjectType<Editor, Executor>::getNewEditor(const QString& fileName) const
 {
-    return new Editor(file);
+    return new Editor(fileName);
 }
 
 /**

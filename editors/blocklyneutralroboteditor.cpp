@@ -10,8 +10,8 @@
  * @brief Constructor of the editor
  * @param file : The file associated with the editor
  */
-BlocklyNeutralRobotEditor::BlocklyNeutralRobotEditor(ProgramFile &file)
-    : AbstractEditor(file)
+BlocklyNeutralRobotEditor::BlocklyNeutralRobotEditor(const QString& fileName)
+    : AbstractEditor(fileName)
 {
     // Initialization
     view.load(QUrl(URI(BLOCKLY_NEUTRAL_ROBOT_PATH)));

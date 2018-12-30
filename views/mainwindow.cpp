@@ -3,6 +3,8 @@
 
 #include "editors/blocklyneutralroboteditor.h"
 
+#include <QDebug>
+
 /**
  * @brief Constructor of the main window
  * @param parent : The hierachical parent of the window
@@ -14,12 +16,18 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
     // Settings
+    ui->closeProgramAction->setEnabled(false);
+    ui->saveAction->setEnabled(false);
+    ui->sendProgramAction->setEnabled(false);
 
     // Initialization of the environment
     editor = new QWidget;
     executor = new QWidget;
     ui->centralLayout->addWidget(editor);
     ui->centralLayout->addWidget(executor);
+
+    // Connections
+    connect(ui->quitAction, &QAction::triggered, this, &MainWindow::close);
 }
 
 /**
@@ -39,28 +47,18 @@ MainWindow::~MainWindow()
  */
 void MainWindow::closeEvent(QCloseEvent *event)
 {
-    emit closeRequested();
+    processBeforeQuitting();
     QMainWindow::closeEvent(event);
 }
 
 // Methods ----------------------------------------------------------------------------------------
 
 /**
- * @brief Grants access to the quit actino
- * @return The quit action
+ * @brief Process the last things to do before quitting the application
  */
-QAction& MainWindow::getQuitAction()
+void MainWindow::processBeforeQuitting()
 {
-    return *(ui->quitAction);
-}
-
-/**
- * @brief Grants access to the program sending action
- * @return The program sending action
- */
-QAction& MainWindow::getSendAction()
-{
-    return *(ui->sendProgramAction);
+    // Things to do before quitting
 }
 
 /**
@@ -70,14 +68,30 @@ QAction& MainWindow::getSendAction()
  */
 void MainWindow::setEnvironment(AbstractEditor *newEditor, AbstractExecutor *newExecutor)
 {
-    QWidget* oldEditor = editor;
-    QWidget* oldExecutor = executor;
+    replaceEnvironment(newEditor, newExecutor);
 
-    ui->centralLayout->replaceWidget(oldEditor, newEditor);
-    ui->centralLayout->replaceWidget(oldExecutor, newExecutor);
+    // Changing the visible actions
+    ui->createNewProgramAction->setEnabled(false);
+    ui->openProgramAction->setEnabled(false);
 
-    delete oldEditor;
-    delete oldExecutor;
+    ui->closeProgramAction->setEnabled(true);
+    ui->saveAction->setEnabled(true);
+    ui->sendProgramAction->setEnabled(true);
+}
+
+/**
+ * @brief Replaces the developpment environment with a new one, defined by two QWidget that are not specifically abstract editor or executor
+ * @param newEditor : The new editor widget
+ * @param newExecutor : The new executor widget
+ */
+void MainWindow::replaceEnvironment(QWidget *newEditor, QWidget *newExecutor)
+{
+    // Changing the environment
+    ui->centralLayout->replaceWidget(editor, newEditor);
+    ui->centralLayout->replaceWidget(executor, newExecutor);
+
+    delete editor;
+    delete executor;
 
     editor = newEditor;
     executor = newExecutor;

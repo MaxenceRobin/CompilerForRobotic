@@ -1,11 +1,11 @@
-#include "controllers/mainwindowviewcontroller.h"
+#include "views/mainwindow.h"
 
 #include <QApplication>
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-    MainWindowViewController window;
+    MainWindow window;
     window.showMaximized();
 
     return app.exec();

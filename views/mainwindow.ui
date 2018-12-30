@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../resources.qrc">
-    <normaloff>:/icons/robot</normaloff>:/icons/robot</iconset>
+    <normaloff>:/icons/multicoding</normaloff>:/icons/multicoding</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
@@ -143,7 +143,7 @@
     <string>Fermer le programme en corus</string>
    </property>
    <property name="toolTip">
-    <string>Fermer le programme en corus</string>
+    <string>Fermer le programme en cours</string>
    </property>
   </action>
  </widget>

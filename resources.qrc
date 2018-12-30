@@ -7,5 +7,6 @@
         <file alias="robot">resources/icons/robot.png</file>
         <file alias="send">resources/icons/send.png</file>
         <file alias="close">resources/icons/close.png</file>
+        <file alias="multicoding">resources/icons/multicoding.png</file>
     </qresource>
 </RCC>

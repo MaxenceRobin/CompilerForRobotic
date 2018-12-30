@@ -25,16 +25,13 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private:
     void closeEvent(QCloseEvent* event);
+
+    void processBeforeQuitting();
     void setEnvironment(AbstractEditor* newEditor, AbstractExecutor* newExecutor);
-
-signals:
-    void closeRequested();
-
-    // Special access for the controller
-protected:
-    QAction& getQuitAction();
-    QAction& getSendAction();
+    void closeProject();
+    void replaceEnvironment(QWidget* newEditor, QWidget* newExecutor);
 
 private:
     Ui::MainWindow *ui;

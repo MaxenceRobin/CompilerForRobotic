@@ -43,7 +43,6 @@ SOURCES += \
     ANTLR/antlr4-runtime/PivotLexer.cpp \
     ANTLR/antlr4-runtime/PivotParser.cpp \
     ANTLR/antlr4-runtime/PivotVisitor.cpp \
-    controllers/mainwindowviewcontroller.cpp \
     compilers/micropython/micropythoncompiler.cpp \
     models/programfile.cpp \
     models/projecttypelist.cpp \
@@ -59,7 +58,6 @@ HEADERS += \
     ANTLR/antlr4-runtime/PivotLexer.h \
     ANTLR/antlr4-runtime/PivotParser.h \
     ANTLR/antlr4-runtime/PivotVisitor.h \
-    controllers/mainwindowviewcontroller.h \
     compilers/micropython/micropythoncompiler.h \
     models/programfile.h \
     models/projecttype.h \
