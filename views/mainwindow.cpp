@@ -150,9 +150,18 @@ void MainWindow::openProgram()
     const ProjectTypeList& typesList = ProjectTypeList::getSingleton();
     QString filter = "";
 
+    // The Qt filter format is :
+    // "Name1 (*.ext1);;Name2 (*.ext2);;..."
+    bool first = true;
     for (auto& type : typesList.getTypesList())
     {
-        filter += type->getName() + " (*." + type->getExtension() + ");;";
+        if (!first)
+        {
+            filter += ";;";
+        }
+
+        filter += type->getName() + " (*." + type->getExtension() + ")";
+        first = false;
     }
 
     // Loading the opened file if the choice is not cancelled

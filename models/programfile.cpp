@@ -19,11 +19,8 @@ ProgramFile::ProgramFile(const QString& name)
  */
 ProgramFile::~ProgramFile()
 {
-    qDebug() << "Destruction du fichier";
-
     if (isOpen())
     {
-        qDebug() << "fermeture du fichier";
         close();
     }
 }
