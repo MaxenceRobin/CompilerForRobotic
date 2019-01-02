@@ -8,5 +8,6 @@
         <file alias="send">resources/icons/send.png</file>
         <file alias="close">resources/icons/close.png</file>
         <file alias="multicoding">resources/icons/multicoding.png</file>
+        <file alias="blocklyneutralrobot">resources/icons/blocklyneutralrobot.png</file>
     </qresource>
 </RCC>

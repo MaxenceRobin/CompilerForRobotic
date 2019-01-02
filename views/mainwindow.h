@@ -4,6 +4,8 @@
 #include "editors/abstracteditor.h"
 #include "executors/abstractexecutor.h"
 
+#include "createprogramview.h"
+
 #include "models/programfile.h"
 
 #include <QMainWindow>
@@ -34,6 +36,9 @@ private:
     void replaceEnvironment(QWidget* newEditor, QWidget* newExecutor);
     void loadProgram(const QString& fileName);
 
+private:
+    void setProjectMode(bool mode);
+
 private slots:
     void createProgram();
     void openProgram();
@@ -48,6 +53,9 @@ private:
     QWidget* executor;
 
     ProgramFile* currentFile;
+    bool projectOpen;
+
+    CreateProgramView createProgramDialog;
 };
 
 #endif // MAINWINDOW_H

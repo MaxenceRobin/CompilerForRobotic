@@ -9,7 +9,7 @@
 #include <QClipboard>
 
 /**
- * @brief
+ * @brief Executor that produces MicroPython from abstract robotic pivot code and send it to the robot via serial port communication
  */
 class MicroPythonGeneratorExecutor : public AbstractExecutor
 {

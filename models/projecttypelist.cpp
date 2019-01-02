@@ -11,7 +11,7 @@
 ProjectTypeList::ProjectTypeList()
 {
     // Creation of the types
-    types   << new ProjectType<BlocklyNeutralRobotEditor, MicroPythonGeneratorExecutor>("Blockly for MicroPython", "bkmp");
+    types   << new ProjectType<BlocklyNeutralRobotEditor, MicroPythonGeneratorExecutor>("Blockly for MicroPython", "bkmp", ":/icons/blocklyneutralrobot");
 }
 
 /**
@@ -29,7 +29,7 @@ ProjectTypeList::~ProjectTypeList()
  * @brief Returns the uniq instance of ProjectTypeList
  * @return The ProjectTypeList singleton
  */
-ProjectTypeList& ProjectTypeList::getSingleton()
+const ProjectTypeList &ProjectTypeList::getSingleton()
 {
     static ProjectTypeList list;
     return list;
@@ -80,4 +80,26 @@ const AbstractProjectType* ProjectTypeList::getTypeByExtension(const QString &ex
     }
 
     return nullptr;
+}
+
+/**
+ * @brief Convenience method that returns the name of a type from its extension
+ * @param extension : The extension of the seeked type
+ * @return The name of the type having the given extension
+ */
+const QString ProjectTypeList::getNameByExtension(const QString &extension) const
+{
+    const AbstractProjectType* type = getTypeByExtension(extension);
+    return type->getName();
+}
+
+/**
+ * @brief Convenience method that returns the extension of a type from its name
+ * @param name : The name of the seeked type
+ * @return The extensions of the type having the given extension
+ */
+const QString ProjectTypeList::getExtensionByName(const QString &name) const
+{
+    const AbstractProjectType* type = getTypeByName(name);
+    return type->getExtension();
 }

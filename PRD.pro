@@ -50,7 +50,9 @@ SOURCES += \
     executors/micropythongeneratorexecutor.cpp \
     editors/abstracteditor.cpp \
     executors/abstractexecutor.cpp \
-    models/projecttype.cpp
+    models/projecttype.cpp \
+    views/createprogramview.cpp \
+    models/settings.cpp
 
 HEADERS += \
     views/mainwindow.h \
@@ -65,10 +67,13 @@ HEADERS += \
     editors/blocklyneutralroboteditor.h \
     executors/micropythongeneratorexecutor.h \
     editors/abstracteditor.h \
-    executors/abstractexecutor.h
+    executors/abstractexecutor.h \
+    views/createprogramview.h \
+    models/settings.h
 
 FORMS += \
-    views/mainwindow.ui
+    views/mainwindow.ui \
+    views/createprogramview.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

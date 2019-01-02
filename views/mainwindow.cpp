@@ -3,6 +3,7 @@
 
 #include "editors/blocklyneutralroboteditor.h"
 #include "models/projecttypelist.h"
+#include "models/settings.h"
 
 #include <QFileInfo>
 #include <QFileDialog>
@@ -16,15 +17,14 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    currentFile(nullptr)
+    currentFile(nullptr),
+    projectOpen(false),
+    createProgramDialog(this)
 {
     ui->setupUi(this);
 
     // Initialization -------------------------------------
-    // Actions
-    ui->closeProgramAction->setEnabled(false);
-    ui->saveAction->setEnabled(false);
-    ui->sendProgramAction->setEnabled(false);
+    setProjectMode(false);
 
     // Environment
     editor = new QWidget;
@@ -70,8 +70,8 @@ void MainWindow::closeEvent(QCloseEvent *event)
  */
 void MainWindow::processBeforeQuitting()
 {
-    // If a file is currently open, the current program is closed first (even though the file will be deleted by the linked destruction anyway)
-    if (currentFile != nullptr)
+    // If a file is currently open it it closed before quitting
+    if (projectOpen)
     {
         closeProgram();
     }
@@ -94,6 +94,20 @@ void MainWindow::replaceEnvironment(QWidget *newEditor, QWidget *newExecutor)
 
     editor = newEditor;
     executor = newExecutor;
+}
+
+/**
+ * @brief Enables ro disables the project mode (define which actions are visible or not)
+ * @param mode : true to enabled to project mode, false to disable it
+ */
+void MainWindow::setProjectMode(bool mode)
+{
+    ui->createNewProgramAction->setEnabled(!mode);
+    ui->openProgramAction->setEnabled(!mode);
+
+    ui->closeProgramAction->setEnabled(mode);
+    ui->saveAction->setEnabled(mode);
+    ui->sendProgramAction->setEnabled(mode);
 }
 
 /**
@@ -121,14 +135,7 @@ void MainWindow::loadProgram(const QString &fileName)
 
     // The editor and executor are setted
     replaceEnvironment(newEditor, newExecutor);
-
-    // Finally the appropriate actions are enabled or disabled
-    ui->createNewProgramAction->setEnabled(false);
-    ui->openProgramAction->setEnabled(false);
-
-    ui->closeProgramAction->setEnabled(true);
-    ui->saveAction->setEnabled(true);
-    ui->sendProgramAction->setEnabled(true);
+    setProjectMode(true);
 }
 
 // Slots ------------------------------------------------------------------------------------------
@@ -138,7 +145,12 @@ void MainWindow::loadProgram(const QString &fileName)
  */
 void MainWindow::createProgram()
 {
+    const QString fileName = createProgramDialog.getProgramFileName();
 
+    if (!fileName.isEmpty())
+    {
+        loadProgram(fileName);
+    }
 }
 
 /**
@@ -165,7 +177,8 @@ void MainWindow::openProgram()
     }
 
     // Loading the opened file if the choice is not cancelled
-    const QString fileName = QFileDialog::getOpenFileName(this, "Ouvrir un programme", "", filter);
+    Settings& settings = Settings::getSingleton();
+    const QString fileName = QFileDialog::getOpenFileName(this, "Ouvrir un programme", settings.value("defaultLocation").toString(), filter);
 
     if (!fileName.isNull())
     {
@@ -178,14 +191,10 @@ void MainWindow::openProgram()
  */
 void MainWindow::closeProgram()
 {
+    saveProgram();
     replaceEnvironment(new QWidget, new QWidget);
-
-    ui->createNewProgramAction->setEnabled(true);
-    ui->openProgramAction->setEnabled(true);
-
-    ui->closeProgramAction->setEnabled(false);
-    ui->saveAction->setEnabled(false);
-    ui->sendProgramAction->setEnabled(false);
+    setProjectMode(false);
+    projectOpen = false;
 }
 
 /**
