@@ -9,10 +9,12 @@
 class Settings : public QSettings
 {
 public:
-    static Settings& getSingleton();
+    static QString getDefaultProgramLocation();
+    static void setDefaultProgramLocation(const QString& location);
 
 private:
     // Private for the singleton
+    static Settings& getSingleton();
     Settings();
     void init();
 };

@@ -60,10 +60,8 @@ CreateProgramView::~CreateProgramView()
  */
 void CreateProgramView::resetView()
 {
-    Settings& settings = Settings::getSingleton();
-
     ui->programNameEdit->clear();
-    ui->programLocationEdit->setText(settings.value("defaultLocation").toString());
+    ui->programLocationEdit->setText(Settings::getDefaultProgramLocation());
     ui->defaultLocationCheckBox->setChecked(false);
 
     // Unselected all the project types
@@ -88,8 +86,7 @@ QString CreateProgramView::getProgramFileName()
     {
         if (ui->defaultLocationCheckBox->isChecked())
         {
-            Settings& settings = Settings::getSingleton();
-            settings.setValue("defaultLocation", ui->programLocationEdit->text());
+            Settings::setDefaultProgramLocation(ui->programLocationEdit->text());
         }
 
         return ui->programLocationEdit->text() +
@@ -107,8 +104,7 @@ QString CreateProgramView::getProgramFileName()
  */
 void CreateProgramView::browse()
 {
-    Settings& settings = Settings::getSingleton();
-    const QString fileDir = QFileDialog::getExistingDirectory(this, "Parcourir", settings.value("defaultLocation").toString());
+    const QString fileDir = QFileDialog::getExistingDirectory(this, "Parcourir", Settings::getDefaultProgramLocation());
     ui->programLocationEdit->setText(fileDir);
 }
 

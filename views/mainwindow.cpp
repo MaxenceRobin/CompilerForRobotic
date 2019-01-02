@@ -177,8 +177,7 @@ void MainWindow::openProgram()
     }
 
     // Loading the opened file if the choice is not cancelled
-    Settings& settings = Settings::getSingleton();
-    const QString fileName = QFileDialog::getOpenFileName(this, "Ouvrir un programme", settings.value("defaultLocation").toString(), filter);
+    const QString fileName = QFileDialog::getOpenFileName(this, "Ouvrir un programme", Settings::getDefaultProgramLocation(), filter);
 
     if (!fileName.isNull())
     {
