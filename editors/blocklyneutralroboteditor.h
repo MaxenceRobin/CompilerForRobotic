@@ -17,6 +17,7 @@ public:
     virtual ~BlocklyNeutralRobotEditor() override;
 
     virtual QString getPivot() override;
+    virtual void save() override;
 
 private:
     QHBoxLayout layout;

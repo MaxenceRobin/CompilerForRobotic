@@ -52,7 +52,6 @@ private:
     QWidget* editor;
     QWidget* executor;
 
-    ProgramFile* currentFile;
     bool projectOpen;
 
     CreateProgramView createProgramDialog;

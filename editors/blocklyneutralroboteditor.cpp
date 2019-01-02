@@ -42,3 +42,13 @@ QString BlocklyNeutralRobotEditor::getPivot()
 
     return pivotResult;
 }
+
+/**
+ * @brief Saves the current file
+ */
+void BlocklyNeutralRobotEditor::save()
+{
+    // Storing the blockly blocks into the file content
+    // ...
+    AbstractEditor::save();
+}

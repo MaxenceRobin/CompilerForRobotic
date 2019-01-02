@@ -28,3 +28,11 @@ ProgramFile& AbstractEditor::getFile()
 {
     return programFile;
 }
+
+/**
+ * @brief Saves the intern file on the disk
+ */
+void AbstractEditor::save()
+{
+    programFile.saveOnDisk();
+}

@@ -17,7 +17,6 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    currentFile(nullptr),
     projectOpen(false),
     createProgramDialog(this)
 {
@@ -131,7 +130,6 @@ void MainWindow::loadProgram(const QString &fileName)
 
     AbstractEditor* newEditor = projectType->getNewEditor(fileName);
     AbstractExecutor* newExecutor = projectType->getNewExecutor();
-    currentFile = &newEditor->getFile();
 
     // The editor and executor are setted
     replaceEnvironment(newEditor, newExecutor);
@@ -201,7 +199,8 @@ void MainWindow::closeProgram()
  */
 void MainWindow::saveProgram()
 {
-    currentFile->saveOnDisk();
+    AbstractEditor* currentEditor = dynamic_cast<AbstractEditor*>(editor);
+    currentEditor->save();
 }
 
 /**

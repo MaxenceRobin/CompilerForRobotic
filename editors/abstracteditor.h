@@ -17,6 +17,7 @@ public:
     ProgramFile& getFile();
 
     virtual QString getPivot() = 0;
+    virtual void save();
 
 private:
     ProgramFile programFile;
