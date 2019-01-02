@@ -1,5 +1,7 @@
 #include "blocklyneutralroboteditor.h"
 
+#include <QDebug>
+
 #include <QApplication>
 #define URI(path) QApplication::applicationDirPath() + "/" + path
 #define BLOCKLY_NEUTRAL_ROBOT_PATH "Blockly/neutralrobot.html"
@@ -34,11 +36,9 @@ BlocklyNeutralRobotEditor::~BlocklyNeutralRobotEditor()
  */
 QString BlocklyNeutralRobotEditor::getPivot()
 {
-    QString result;
-
     view.page()->runJavaScript(JS_COMMAND_GET_BLOCKLY_CODE,
-                               [&result](const QVariant& value) { result = value.toString(); }
+                               [this](const QVariant& value) { pivotResult = value.toString(); }
     );
 
-    return result;
+    return pivotResult;
 }

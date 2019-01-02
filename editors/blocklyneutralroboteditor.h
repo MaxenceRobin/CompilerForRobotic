@@ -5,6 +5,7 @@
 
 #include <QWebEngineView>
 #include <QHBoxLayout>
+#include <QString>
 
 /**
  * @brief An editor using the Blockly interface with blocks describing basic robot actions, not associated to a specific kind of robot
@@ -20,6 +21,8 @@ public:
 private:
     QHBoxLayout layout;
     QWebEngineView view;
+
+    QString pivotResult;
 };
 
 #endif // BLOCKLYNEUTRALROBOTEDITOR_H

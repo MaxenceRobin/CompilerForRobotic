@@ -1,6 +1,7 @@
 #include "micropythongeneratorexecutor.h"
 
 #include <QApplication>
+#include <QDebug>
 
 MicroPythonGeneratorExecutor::MicroPythonGeneratorExecutor()
     : AbstractExecutor(),

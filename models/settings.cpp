@@ -11,9 +11,6 @@
 Settings::Settings()
     : QSettings(URI("Settings/settings.ini"), Settings::IniFormat)
 {
-    // Initialization
-    qDebug() << fileName();
-
     // If no settings are defined yet, the default settings have to be initialized
     if (!value("isDefined", false).toBool())
     {

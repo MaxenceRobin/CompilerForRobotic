@@ -210,4 +210,8 @@ void MainWindow::saveProgram()
  */
 void MainWindow::sendProgram()
 {
+    AbstractEditor* currentEditor = dynamic_cast<AbstractEditor*>(editor);
+    AbstractExecutor* currentExecutor = dynamic_cast<AbstractExecutor*>(executor);
+
+    currentExecutor->execute(currentEditor->getPivot());
 }
