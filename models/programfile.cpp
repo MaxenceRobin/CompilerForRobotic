@@ -1,6 +1,6 @@
 #include "programfile.h"
 
-#include <QDataStream>
+#include <QTextStream>
 #include <QDebug>
 
 /**
@@ -100,7 +100,9 @@ void ProgramFile::saveOnDisk()
 {
     if (isOpen())
     {
-        QDataStream stream(this);
+        // The size it setted to 0 to clear all the existing content
+        resize(0);
+        QTextStream stream(this);
         stream << content;
     }
 }
