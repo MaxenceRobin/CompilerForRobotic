@@ -29,7 +29,6 @@ ProgramFile::~ProgramFile()
  */
 void ProgramFile::setContent(const QString &content)
 {
-    qDebug() << "old = " << this->content << " / new = " << content;
     this->content = content;
 }
 
@@ -73,8 +72,6 @@ QString ProgramFile::reloadFromDisk()
  */
 void ProgramFile::saveOnDisk()
 {
-    qDebug() << "saving file";
-
     if (open(ProgramFile::Text | ProgramFile::WriteOnly))
     {
         QTextStream stream(this);

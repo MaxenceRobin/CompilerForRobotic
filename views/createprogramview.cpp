@@ -7,6 +7,8 @@
 #include <QFileDialog>
 #include <QDir>
 
+#include <QDebug>
+
 /**
  * @brief Construct a new dialog
  * @param parent : The hierarchical parent of the dialog
@@ -105,7 +107,12 @@ QString CreateProgramView::getProgramFileName()
 void CreateProgramView::browse()
 {
     const QString fileDir = QFileDialog::getExistingDirectory(this, "Parcourir", Settings::getDefaultProgramLocation());
-    ui->programLocationEdit->setText(fileDir);
+
+    // If the new location is invalid, the path is not replaced
+    if (!fileDir.isEmpty())
+    {
+        ui->programLocationEdit->setText(fileDir);
+    }
 }
 
 /**
