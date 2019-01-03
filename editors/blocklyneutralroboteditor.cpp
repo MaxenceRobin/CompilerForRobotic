@@ -19,8 +19,9 @@ BlocklyNeutralRobotEditor::BlocklyNeutralRobotEditor(const QString& fileName)
     : AbstractEditor(fileName),
       channel(view.page())
 {
+    dataGetter = new Channel(getFile().getContent());
     view.page()->setWebChannel(&channel);
-    channel.registerObject("dataGetter", new Channel(getFile().getContent()));
+    channel.registerObject("dataGetter", dataGetter);
 
     // Initialization
     view.load(QUrl(URI(BLOCKLY_NEUTRAL_ROBOT_PATH)));
@@ -46,6 +47,7 @@ void BlocklyNeutralRobotEditor::loadProgram()
  */
 BlocklyNeutralRobotEditor::~BlocklyNeutralRobotEditor()
 {
+    delete dataGetter;
 }
 
 // Methods ----------------------------------------------------------------------------------------

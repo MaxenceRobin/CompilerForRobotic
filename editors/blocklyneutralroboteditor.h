@@ -9,6 +9,8 @@
 #include <QWebChannel>
 #include <QDebug>
 
+class Channel;
+
 /**
  * @brief An editor using the Blockly interface with blocks describing basic robot actions, not associated to a specific kind of robot
  */
@@ -33,6 +35,7 @@ private:
     QString pivotResult;
 
     QWebChannel channel;
+    Channel* dataGetter;
 };
 
 // ################################################################################################

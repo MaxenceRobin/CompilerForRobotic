@@ -15,56 +15,39 @@ ProgramFile::ProgramFile(const QString& name)
 }
 
 /**
- * @brief Destructor of the object, close automatically the file if it's still open
+ * @brief Destructor
  */
 ProgramFile::~ProgramFile()
 {
-    if (isOpen())
-    {
-        close();
-    }
 }
 
 // Methods ----------------------------------------------------------------------------------------
 
 /**
- * @brief Sets the content of the file, if it is open
+ * @brief Sets the content of the file
  * @param content : The new content of the file
  */
 void ProgramFile::setContent(const QString &content)
 {
-    if (isOpen())
-    {
-        this->content = content;
-    }
+    this->content = content;
 }
 
 /**
- * @brief Appends the content at the end of the file, if it is open
+ * @brief Appends the content at the end of the file,
  * @param content : The content to add at the end of the file
  */
 void ProgramFile::appendContent(const QString &content)
 {
-    if (isOpen())
-    {
-        this->content += content;
-    }
+    this->content += content;
 }
 
 /**
- * @brief Gets the content of the file, or an empty string if it is not open
- * @return The content of the file, or an empty string if it is not open
+ * @brief Gets the content of the file
+ * @return The content of the file
  */
 QString ProgramFile::getContent() const
 {
-    if (isOpen())
-    {
-        return content;
-    }
-    else
-    {
-        return "";
-    }
+    return content;
 }
 
 /**
@@ -73,36 +56,26 @@ QString ProgramFile::getContent() const
  */
 QString ProgramFile::reloadFromDisk()
 {
-    if (!isOpen())
-    {
-        open(ProgramFile::Text | ProgramFile::ReadWrite);
-    }
-    else
-    {
-        reset();
-    }
-
-    if (isOpen())
+    // The ReadWrite access is used to create the file if it doesn't exist (not available with ReadOnly)
+    if (open(ProgramFile::Text | ProgramFile::ReadWrite))
     {
         content = readAll();
+        close();
         return content;
     }
-    else
-    {
-        return "";
-    }
+
+    return "";
 }
 
 /**
- * @brief Writes the content of the file onto the disk, if the file is open
+ * @brief Writes the content of the file onto the disk
  */
 void ProgramFile::saveOnDisk()
 {
-    if (isOpen())
+    if (open(ProgramFile::Text | ProgramFile::WriteOnly))
     {
-        // The size it setted to 0 to clear all the existing content
-        resize(0);
         QTextStream stream(this);
         stream << content;
+        close();
     }
 }
