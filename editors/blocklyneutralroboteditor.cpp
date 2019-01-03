@@ -1,5 +1,7 @@
 #include "blocklyneutralroboteditor.h"
 
+#include <QEventLoop>
+
 #include <QApplication>
 #define URI(path) QApplication::applicationDirPath() + "/" + path
 #define BLOCKLY_NEUTRAL_ROBOT_PATH "Blockly/neutralrobot.html"
@@ -71,11 +73,17 @@ QString BlocklyNeutralRobotEditor::getPivot()
  */
 void BlocklyNeutralRobotEditor::save()
 {
+    QEventLoop loop;
+    connect(this, &BlocklyNeutralRobotEditor::saveFinished, &loop, &QEventLoop::quit);
+
     // Storing the blockly blocks into the file content
     view.page()->runJavaScript(QString(JS_COMMAND_GET_BLOCKLY_BLOCKS), [this] (const QVariant& value)
     {
         getFile().setContent(value.toString());
+        emit saveFinished();
     });
+
+    loop.exec();
 
     AbstractEditor::save();
 }

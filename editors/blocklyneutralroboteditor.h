@@ -28,6 +28,9 @@ public:
 private slots:
     void loadProgram();
 
+signals:
+    void saveFinished();
+
 private:
     QHBoxLayout layout;
     QWebEngineView view;

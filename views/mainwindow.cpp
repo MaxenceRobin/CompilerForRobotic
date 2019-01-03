@@ -189,9 +189,10 @@ void MainWindow::openProgram()
 void MainWindow::closeProgram()
 {
     saveProgram();
-    replaceEnvironment(new QWidget, new QWidget);
     setProjectMode(false);
     projectOpen = false;
+    replaceEnvironment(new QWidget, new QWidget);
+
 }
 
 /**
