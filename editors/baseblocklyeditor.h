@@ -32,6 +32,8 @@ public:
 private slots:
     void loadProgram();
 
+    virtual void toggleDebugMode() override;
+
 signals:
     void saveFinished();
 

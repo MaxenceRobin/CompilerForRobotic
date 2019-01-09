@@ -13,6 +13,9 @@ public:
     virtual ~AbstractExecutor();
 
     virtual void execute(const QString& pivot) = 0;
+
+public slots:
+    virtual void toggleDebugMode() = 0;
 };
 
 #endif // BASEEXECUTOR_H

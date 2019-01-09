@@ -10,8 +10,6 @@ fragment DECIMAL_PART   : '.' DIGIT+ ([eE] [+-]? DIGIT+)?;
 NUMBER                  : INTEGER_PART (DECIMAL_PART)?;
 
 // Booleans
-TRUE    : 'true';
-FALSE   : 'false';
 EQU     : '==';
 DIF     : '!=';
 LT      : '<';
@@ -36,6 +34,8 @@ WHITESPACE  : (' ' | '\t')+ -> skip;
 FORWARD     : 'forward';
 WHILE       : 'while';
 UNTIL       : 'until';
+TRUE        : 'true';
+FALSE       : 'false';
 
 // Parser #########################################################################################
 

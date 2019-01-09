@@ -53,6 +53,13 @@ BaseBlocklyEditor::~BaseBlocklyEditor()
 // Methods ----------------------------------------------------------------------------------------
 
 /**
+ * @brief Does nothing. The implementation only avoid sub classes to be forced to implement it
+ */
+void BaseBlocklyEditor::toggleDebugMode()
+{
+}
+
+/**
  * @brief Returns the pivot code associated to the blockly program
  * @return The pivot code for the current blockly program
  */

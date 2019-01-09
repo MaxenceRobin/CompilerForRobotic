@@ -11,6 +11,9 @@ class BlocklyNeutralRobotEditor : public BaseBlocklyEditor
 public:
     BlocklyNeutralRobotEditor(const QString& fileName);
     virtual ~BlocklyNeutralRobotEditor();
+
+public slots:
+    virtual void toggleDebugMode() override;
 };
 
 #endif // BLOCKLYNEUTRALROBOTEDITOR_H

@@ -31,6 +31,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->centralLayout->addWidget(editor);
     ui->centralLayout->addWidget(executor);
 
+    addAction(ui->debugAction);
+
     // Connections ----------------------------------------
     connect(ui->quitAction, &QAction::triggered, this, &MainWindow::close);
 
@@ -130,6 +132,10 @@ void MainWindow::loadProgram(const QString &fileName)
 
     AbstractEditor* newEditor = projectType->getNewEditor(fileName);
     AbstractExecutor* newExecutor = projectType->getNewExecutor();
+
+    // Connections
+    connect(ui->debugAction, &QAction::triggered, newEditor, &AbstractEditor::toggleDebugMode);
+    connect(ui->debugAction, &QAction::triggered, newExecutor, &AbstractExecutor::toggleDebugMode);
 
     // The editor and executor are setted
     replaceEnvironment(newEditor, newExecutor);

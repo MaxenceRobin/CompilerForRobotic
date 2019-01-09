@@ -18,3 +18,12 @@ BlocklyNeutralRobotEditor::~BlocklyNeutralRobotEditor()
 {
 }
 
+// Methods ----------------------------------------------------------------------------------------
+
+/**
+ * @brief Toggle the debug mode
+ */
+void BlocklyNeutralRobotEditor::toggleDebugMode()
+{
+    setVisible(isHidden());
+}

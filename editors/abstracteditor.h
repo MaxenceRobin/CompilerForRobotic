@@ -19,6 +19,9 @@ public:
     virtual QString getPivot() = 0;
     virtual void save();
 
+public slots:
+    virtual void toggleDebugMode() = 0;
+
 private:
     ProgramFile programFile;
 };
