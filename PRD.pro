@@ -52,7 +52,8 @@ SOURCES += \
     executors/abstractexecutor.cpp \
     models/projecttype.cpp \
     views/createprogramview.cpp \
-    models/settings.cpp
+    models/settings.cpp \
+    editors/baseblocklyeditor.cpp
 
 HEADERS += \
     views/mainwindow.h \
@@ -69,7 +70,8 @@ HEADERS += \
     editors/abstracteditor.h \
     executors/abstractexecutor.h \
     views/createprogramview.h \
-    models/settings.h
+    models/settings.h \
+    editors/baseblocklyeditor.h
 
 FORMS += \
     views/mainwindow.ui \
