@@ -63,6 +63,7 @@ string MicroPythonCompiler::getMicroPythonFromPivot(const string &pivot)
     PivotParser parser(&tokens);
 
     PivotParser::FileContext* tree = parser.file();
+    indentationCount = 0;
     string result = visitFile(tree).as<string>();
 
     return result;
