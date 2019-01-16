@@ -7,6 +7,8 @@
 #include <QHBoxLayout>
 #include <QString>
 #include <QWebChannel>
+#include <QEventLoop>
+
 #include <QDebug>
 
 /**
@@ -35,7 +37,7 @@ private slots:
     virtual void toggleDebugMode() override;
 
 signals:
-    void saveFinished();
+    void endLoop();
 
 private:
     QHBoxLayout layout;
@@ -44,5 +46,7 @@ private:
     QString pivotResult;
 
     QWebChannel channel;
+
+    QEventLoop blockingLoop;
 };
 #endif // ABSTRACTBLOCKLYEDITOR_H

@@ -31,6 +31,8 @@ BaseBlocklyEditor::BaseBlocklyEditor(const QString& fileName, const QString &blo
 
     // Connections
     connect(&view, &QWebEngineView::loadFinished, this, &BaseBlocklyEditor::loadProgram);
+
+    connect(this, &BaseBlocklyEditor::endLoop, &blockingLoop, &QEventLoop::quit);
 }
 
 /**
@@ -68,7 +70,10 @@ QString BaseBlocklyEditor::getPivot()
     view.page()->runJavaScript(JS_COMMAND_GET_BLOCKLY_CODE, [this](const QVariant& value)
     {
         pivotResult = value.toString();
+        emit endLoop();
     });
+
+    blockingLoop.exec();
 
     return pivotResult;
 }
@@ -78,17 +83,14 @@ QString BaseBlocklyEditor::getPivot()
  */
 void BaseBlocklyEditor::save()
 {
-    QEventLoop loop;
-    connect(this, &BaseBlocklyEditor::saveFinished, &loop, &QEventLoop::quit);
-
     // Storing the blockly blocks into the file content
     view.page()->runJavaScript(QString(JS_COMMAND_GET_BLOCKLY_BLOCKS), [this] (const QVariant& value)
     {
         getFile().setContent(value.toString());
-        emit saveFinished();
+        emit endLoop();
     });
 
-    loop.exec();
+    blockingLoop.exec();
 
     AbstractEditor::save();
 }
