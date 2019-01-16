@@ -27,6 +27,14 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitDuration(PivotParser::DurationContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitSpeed(PivotParser::SpeedContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitBoolean_expression(PivotParser::Boolean_expressionContext *ctx) override {
     return visitChildren(ctx);
   }

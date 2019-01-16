@@ -21,6 +21,10 @@ MicroPythonGeneratorExecutor::MicroPythonGeneratorExecutor()
 
     setLayout(&layout);
 
+    // Settings
+    inputCode.setFont(QFont("Consolas", 14));
+    outputCode.setFont(QFont("Consolas", 14));
+
     // Connections
     connect(&translateButton, &QPushButton::clicked, this, &MicroPythonGeneratorExecutor::translateManualCode);
 }
@@ -56,6 +60,8 @@ void MicroPythonGeneratorExecutor::translateManualCode()
  */
 void MicroPythonGeneratorExecutor::execute(const QString &pivot)
 {
+    inputCode.setText(pivot);
+
     const QString result = QString::fromStdString(
                 compiler.getMicroPythonFromPivot(pivot.toStdString())
                 );

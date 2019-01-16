@@ -13,13 +13,14 @@ class  PivotParser : public antlr4::Parser {
 public:
   enum {
     NUMBER = 1, EQU = 2, DIF = 3, LT = 4, GT = 5, LEQ = 6, GEQ = 7, AND = 8, 
-    OR = 9, NOT = 10, LPAR = 11, RPAR = 12, NEWLINE = 13, WHITESPACE = 14, 
-    FORWARD = 15, WHILE = 16, UNTIL = 17, TRUE = 18, FALSE = 19
+    OR = 9, NOT = 10, AFF = 11, LPAR = 12, RPAR = 13, NEWLINE = 14, WHITESPACE = 15, 
+    FORWARD = 16, TRUE = 17, FALSE = 18, DURATION = 19, SPEED = 20
   };
 
   enum {
-    RuleFile = 0, RuleStatement = 1, RuleAction = 2, RuleBoolean_expression = 3, 
-    RuleBoolean_and = 4, RuleBoolean_not = 5, RuleBoolean_atom = 6
+    RuleFile = 0, RuleStatement = 1, RuleAction = 2, RuleDuration = 3, RuleSpeed = 4, 
+    RuleBoolean_expression = 5, RuleBoolean_and = 6, RuleBoolean_not = 7, 
+    RuleBoolean_atom = 8
   };
 
   PivotParser(antlr4::TokenStream *input);
@@ -35,6 +36,8 @@ public:
   class FileContext;
   class StatementContext;
   class ActionContext;
+  class DurationContext;
+  class SpeedContext;
   class Boolean_expressionContext;
   class Boolean_andContext;
   class Boolean_notContext;
@@ -73,16 +76,42 @@ public:
     ActionContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *FORWARD();
-    antlr4::tree::TerminalNode *NUMBER();
-    antlr4::tree::TerminalNode *WHILE();
-    Boolean_expressionContext *boolean_expression();
-    antlr4::tree::TerminalNode *UNTIL();
+    antlr4::tree::TerminalNode *DURATION();
+    std::vector<antlr4::tree::TerminalNode *> AFF();
+    antlr4::tree::TerminalNode* AFF(size_t i);
+    DurationContext *duration();
+    antlr4::tree::TerminalNode *SPEED();
+    SpeedContext *speed();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    
   };
 
   ActionContext* action();
+
+  class  DurationContext : public antlr4::ParserRuleContext {
+  public:
+    DurationContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *NUMBER();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  DurationContext* duration();
+
+  class  SpeedContext : public antlr4::ParserRuleContext {
+  public:
+    SpeedContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *NUMBER();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  SpeedContext* speed();
 
   class  Boolean_expressionContext : public antlr4::ParserRuleContext {
   public:

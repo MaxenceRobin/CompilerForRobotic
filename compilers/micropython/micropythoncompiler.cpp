@@ -3,6 +3,8 @@
 
 using namespace antlr4;
 
+#include <QDebug>
+
 /**
  * @brief Constructor of the MicroPython compiler class
  */
@@ -12,6 +14,41 @@ MicroPythonCompiler::MicroPythonCompiler()
 }
 
 // Methods ----------------------------------------------------------------------------------------
+
+/**
+ * @brief Increments the number of indentations
+ */
+void MicroPythonCompiler::incrementInndentation()
+{
+    indentationCount++;
+}
+
+/**
+ * @brief Decrements the number of indentation, or does nothing if the value is already 0
+ */
+void MicroPythonCompiler::decrementIndentation()
+{
+    if (indentationCount > 0)
+    {
+        indentationCount--;
+    }
+}
+
+/**
+ * @brief Returns the current indentation
+ * @return the current indentation
+ */
+string MicroPythonCompiler::getIndentation()
+{
+    string result = "";
+
+    for (unsigned int i = 0; i < indentationCount; i++)
+    {
+        result += "\t";
+    }
+
+    return result;
+}
 
 /**
  * @brief Returns the MicroPython code for the given pivot code
@@ -38,14 +75,15 @@ string MicroPythonCompiler::getMicroPythonFromPivot(const string &pivot)
  */
 Any MicroPythonCompiler::visitFile(PivotParser::FileContext *context)
 {
-    string result = "File = {\n";
+    string result = "if __name__ == \"__main__\" :\n";
+    incrementInndentation();
 
-    for (const auto& statement : context->statement())
+    for (auto statement : context->statement())
     {
-        result += "\t" + visitStatement(statement).as<string>() + "\n";
+        result += visitStatement(statement).as<string>();
     }
 
-    result += "}";
+    decrementIndentation();
 
     return std::move(result);
 }
@@ -57,12 +95,14 @@ Any MicroPythonCompiler::visitFile(PivotParser::FileContext *context)
  */
 Any MicroPythonCompiler::visitStatement(PivotParser::StatementContext *context)
 {
-    string result = "";
+    string result = getIndentation();
 
     if (context->action())
     {
-        result = "<action> {\n\t\t" + visitAction(context->action()).as<string>() + "\n\t}";
+        result += visitAction(context->action()).as<string>();
     }
+
+    result += "\n";
 
     return std::move(result);
 }
@@ -78,20 +118,15 @@ Any MicroPythonCompiler::visitAction(PivotParser::ActionContext *context)
 
     if (context->FORWARD())
     {
-        result = "[command=forward] ";
+        string speed = "V_MOYEN";
 
-        if (context->NUMBER())
+        if (context->SPEED())
         {
-            result += "duration {" + context->NUMBER()->getText() + "}";
+            speed = context->speed()->getText();
         }
-        else if (context->WHILE())
-        {
-            result += "while {" + context->boolean_expression()->getText() + "}";
-        }
-        else if (context->UNTIL())
-        {
-            result += "until {" + context->boolean_expression()->getText() + "}";
-        }
+
+        result += "Avancer_droit(" + speed + ")\n";
+        result += getIndentation() + "time.sleep(" + context->duration()->getText() + " * 1000)";
     }
 
     return std::move(result);

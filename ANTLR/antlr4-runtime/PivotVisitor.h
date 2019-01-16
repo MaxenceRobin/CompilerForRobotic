@@ -25,6 +25,10 @@ public:
 
     virtual antlrcpp::Any visitAction(PivotParser::ActionContext *context) = 0;
 
+    virtual antlrcpp::Any visitDuration(PivotParser::DurationContext *context) = 0;
+
+    virtual antlrcpp::Any visitSpeed(PivotParser::SpeedContext *context) = 0;
+
     virtual antlrcpp::Any visitBoolean_expression(PivotParser::Boolean_expressionContext *context) = 0;
 
     virtual antlrcpp::Any visitBoolean_and(PivotParser::Boolean_andContext *context) = 0;

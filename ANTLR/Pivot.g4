@@ -21,6 +21,7 @@ OR      : '||';
 NOT     : '!';
 
 // Symbols
+AFF     : '=';
 LPAR    : '(';
 RPAR    : ')';
 
@@ -32,10 +33,10 @@ WHITESPACE  : (' ' | '\t')+ -> skip;
 
 // Keywords
 FORWARD     : 'forward';
-WHILE       : 'while';
-UNTIL       : 'until';
 TRUE        : 'true';
 FALSE       : 'false';
+DURATION    : 'duration';
+SPEED       : 'speed';
 
 // Parser #########################################################################################
 
@@ -45,10 +46,11 @@ file    : (statement NEWLINE)* (statement NEWLINE?)? EOF;
 statement   : action;
 
 // Possible actions
-action  : FORWARD NUMBER
-        | FORWARD WHILE boolean_expression
-        | FORWARD UNTIL boolean_expression
+action  : FORWARD DURATION AFF duration (SPEED AFF speed)?
         ;
+
+duration    : NUMBER;
+speed       : NUMBER;
 
 // Boolean expressions
 boolean_expression  : boolean_and (OR boolean_and)*;
