@@ -140,6 +140,7 @@ void MainWindow::loadProgram(const QString &fileName)
     // The editor and executor are setted
     replaceEnvironment(newEditor, newExecutor);
     setProjectMode(true);
+    projectOpen = true;
 }
 
 // Slots ------------------------------------------------------------------------------------------
