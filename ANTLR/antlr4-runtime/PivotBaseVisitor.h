@@ -19,6 +19,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitStatements(PivotParser::StatementsContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitStatement(PivotParser::StatementContext *ctx) override {
     return visitChildren(ctx);
   }
@@ -27,11 +31,27 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitDuration(PivotParser::DurationContext *ctx) override {
+  virtual antlrcpp::Any visitLoop(PivotParser::LoopContext *ctx) override {
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitSpeed(PivotParser::SpeedContext *ctx) override {
+  virtual antlrcpp::Any visitNumeric_expression(PivotParser::Numeric_expressionContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitNumeric_mul_div(PivotParser::Numeric_mul_divContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitNumeric_pow(PivotParser::Numeric_powContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitNumeric_inversion(PivotParser::Numeric_inversionContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitNumeric_atom(PivotParser::Numeric_atomContext *ctx) override {
     return visitChildren(ctx);
   }
 

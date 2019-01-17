@@ -18,14 +18,24 @@ public:
     string getMicroPythonFromPivot(const string& pivot);
 
 protected:
+    void initialize();
     void incrementInndentation();
     void decrementIndentation();
     string getIndentation();
+    string enterLoop();
+    void leaveLoop();
 
 private:
     virtual Any visitFile(PivotParser::FileContext* context) override;
     virtual Any visitStatement(PivotParser::StatementContext* context) override;
     virtual Any visitAction(PivotParser::ActionContext* context) override;
+    virtual Any visitLoop(PivotParser::LoopContext* context) override;
+
+    virtual Any visitNumeric_expression(PivotParser::Numeric_expressionContext* context) override;
+    virtual Any visitNumeric_mul_div(PivotParser::Numeric_mul_divContext* context) override;
+    virtual Any visitNumeric_pow(PivotParser::Numeric_powContext* context) override;
+    virtual Any visitNumeric_inversion(PivotParser::Numeric_inversionContext* context) override;
+    virtual Any visitNumeric_atom(PivotParser::Numeric_atomContext* context) override;
 
     virtual Any visitBoolean_expression(PivotParser::Boolean_expressionContext* context) override;
     virtual Any visitBoolean_and(PivotParser::Boolean_andContext* context) override;

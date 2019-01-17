@@ -13,6 +13,14 @@ MicroPythonCompiler::MicroPythonCompiler()
 {
 }
 
+/**
+ * @brief Initializes the intern attributes used during the compilation process
+ */
+void MicroPythonCompiler::initialize()
+{
+    indentationCount = 0;
+}
+
 // Methods ----------------------------------------------------------------------------------------
 
 /**
@@ -63,7 +71,8 @@ string MicroPythonCompiler::getMicroPythonFromPivot(const string &pivot)
     PivotParser parser(&tokens);
 
     PivotParser::FileContext* tree = parser.file();
-    indentationCount = 0;
+
+    initialize();
     string result = visitFile(tree).as<string>();
 
     return result;
@@ -79,7 +88,7 @@ Any MicroPythonCompiler::visitFile(PivotParser::FileContext *context)
     string result = "if __name__ == \"__main__\" :\n";
     incrementInndentation();
 
-    for (auto statement : context->statement())
+    for (auto statement : context->statements()->statement())
     {
         result += visitStatement(statement).as<string>();
     }
@@ -102,6 +111,10 @@ Any MicroPythonCompiler::visitStatement(PivotParser::StatementContext *context)
     {
         result += visitAction(context->action()).as<string>();
     }
+    else if (context->loop())
+    {
+        result += visitLoop(context->loop()).as<string>();
+    }
 
     result += "\n";
 
@@ -123,15 +136,143 @@ Any MicroPythonCompiler::visitAction(PivotParser::ActionContext *context)
 
         if (context->SPEED())
         {
-            speed = context->speed()->getText();
+            speed = context->speed->getText();
         }
 
         result += "Avancer_droit(" + speed + ")\n";
-        result += getIndentation() + "time.sleep(" + context->duration()->getText() + " * 1000)";
+        result += getIndentation() + "time.sleep(" + context->duration->getText() + " * 1000)";
     }
 
     return std::move(result);
 }
+
+/**
+ * @brief Returns the MicroPython representation of a loop
+ * @param context : The tree representation of the loop
+ * @return The string that represents the MicroPython code of the loop
+ */
+Any MicroPythonCompiler::visitLoop(PivotParser::LoopContext *context)
+{
+    string result = "for _ in range(" + visitNumeric_expression(context->repetition_number).as<string>() + ") :\n";
+    incrementInndentation();
+
+    for (auto statement : context->statements()->statement())
+    {
+        result += visitStatement(statement).as<string>();
+    }
+
+    decrementIndentation();
+    return std::move(result);
+}
+
+/**
+ * @brief Returns the MicroPython representation of a numeric expression
+ * @param context : The tree representation of the numeric expression
+ * @return The string that represents the MicroPython code of the numeric expression
+ */
+Any MicroPythonCompiler::visitNumeric_expression(PivotParser::Numeric_expressionContext* context)
+{
+    string result = "";
+    bool first = true;
+    unsigned int operatorNumber = 0;
+
+    for (auto currentValue : context->value)
+    {
+        if (!first)
+        {
+            result += context->op[operatorNumber].getText();
+            operatorNumber++;
+        }
+
+        result += visitNumeric_mul_div(currentValue).as<string>();
+        first = false;
+    }
+
+    return std::move(result);
+}
+
+/**
+ * @brief Returns the MicroPython representation of a numeric multiplication or division
+ * @param context : The tree representation of a numeric multiplication or division
+ * @return The string that represents the MicroPython code of the numeric multiplication or division
+ */
+Any MicroPythonCompiler::visitNumeric_mul_div(PivotParser::Numeric_mul_divContext* context)
+{
+    string result = "";
+    bool first = true;
+    unsigned int operatorNumber = 0;
+
+    for (auto currentValue : context->value)
+    {
+        if (!first)
+        {
+            result += context->op[operatorNumber].getText();
+            operatorNumber++;
+        }
+
+        result += visitNumeric_pow(currentValue).as<string>();
+        first = false;
+    }
+
+    return std::move(result);
+}
+
+/**
+ * @brief Returns the MicroPython representation of a power expression
+ * @param context : The tree representation of the power expression
+ * @return The string that represents the MicroPython code of the power expression
+ */
+Any MicroPythonCompiler::visitNumeric_pow(PivotParser::Numeric_powContext* context)
+{
+    string result = "";
+
+    if (context->MATH())
+    {
+        result = visitNumeric_pow(context->first).as<string>() + "**" + visitNumeric_pow(context->second).as<string>();
+    }
+    else
+    {
+        result = visitNumeric_inversion(context->numeric_inversion()).as<string>();
+    }
+
+    return std::move(result);
+}
+
+/**
+ * @brief Returns the MicroPython representation of a numeric inversion
+ * @param context : The tree representation of the numeric inversion
+ * @return The string that represents the MicroPython code of the numeric inversion
+ */
+Any MicroPythonCompiler::visitNumeric_inversion(PivotParser::Numeric_inversionContext* context)
+{
+    string result = visitNumeric_atom(context->numeric_atom()).as<string>();
+
+    if (context->MINUS())
+    {
+        result = "-" + result;
+    }
+
+    return std::move(result);
+}
+
+/**
+ * @brief Returns the MicroPython representation of a numeric atom
+ * @param context : The tree representation of the numeric atom
+ * @return The string that represents the MicroPython code of the numeric atom
+ */
+Any MicroPythonCompiler::visitNumeric_atom(PivotParser::Numeric_atomContext* context)
+{
+    if (context->NUMBER())
+    {
+        return context->getText();
+    }
+    else
+    {
+        return "(" + visitNumeric_expression(context->numeric_expression()).as<string>() + ")";
+    }
+}
+
+// En attente ##################################################################
 
 Any MicroPythonCompiler::visitBoolean_expression(PivotParser::Boolean_expressionContext* context)
 {

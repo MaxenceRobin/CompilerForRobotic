@@ -24,6 +24,15 @@ NOT     : '!';
 AFF     : '=';
 LPAR    : '(';
 RPAR    : ')';
+SEP     : ':';
+PLUS    : '+';
+MINUS   : '-';
+DIV     : '/';
+STAR    : '*';
+COMMA   : ',';
+DOT     : '.';
+MATH    : 'Math';
+POW     : 'pow';
 
 
 // Specials
@@ -37,20 +46,37 @@ TRUE        : 'true';
 FALSE       : 'false';
 DURATION    : 'duration';
 SPEED       : 'speed';
+LOOP        : 'loop';
+TIMES       : 'times';
+END         : 'end';
 
 // Parser #########################################################################################
 
-file    : (statement NEWLINE)* (statement NEWLINE?)? EOF;
+file    : statements EOF;
+
+statements  : (statement NEWLINE)* (statement NEWLINE?)?;
 
 // Statements types
-statement   : action;
+statement   : action
+            | loop
+            ;
 
 // Possible actions
-action  : FORWARD DURATION AFF duration (SPEED AFF speed)?
+action  : FORWARD DURATION AFF duration=numeric_expression (SPEED AFF speed=numeric_expression)?
         ;
 
-duration    : NUMBER;
-speed       : NUMBER;
+// Loops
+loop    : LOOP TIMES AFF repetition_number=numeric_expression SEP NEWLINE statements END;
+
+// Numeric expressions
+numeric_expression  : value+=numeric_mul_div (op=(PLUS|MINUS) value+=numeric_mul_div)*;
+numeric_mul_div     : value+=numeric_pow (op=(STAR|DIV) value+=numeric_pow)*;
+numeric_pow         : numeric_inversion
+                    | MATH DOT POW LPAR first=numeric_pow COMMA second=numeric_pow RPAR;
+numeric_inversion   : MINUS? numeric_atom;
+numeric_atom        : NUMBER
+                    | LPAR numeric_expression RPAR
+                    ;
 
 // Boolean expressions
 boolean_expression  : boolean_and (OR boolean_and)*;

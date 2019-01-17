@@ -21,13 +21,23 @@ public:
    */
     virtual antlrcpp::Any visitFile(PivotParser::FileContext *context) = 0;
 
+    virtual antlrcpp::Any visitStatements(PivotParser::StatementsContext *context) = 0;
+
     virtual antlrcpp::Any visitStatement(PivotParser::StatementContext *context) = 0;
 
     virtual antlrcpp::Any visitAction(PivotParser::ActionContext *context) = 0;
 
-    virtual antlrcpp::Any visitDuration(PivotParser::DurationContext *context) = 0;
+    virtual antlrcpp::Any visitLoop(PivotParser::LoopContext *context) = 0;
 
-    virtual antlrcpp::Any visitSpeed(PivotParser::SpeedContext *context) = 0;
+    virtual antlrcpp::Any visitNumeric_expression(PivotParser::Numeric_expressionContext *context) = 0;
+
+    virtual antlrcpp::Any visitNumeric_mul_div(PivotParser::Numeric_mul_divContext *context) = 0;
+
+    virtual antlrcpp::Any visitNumeric_pow(PivotParser::Numeric_powContext *context) = 0;
+
+    virtual antlrcpp::Any visitNumeric_inversion(PivotParser::Numeric_inversionContext *context) = 0;
+
+    virtual antlrcpp::Any visitNumeric_atom(PivotParser::Numeric_atomContext *context) = 0;
 
     virtual antlrcpp::Any visitBoolean_expression(PivotParser::Boolean_expressionContext *context) = 0;
 

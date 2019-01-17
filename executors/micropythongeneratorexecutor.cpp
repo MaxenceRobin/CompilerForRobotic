@@ -23,7 +23,9 @@ MicroPythonGeneratorExecutor::MicroPythonGeneratorExecutor()
 
     // Settings
     inputCode.setFont(QFont("Consolas", 14));
+    inputCode.setTabStopWidth(30);
     outputCode.setFont(QFont("Consolas", 14));
+    outputCode.setTabStopWidth(30);
 
     // Connections
     connect(&translateButton, &QPushButton::clicked, this, &MicroPythonGeneratorExecutor::translateManualCode);
