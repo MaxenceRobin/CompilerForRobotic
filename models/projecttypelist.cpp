@@ -26,7 +26,7 @@ ProjectTypeList::~ProjectTypeList()
 }
 
 /**
- * @brief Returns the uniq instance of ProjectTypeList
+ * @brief Returns the unique instance of ProjectTypeList
  * @return The ProjectTypeList singleton
  */
 const ProjectTypeList &ProjectTypeList::getSingleton()

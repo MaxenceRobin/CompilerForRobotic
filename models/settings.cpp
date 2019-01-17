@@ -36,8 +36,8 @@ void Settings::init()
 }
 
 /**
- * @brief Returns the uniq instance of Settings using the singleton pattern
- * @return The uniq instance of Settings object
+ * @brief Returns the unique instance of Settings using the singleton pattern
+ * @return The unique instance of Settings object
  */
 Settings& Settings::getSingleton()
 {

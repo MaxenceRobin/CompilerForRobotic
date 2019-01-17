@@ -72,7 +72,7 @@ loop    : LOOP TIMES AFF repetition_number=numeric_expression SEP NEWLINE statem
 numeric_expression  : value+=numeric_mul_div (op=(PLUS|MINUS) value+=numeric_mul_div)*;
 numeric_mul_div     : value+=numeric_pow (op=(STAR|DIV) value+=numeric_pow)*;
 numeric_pow         : numeric_inversion
-                    | MATH DOT POW LPAR first=numeric_pow COMMA second=numeric_pow RPAR;
+                    | MATH DOT POW LPAR first=numeric_expression COMMA second=numeric_expression RPAR;
 numeric_inversion   : MINUS? numeric_atom;
 numeric_atom        : NUMBER
                     | LPAR numeric_expression RPAR

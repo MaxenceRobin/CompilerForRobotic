@@ -174,8 +174,8 @@ public:
 
   class  Numeric_powContext : public antlr4::ParserRuleContext {
   public:
-    PivotParser::Numeric_powContext *first = nullptr;;
-    PivotParser::Numeric_powContext *second = nullptr;;
+    PivotParser::Numeric_expressionContext *first = nullptr;;
+    PivotParser::Numeric_expressionContext *second = nullptr;;
     Numeric_powContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     Numeric_inversionContext *numeric_inversion();
@@ -185,8 +185,8 @@ public:
     antlr4::tree::TerminalNode *LPAR();
     antlr4::tree::TerminalNode *COMMA();
     antlr4::tree::TerminalNode *RPAR();
-    std::vector<Numeric_powContext *> numeric_pow();
-    Numeric_powContext* numeric_pow(size_t i);
+    std::vector<Numeric_expressionContext *> numeric_expression();
+    Numeric_expressionContext* numeric_expression(size_t i);
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    

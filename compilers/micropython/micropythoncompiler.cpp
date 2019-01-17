@@ -228,7 +228,7 @@ Any MicroPythonCompiler::visitNumeric_pow(PivotParser::Numeric_powContext* conte
 
     if (context->MATH())
     {
-        result = visitNumeric_pow(context->first).as<string>() + "**" + visitNumeric_pow(context->second).as<string>();
+        result = visitNumeric_expression(context->first).as<string>() + "**" + visitNumeric_expression(context->second).as<string>();
     }
     else
     {
