@@ -39,9 +39,13 @@ public:
 
     virtual antlrcpp::Any visitNumeric_atom(PivotParser::Numeric_atomContext *context) = 0;
 
+    virtual antlrcpp::Any visitIf_elif_else(PivotParser::If_elif_elseContext *context) = 0;
+
     virtual antlrcpp::Any visitBoolean_expression(PivotParser::Boolean_expressionContext *context) = 0;
 
     virtual antlrcpp::Any visitBoolean_and(PivotParser::Boolean_andContext *context) = 0;
+
+    virtual antlrcpp::Any visitBoolean_comparator(PivotParser::Boolean_comparatorContext *context) = 0;
 
     virtual antlrcpp::Any visitBoolean_not(PivotParser::Boolean_notContext *context) = 0;
 

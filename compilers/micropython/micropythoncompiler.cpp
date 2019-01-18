@@ -26,7 +26,7 @@ void MicroPythonCompiler::initialize()
 /**
  * @brief Increments the number of indentations
  */
-void MicroPythonCompiler::incrementInndentation()
+void MicroPythonCompiler::incrementIndentation()
 {
     indentationCount++;
 }
@@ -86,14 +86,27 @@ string MicroPythonCompiler::getMicroPythonFromPivot(const string &pivot)
 Any MicroPythonCompiler::visitFile(PivotParser::FileContext *context)
 {
     string result = "if __name__ == \"__main__\" :\n";
-    incrementInndentation();
 
-    for (auto statement : context->statements()->statement())
+    incrementIndentation();
+    result += visitStatements(context->statements()).as<string>();
+    decrementIndentation();
+
+    return std::move(result);
+}
+
+/**
+ * @brief Returns the MicroPython representation of a block of statements
+ * @param context : The tree representation of a block of statements
+ * @return The string that represents the MicroPython code of the block of statements
+ */
+Any MicroPythonCompiler::visitStatements(PivotParser::StatementsContext* context)
+{
+    string result = "";
+
+    for (auto statement : context->statement())
     {
         result += visitStatement(statement).as<string>();
     }
-
-    decrementIndentation();
 
     return std::move(result);
 }
@@ -114,6 +127,10 @@ Any MicroPythonCompiler::visitStatement(PivotParser::StatementContext *context)
     else if (context->loop())
     {
         result += visitLoop(context->loop()).as<string>();
+    }
+    else if (context->if_elif_else())
+    {
+        result += visitIf_elif_else(context->if_elif_else()).as<string>();
     }
 
     result += "\n";
@@ -136,11 +153,11 @@ Any MicroPythonCompiler::visitAction(PivotParser::ActionContext *context)
 
         if (context->SPEED())
         {
-            speed = context->speed->getText();
+            speed = visitNumeric_expression(context->speed).as<string>();
         }
 
-        result += "Avancer_droit(" + speed + ")\n";
-        result += getIndentation() + "time.sleep(" + context->duration->getText() + " * 1000)";
+        result += "Avancer_droit" + speed + "\n";
+        result += getIndentation() + "time.sleep(" + visitNumeric_expression(context->duration).as<string>() + " * 1000)";
     }
 
     return std::move(result);
@@ -153,15 +170,12 @@ Any MicroPythonCompiler::visitAction(PivotParser::ActionContext *context)
  */
 Any MicroPythonCompiler::visitLoop(PivotParser::LoopContext *context)
 {
-    string result = "for _ in range(" + visitNumeric_expression(context->repetition_number).as<string>() + ") :\n";
-    incrementInndentation();
+    string result = "for _ in range" + visitNumeric_expression(context->repetition_number).as<string>() + " :\n";
 
-    for (auto statement : context->statements()->statement())
-    {
-        result += visitStatement(statement).as<string>();
-    }
-
+    incrementIndentation();
+    result += visitStatements(context->statements()).as<string>();
     decrementIndentation();
+
     return std::move(result);
 }
 
@@ -225,14 +239,17 @@ Any MicroPythonCompiler::visitNumeric_mul_div(PivotParser::Numeric_mul_divContex
 Any MicroPythonCompiler::visitNumeric_pow(PivotParser::Numeric_powContext* context)
 {
     string result = "";
+    bool first = true;
 
-    if (context->MATH())
+    for (auto currentValue : context->value)
     {
-        result = visitNumeric_expression(context->first).as<string>() + "**" + visitNumeric_expression(context->second).as<string>();
-    }
-    else
-    {
-        result = visitNumeric_inversion(context->numeric_inversion()).as<string>();
+        if (!first)
+        {
+            result += "**";
+        }
+
+        result += visitNumeric_inversion(currentValue).as<string>();
+        first = false;
     }
 
     return std::move(result);
@@ -272,24 +289,140 @@ Any MicroPythonCompiler::visitNumeric_atom(PivotParser::Numeric_atomContext* con
     }
 }
 
-// En attente ##################################################################
+/**
+ * @brief Returns the MicroPython representation of an if-elif-else expression
+ * @param context : The tree representation of the if-elif-else expression
+ * @return The string that represents the MicroPython code of the if-elif-else expression
+ */
+Any MicroPythonCompiler::visitIf_elif_else(PivotParser::If_elif_elseContext* context)
+{
+    incrementIndentation();
+    string result = "if " + visitBoolean_expression(context->if_condition).as<string>() + " :\n" + visitStatements(context->if_block).as<string>();
+    decrementIndentation();
 
+    unsigned int blockNumber = 0;
+    for (auto currentElif : context->elif_condition)
+    {
+        result += getIndentation() + "elif ";
+
+        incrementIndentation();
+        result += visitBoolean_expression(currentElif).as<string>() + " :\n" + visitStatements(context->elif_block[blockNumber]).as<string>();
+        decrementIndentation();
+
+        blockNumber++;
+    }
+
+    if (context->ELSE())
+    {
+        result += getIndentation() + "else :\n";
+
+        incrementIndentation();
+        result += visitStatements(context->else_block).as<string>();
+        decrementIndentation();
+    }
+
+    return std::move(result);
+}
+
+/**
+ * @brief Returns the MicroPython representation of a boolean expression
+ * @param context : The tree representation of the boolean expression
+ * @return The string that represents the MicroPython code of the boolean expression
+ */
 Any MicroPythonCompiler::visitBoolean_expression(PivotParser::Boolean_expressionContext* context)
 {
-    return context->getText();
+    string result = "";
+    bool first = true;
+
+    for (auto currentValue : context->value)
+    {
+        if (!first)
+        {
+            result += " or ";
+        }
+
+        result += visitBoolean_and(currentValue).as<string>();
+        first = false;
+    }
+
+    return std::move(result);
 }
 
+/**
+ * @brief Returns the MicroPython representation of an and expression
+ * @param context : The tree representation of the and expression
+ * @return The string that represents the MicroPython code of the and expression
+ */
 Any MicroPythonCompiler::visitBoolean_and(PivotParser::Boolean_andContext* context)
 {
-    return context->getText();
+    string result = "";
+    bool first = true;
+
+    for (auto currentValue : context->value)
+    {
+        if (!first)
+        {
+            result += " and ";
+        }
+
+        result += visitBoolean_comparator(currentValue).as<string>();
+        first = false;
+    }
+
+    return std::move(result);
 }
 
+/**
+ * @brief Returns the MicroPython representation of an comparison
+ * @param context : The tree representation of the comparison
+ * @return The string that represents the MicroPython code of the comparison
+ */
+Any MicroPythonCompiler::visitBoolean_comparator(PivotParser::Boolean_comparatorContext* context)
+{
+    string result = visitBoolean_not(context->left).as<string>();
+
+    if (context->right)
+    {
+        result += context->comparator->getText() + visitBoolean_not(context->right).as<string>();
+    }
+
+    return std::move(result);
+}
+
+/**
+ * @brief Returns the MicroPython representation of a not expression
+ * @param context : The tree representation of the not expression
+ * @return The string that represents the MicroPython code of the not expression
+ */
 Any MicroPythonCompiler::visitBoolean_not(PivotParser::Boolean_notContext* context)
 {
-    return context->getText();
+    string result = visitBoolean_atom(context->boolean_atom()).as<string>();
+
+    if (context->NOT())
+    {
+        result = "not " + result;
+    }
+
+    return std::move(result);
 }
 
+/**
+ * @brief Returns the MicroPython representation of a boolean atom
+ * @param context : The tree representation of the boolean atom
+ * @return The string that represents the MicroPython code of the boolean atom
+ */
 Any MicroPythonCompiler::visitBoolean_atom(PivotParser::Boolean_atomContext* context)
 {
-    return context->getText();
+    string result = "";
+
+    if (context->LPAR())
+    {
+        result = "(" + visitBoolean_expression(context->boolean_expression()).as<string>() + ")";
+    }
+    else
+    {
+        result = context->getText();
+    }
+
+    return std::move(result);
 }

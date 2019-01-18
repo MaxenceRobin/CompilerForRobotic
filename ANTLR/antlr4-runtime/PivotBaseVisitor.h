@@ -55,11 +55,19 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitIf_elif_else(PivotParser::If_elif_elseContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitBoolean_expression(PivotParser::Boolean_expressionContext *ctx) override {
     return visitChildren(ctx);
   }
 
   virtual antlrcpp::Any visitBoolean_and(PivotParser::Boolean_andContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitBoolean_comparator(PivotParser::Boolean_comparatorContext *ctx) override {
     return visitChildren(ctx);
   }
 

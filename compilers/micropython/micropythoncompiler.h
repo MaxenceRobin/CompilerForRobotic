@@ -19,7 +19,7 @@ public:
 
 protected:
     void initialize();
-    void incrementInndentation();
+    void incrementIndentation();
     void decrementIndentation();
     string getIndentation();
     string enterLoop();
@@ -27,6 +27,7 @@ protected:
 
 private:
     virtual Any visitFile(PivotParser::FileContext* context) override;
+    virtual Any visitStatements(PivotParser::StatementsContext* context) override;
     virtual Any visitStatement(PivotParser::StatementContext* context) override;
     virtual Any visitAction(PivotParser::ActionContext* context) override;
     virtual Any visitLoop(PivotParser::LoopContext* context) override;
@@ -37,8 +38,11 @@ private:
     virtual Any visitNumeric_inversion(PivotParser::Numeric_inversionContext* context) override;
     virtual Any visitNumeric_atom(PivotParser::Numeric_atomContext* context) override;
 
+    virtual Any visitIf_elif_else(PivotParser::If_elif_elseContext* context) override;
+
     virtual Any visitBoolean_expression(PivotParser::Boolean_expressionContext* context) override;
     virtual Any visitBoolean_and(PivotParser::Boolean_andContext* context) override;
+    virtual Any visitBoolean_comparator(PivotParser::Boolean_comparatorContext* context) override;
     virtual Any visitBoolean_not(PivotParser::Boolean_notContext* context) override;
     virtual Any visitBoolean_atom(PivotParser::Boolean_atomContext* context) override;
 

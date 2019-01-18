@@ -14,16 +14,17 @@ public:
   enum {
     NUMBER = 1, EQU = 2, DIF = 3, LT = 4, GT = 5, LEQ = 6, GEQ = 7, AND = 8, 
     OR = 9, NOT = 10, AFF = 11, LPAR = 12, RPAR = 13, SEP = 14, PLUS = 15, 
-    MINUS = 16, DIV = 17, STAR = 18, COMMA = 19, DOT = 20, MATH = 21, POW = 22, 
-    NEWLINE = 23, WHITESPACE = 24, FORWARD = 25, TRUE = 26, FALSE = 27, 
-    DURATION = 28, SPEED = 29, LOOP = 30, TIMES = 31, END = 32
+    MINUS = 16, DIV = 17, STAR = 18, POW = 19, COMMA = 20, DOT = 21, NEWLINE = 22, 
+    WHITESPACE = 23, FORWARD = 24, DURATION = 25, SPEED = 26, LOOP = 27, 
+    TIMES = 28, END = 29, IF = 30, ELIF = 31, ELSE = 32, TRUE = 33, FALSE = 34
   };
 
   enum {
     RuleFile = 0, RuleStatements = 1, RuleStatement = 2, RuleAction = 3, 
     RuleLoop = 4, RuleNumeric_expression = 5, RuleNumeric_mul_div = 6, RuleNumeric_pow = 7, 
-    RuleNumeric_inversion = 8, RuleNumeric_atom = 9, RuleBoolean_expression = 10, 
-    RuleBoolean_and = 11, RuleBoolean_not = 12, RuleBoolean_atom = 13
+    RuleNumeric_inversion = 8, RuleNumeric_atom = 9, RuleIf_elif_else = 10, 
+    RuleBoolean_expression = 11, RuleBoolean_and = 12, RuleBoolean_comparator = 13, 
+    RuleBoolean_not = 14, RuleBoolean_atom = 15
   };
 
   PivotParser(antlr4::TokenStream *input);
@@ -46,8 +47,10 @@ public:
   class Numeric_powContext;
   class Numeric_inversionContext;
   class Numeric_atomContext;
+  class If_elif_elseContext;
   class Boolean_expressionContext;
   class Boolean_andContext;
+  class Boolean_comparatorContext;
   class Boolean_notContext;
   class Boolean_atomContext; 
 
@@ -85,6 +88,7 @@ public:
     virtual size_t getRuleIndex() const override;
     ActionContext *action();
     LoopContext *loop();
+    If_elif_elseContext *if_elif_else();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    
@@ -174,19 +178,14 @@ public:
 
   class  Numeric_powContext : public antlr4::ParserRuleContext {
   public:
-    PivotParser::Numeric_expressionContext *first = nullptr;;
-    PivotParser::Numeric_expressionContext *second = nullptr;;
+    PivotParser::Numeric_inversionContext *numeric_inversionContext = nullptr;;
+    std::vector<Numeric_inversionContext *> value;;
     Numeric_powContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    Numeric_inversionContext *numeric_inversion();
-    antlr4::tree::TerminalNode *MATH();
-    antlr4::tree::TerminalNode *DOT();
-    antlr4::tree::TerminalNode *POW();
-    antlr4::tree::TerminalNode *LPAR();
-    antlr4::tree::TerminalNode *COMMA();
-    antlr4::tree::TerminalNode *RPAR();
-    std::vector<Numeric_expressionContext *> numeric_expression();
-    Numeric_expressionContext* numeric_expression(size_t i);
+    std::vector<Numeric_inversionContext *> numeric_inversion();
+    Numeric_inversionContext* numeric_inversion(size_t i);
+    std::vector<antlr4::tree::TerminalNode *> POW();
+    antlr4::tree::TerminalNode* POW(size_t i);
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    
@@ -222,8 +221,41 @@ public:
 
   Numeric_atomContext* numeric_atom();
 
+  class  If_elif_elseContext : public antlr4::ParserRuleContext {
+  public:
+    PivotParser::Boolean_expressionContext *if_condition = nullptr;;
+    PivotParser::StatementsContext *if_block = nullptr;;
+    PivotParser::Boolean_expressionContext *boolean_expressionContext = nullptr;;
+    std::vector<Boolean_expressionContext *> elif_condition;;
+    PivotParser::StatementsContext *statementsContext = nullptr;;
+    std::vector<StatementsContext *> elif_block;;
+    PivotParser::StatementsContext *else_block = nullptr;;
+    If_elif_elseContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *IF();
+    std::vector<antlr4::tree::TerminalNode *> SEP();
+    antlr4::tree::TerminalNode* SEP(size_t i);
+    std::vector<antlr4::tree::TerminalNode *> NEWLINE();
+    antlr4::tree::TerminalNode* NEWLINE(size_t i);
+    antlr4::tree::TerminalNode *END();
+    std::vector<Boolean_expressionContext *> boolean_expression();
+    Boolean_expressionContext* boolean_expression(size_t i);
+    std::vector<StatementsContext *> statements();
+    StatementsContext* statements(size_t i);
+    std::vector<antlr4::tree::TerminalNode *> ELIF();
+    antlr4::tree::TerminalNode* ELIF(size_t i);
+    antlr4::tree::TerminalNode *ELSE();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  If_elif_elseContext* if_elif_else();
+
   class  Boolean_expressionContext : public antlr4::ParserRuleContext {
   public:
+    PivotParser::Boolean_andContext *boolean_andContext = nullptr;;
+    std::vector<Boolean_andContext *> value;;
     Boolean_expressionContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     std::vector<Boolean_andContext *> boolean_and();
@@ -239,10 +271,12 @@ public:
 
   class  Boolean_andContext : public antlr4::ParserRuleContext {
   public:
+    PivotParser::Boolean_comparatorContext *boolean_comparatorContext = nullptr;;
+    std::vector<Boolean_comparatorContext *> value;;
     Boolean_andContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    std::vector<Boolean_notContext *> boolean_not();
-    Boolean_notContext* boolean_not(size_t i);
+    std::vector<Boolean_comparatorContext *> boolean_comparator();
+    Boolean_comparatorContext* boolean_comparator(size_t i);
     std::vector<antlr4::tree::TerminalNode *> AND();
     antlr4::tree::TerminalNode* AND(size_t i);
 
@@ -251,6 +285,28 @@ public:
   };
 
   Boolean_andContext* boolean_and();
+
+  class  Boolean_comparatorContext : public antlr4::ParserRuleContext {
+  public:
+    PivotParser::Boolean_notContext *left = nullptr;;
+    antlr4::Token *comparator = nullptr;;
+    PivotParser::Boolean_notContext *right = nullptr;;
+    Boolean_comparatorContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    std::vector<Boolean_notContext *> boolean_not();
+    Boolean_notContext* boolean_not(size_t i);
+    antlr4::tree::TerminalNode *EQU();
+    antlr4::tree::TerminalNode *DIF();
+    antlr4::tree::TerminalNode *LT();
+    antlr4::tree::TerminalNode *GT();
+    antlr4::tree::TerminalNode *LEQ();
+    antlr4::tree::TerminalNode *GEQ();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Boolean_comparatorContext* boolean_comparator();
 
   class  Boolean_notContext : public antlr4::ParserRuleContext {
   public:

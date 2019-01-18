@@ -29,10 +29,9 @@ PLUS    : '+';
 MINUS   : '-';
 DIV     : '/';
 STAR    : '*';
+POW     : '^';
 COMMA   : ',';
 DOT     : '.';
-MATH    : 'Math';
-POW     : 'pow';
 
 
 // Specials
@@ -42,13 +41,16 @@ WHITESPACE  : (' ' | '\t')+ -> skip;
 
 // Keywords
 FORWARD     : 'forward';
-TRUE        : 'true';
-FALSE       : 'false';
 DURATION    : 'duration';
 SPEED       : 'speed';
 LOOP        : 'loop';
 TIMES       : 'times';
 END         : 'end';
+IF          : 'if';
+ELIF        : 'elif';
+ELSE        : 'else';
+TRUE        : 'true';
+FALSE       : 'false';
 
 // Parser #########################################################################################
 
@@ -59,6 +61,7 @@ statements  : (statement NEWLINE)* (statement NEWLINE?)?;
 // Statements types
 statement   : action
             | loop
+            | if_elif_else
             ;
 
 // Possible actions
@@ -71,16 +74,22 @@ loop    : LOOP TIMES AFF repetition_number=numeric_expression SEP NEWLINE statem
 // Numeric expressions
 numeric_expression  : value+=numeric_mul_div (op=(PLUS|MINUS) value+=numeric_mul_div)*;
 numeric_mul_div     : value+=numeric_pow (op=(STAR|DIV) value+=numeric_pow)*;
-numeric_pow         : numeric_inversion
-                    | MATH DOT POW LPAR first=numeric_expression COMMA second=numeric_expression RPAR;
+numeric_pow         : value+=numeric_inversion (POW value+=numeric_inversion)*;
 numeric_inversion   : MINUS? numeric_atom;
 numeric_atom        : NUMBER
                     | LPAR numeric_expression RPAR
                     ;
 
+// Conditions
+if_elif_else   :    IF if_condition=boolean_expression SEP NEWLINE if_block=statements
+                    (ELIF elif_condition+=boolean_expression SEP NEWLINE elif_block+=statements)*
+                    (ELSE SEP NEWLINE else_block=statements)?
+                    END;
+
 // Boolean expressions
-boolean_expression  : boolean_and (OR boolean_and)*;
-boolean_and         : boolean_not (AND boolean_not)*;
+boolean_expression  : value+=boolean_and (OR value+=boolean_and)*;
+boolean_and         : value+=boolean_comparator (AND value+=boolean_comparator)*;
+boolean_comparator  : left=boolean_not (comparator=(EQU|DIF|LT|GT|LEQ|GEQ) right=boolean_not)?;
 boolean_not         : NOT? boolean_atom;
 boolean_atom        : TRUE
                     | FALSE
