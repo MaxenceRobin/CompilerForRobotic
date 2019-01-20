@@ -155,17 +155,47 @@ Any MicroPythonCompiler::visitAction(PivotParser::ActionContext *context)
 {
     string result = "";
 
-    if (context->FORWARD())
+    // Movement actions -------------------------
+    if (context->move_type)
     {
         string speed = "V_MOYEN";
 
-        if (context->SPEED())
+        if (context->speed)
         {
             speed = visitNumeric_expression(context->speed).as<string>();
         }
 
-        result += "Avancer_droit(" + speed + ")\n";
+        const string moveType = context->move_type->getText();
+
+        if (moveType == "forward")
+        {
+            result = "Avancer_droit";
+        }
+        else if (moveType == "backward")
+        {
+            result = "Reculer_droit";
+        }
+        else if (moveType == "left")
+        {
+            result = "Pivoter_gauche";
+        }
+        else if (moveType == "right")
+        {
+            result = "Pivoter_droite";
+        }
+
+        result += "(" + speed + ")\n";
         result += getIndentation() + "time.sleep(" + visitNumeric_expression(context->duration).as<string>() + " * 1000)";
+    }
+    // Stoping action ---------------------------
+    else if (context->STOP())
+    {
+        result = "Arret()";
+    }
+    // Waiting action ---------------------------
+    else if (context->WAIT())
+    {
+        result = "time.sleep(" + visitNumeric_expression(context->duration).as<string>() + " * 1000)";
     }
 
     return std::move(result);

@@ -15,9 +15,10 @@ public:
     NUMBER = 1, EQU = 2, DIF = 3, LT = 4, GT = 5, LEQ = 6, GEQ = 7, AND = 8, 
     OR = 9, NOT = 10, AFF = 11, LPAR = 12, RPAR = 13, SEP = 14, PLUS = 15, 
     MINUS = 16, DIV = 17, STAR = 18, POW = 19, COMMA = 20, DOT = 21, SET = 22, 
-    NEWLINE = 23, WHITESPACE = 24, FORWARD = 25, DURATION = 26, SPEED = 27, 
-    LOOP = 28, TIMES = 29, END = 30, IF = 31, ELIF = 32, ELSE = 33, TRUE = 34, 
-    FALSE = 35, WHILE = 36, UNTIL = 37
+    NEWLINE = 23, WHITESPACE = 24, FORWARD = 25, BACKWARD = 26, LEFT = 27, 
+    RIGHT = 28, STOP = 29, DURATION = 30, SPEED = 31, WAIT = 32, LOOP = 33, 
+    TIMES = 34, END = 35, IF = 36, ELIF = 37, ELSE = 38, TRUE = 39, FALSE = 40, 
+    WHILE = 41, UNTIL = 42
   };
 
   PivotLexer(antlr4::CharStream *input);

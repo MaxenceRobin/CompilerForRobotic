@@ -42,8 +42,13 @@ WHITESPACE  : (' ' | '\t')+ -> skip;
 
 // Keywords
 FORWARD     : 'forward';
+BACKWARD    : 'backward';
+LEFT        : 'left';
+RIGHT       : 'right';
+STOP        : 'stop';
 DURATION    : 'duration';
 SPEED       : 'speed';
+WAIT        : 'wait';
 LOOP        : 'loop';
 TIMES       : 'times';
 END         : 'end';
@@ -70,7 +75,9 @@ statement   : action
             ;
 
 // Possible actions
-action  : FORWARD DURATION AFF duration=numeric_expression (SPEED AFF speed=numeric_expression)?
+action  : move_type=(FORWARD|BACKWARD|LEFT|RIGHT) DURATION AFF duration=numeric_expression (SPEED AFF speed=numeric_expression)?
+        | STOP
+        | WAIT DURATION AFF duration=numeric_expression
         ;
 
 // Loops
