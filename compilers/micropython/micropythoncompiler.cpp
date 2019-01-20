@@ -132,6 +132,14 @@ Any MicroPythonCompiler::visitStatement(PivotParser::StatementContext *context)
     {
         result += visitIf_elif_else(context->if_elif_else()).as<string>();
     }
+    else if (context->while_loop())
+    {
+        result += visitWhile_loop(context->while_loop()).as<string>();
+    }
+    else if (context->until_loop())
+    {
+        result += visitUntil_loop(context->until_loop()).as<string>();
+    }
 
     result += "\n";
 
@@ -156,7 +164,7 @@ Any MicroPythonCompiler::visitAction(PivotParser::ActionContext *context)
             speed = visitNumeric_expression(context->speed).as<string>();
         }
 
-        result += "Avancer_droit" + speed + "\n";
+        result += "Avancer_droit(" + speed + ")\n";
         result += getIndentation() + "time.sleep(" + visitNumeric_expression(context->duration).as<string>() + " * 1000)";
     }
 
@@ -170,10 +178,46 @@ Any MicroPythonCompiler::visitAction(PivotParser::ActionContext *context)
  */
 Any MicroPythonCompiler::visitLoop(PivotParser::LoopContext *context)
 {
-    string result = "for _ in range" + visitNumeric_expression(context->repetition_number).as<string>() + " :\n";
+    string result = "for _ in range(" + visitNumeric_expression(context->repetition_number).as<string>() + ") :\n";
 
     incrementIndentation();
     result += visitStatements(context->statements()).as<string>();
+    decrementIndentation();
+
+    return std::move(result);
+}
+
+/**
+ * @brief Returns the MicroPython representation of a while loop
+ * @param context : The tree representation of the while loop
+ * @return The string that represents the MicroPython code of the while loop
+ */
+Any MicroPythonCompiler::visitWhile_loop(PivotParser::While_loopContext* context)
+{
+    string result = "while " + visitBoolean_expression(context->condition).as<string>() + " :\n";
+
+    incrementIndentation();
+    result += visitStatements(context->statements()).as<string>();
+    decrementIndentation();
+
+    return std::move(result);
+}
+
+/**
+ * @brief Returns the MicroPython representation of a until loop
+ * @param context : The tree representation of the until loop
+ * @return The string that represents the MicroPython code of the until loop
+ */
+Any MicroPythonCompiler::visitUntil_loop(PivotParser::Until_loopContext *context)
+{
+    string result = "while true :\n";
+
+    incrementIndentation();
+    result += visitStatements(context->statements()).as<string>();
+    result += getIndentation() + "if " + visitBoolean_expression(context->condition).as<string>() + " :\n";
+        incrementIndentation();
+        result += getIndentation() + "break";
+        decrementIndentation();
     decrementIndentation();
 
     return std::move(result);

@@ -29,6 +29,10 @@ public:
 
     virtual antlrcpp::Any visitLoop(PivotParser::LoopContext *context) = 0;
 
+    virtual antlrcpp::Any visitWhile_loop(PivotParser::While_loopContext *context) = 0;
+
+    virtual antlrcpp::Any visitUntil_loop(PivotParser::Until_loopContext *context) = 0;
+
     virtual antlrcpp::Any visitNumeric_expression(PivotParser::Numeric_expressionContext *context) = 0;
 
     virtual antlrcpp::Any visitNumeric_mul_div(PivotParser::Numeric_mul_divContext *context) = 0;

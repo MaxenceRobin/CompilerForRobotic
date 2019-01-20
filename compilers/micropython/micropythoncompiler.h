@@ -31,6 +31,8 @@ private:
     virtual Any visitStatement(PivotParser::StatementContext* context) override;
     virtual Any visitAction(PivotParser::ActionContext* context) override;
     virtual Any visitLoop(PivotParser::LoopContext* context) override;
+    virtual Any visitWhile_loop(PivotParser::While_loopContext* context) override;
+    virtual Any visitUntil_loop(PivotParser::Until_loopContext* context) override;
 
     virtual Any visitNumeric_expression(PivotParser::Numeric_expressionContext* context) override;
     virtual Any visitNumeric_mul_div(PivotParser::Numeric_mul_divContext* context) override;

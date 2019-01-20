@@ -14,9 +14,10 @@ public:
   enum {
     NUMBER = 1, EQU = 2, DIF = 3, LT = 4, GT = 5, LEQ = 6, GEQ = 7, AND = 8, 
     OR = 9, NOT = 10, AFF = 11, LPAR = 12, RPAR = 13, SEP = 14, PLUS = 15, 
-    MINUS = 16, DIV = 17, STAR = 18, POW = 19, COMMA = 20, DOT = 21, NEWLINE = 22, 
-    WHITESPACE = 23, FORWARD = 24, DURATION = 25, SPEED = 26, LOOP = 27, 
-    TIMES = 28, END = 29, IF = 30, ELIF = 31, ELSE = 32, TRUE = 33, FALSE = 34
+    MINUS = 16, DIV = 17, STAR = 18, POW = 19, COMMA = 20, DOT = 21, SET = 22, 
+    NEWLINE = 23, WHITESPACE = 24, FORWARD = 25, DURATION = 26, SPEED = 27, 
+    LOOP = 28, TIMES = 29, END = 30, IF = 31, ELIF = 32, ELSE = 33, TRUE = 34, 
+    FALSE = 35, WHILE = 36, UNTIL = 37
   };
 
   PivotLexer(antlr4::CharStream *input);

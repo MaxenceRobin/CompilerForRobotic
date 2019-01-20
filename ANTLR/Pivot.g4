@@ -32,6 +32,7 @@ STAR    : '*';
 POW     : '^';
 COMMA   : ',';
 DOT     : '.';
+SET     : '<-';
 
 
 // Specials
@@ -51,6 +52,8 @@ ELIF        : 'elif';
 ELSE        : 'else';
 TRUE        : 'true';
 FALSE       : 'false';
+WHILE       : 'while';
+UNTIL       : 'until';
 
 // Parser #########################################################################################
 
@@ -61,6 +64,8 @@ statements  : (statement NEWLINE)* (statement NEWLINE?)?;
 // Statements types
 statement   : action
             | loop
+            | while_loop
+            | until_loop
             | if_elif_else
             ;
 
@@ -70,6 +75,10 @@ action  : FORWARD DURATION AFF duration=numeric_expression (SPEED AFF speed=nume
 
 // Loops
 loop    : LOOP TIMES AFF repetition_number=numeric_expression SEP NEWLINE statements END;
+
+while_loop  : WHILE condition=boolean_expression SEP NEWLINE statements END;
+
+until_loop  : UNTIL condition=boolean_expression SEP NEWLINE statements END;
 
 // Numeric expressions
 numeric_expression  : value+=numeric_mul_div (op=(PLUS|MINUS) value+=numeric_mul_div)*;

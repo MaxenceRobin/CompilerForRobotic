@@ -14,17 +14,19 @@ public:
   enum {
     NUMBER = 1, EQU = 2, DIF = 3, LT = 4, GT = 5, LEQ = 6, GEQ = 7, AND = 8, 
     OR = 9, NOT = 10, AFF = 11, LPAR = 12, RPAR = 13, SEP = 14, PLUS = 15, 
-    MINUS = 16, DIV = 17, STAR = 18, POW = 19, COMMA = 20, DOT = 21, NEWLINE = 22, 
-    WHITESPACE = 23, FORWARD = 24, DURATION = 25, SPEED = 26, LOOP = 27, 
-    TIMES = 28, END = 29, IF = 30, ELIF = 31, ELSE = 32, TRUE = 33, FALSE = 34
+    MINUS = 16, DIV = 17, STAR = 18, POW = 19, COMMA = 20, DOT = 21, SET = 22, 
+    NEWLINE = 23, WHITESPACE = 24, FORWARD = 25, DURATION = 26, SPEED = 27, 
+    LOOP = 28, TIMES = 29, END = 30, IF = 31, ELIF = 32, ELSE = 33, TRUE = 34, 
+    FALSE = 35, WHILE = 36, UNTIL = 37
   };
 
   enum {
     RuleFile = 0, RuleStatements = 1, RuleStatement = 2, RuleAction = 3, 
-    RuleLoop = 4, RuleNumeric_expression = 5, RuleNumeric_mul_div = 6, RuleNumeric_pow = 7, 
-    RuleNumeric_inversion = 8, RuleNumeric_atom = 9, RuleIf_elif_else = 10, 
-    RuleBoolean_expression = 11, RuleBoolean_and = 12, RuleBoolean_comparator = 13, 
-    RuleBoolean_not = 14, RuleBoolean_atom = 15
+    RuleLoop = 4, RuleWhile_loop = 5, RuleUntil_loop = 6, RuleNumeric_expression = 7, 
+    RuleNumeric_mul_div = 8, RuleNumeric_pow = 9, RuleNumeric_inversion = 10, 
+    RuleNumeric_atom = 11, RuleIf_elif_else = 12, RuleBoolean_expression = 13, 
+    RuleBoolean_and = 14, RuleBoolean_comparator = 15, RuleBoolean_not = 16, 
+    RuleBoolean_atom = 17
   };
 
   PivotParser(antlr4::TokenStream *input);
@@ -42,6 +44,8 @@ public:
   class StatementContext;
   class ActionContext;
   class LoopContext;
+  class While_loopContext;
+  class Until_loopContext;
   class Numeric_expressionContext;
   class Numeric_mul_divContext;
   class Numeric_powContext;
@@ -88,6 +92,8 @@ public:
     virtual size_t getRuleIndex() const override;
     ActionContext *action();
     LoopContext *loop();
+    While_loopContext *while_loop();
+    Until_loopContext *until_loop();
     If_elif_elseContext *if_elif_else();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -135,6 +141,42 @@ public:
   };
 
   LoopContext* loop();
+
+  class  While_loopContext : public antlr4::ParserRuleContext {
+  public:
+    PivotParser::Boolean_expressionContext *condition = nullptr;;
+    While_loopContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *WHILE();
+    antlr4::tree::TerminalNode *SEP();
+    antlr4::tree::TerminalNode *NEWLINE();
+    StatementsContext *statements();
+    antlr4::tree::TerminalNode *END();
+    Boolean_expressionContext *boolean_expression();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  While_loopContext* while_loop();
+
+  class  Until_loopContext : public antlr4::ParserRuleContext {
+  public:
+    PivotParser::Boolean_expressionContext *condition = nullptr;;
+    Until_loopContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *UNTIL();
+    antlr4::tree::TerminalNode *SEP();
+    antlr4::tree::TerminalNode *NEWLINE();
+    StatementsContext *statements();
+    antlr4::tree::TerminalNode *END();
+    Boolean_expressionContext *boolean_expression();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Until_loopContext* until_loop();
 
   class  Numeric_expressionContext : public antlr4::ParserRuleContext {
   public:

@@ -35,6 +35,14 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitWhile_loop(PivotParser::While_loopContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitUntil_loop(PivotParser::Until_loopContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitNumeric_expression(PivotParser::Numeric_expressionContext *ctx) override {
     return visitChildren(ctx);
   }
