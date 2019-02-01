@@ -86,6 +86,7 @@ string MicroPythonCompiler::getMicroPythonFromPivot(const string &pivot)
 Any MicroPythonCompiler::visitFile(PivotParser::FileContext *context)
 {
     string result = "if __name__ == \"__main__\" :\n";
+    //string result = "";
 
     incrementIndentation();
     result += visitStatements(context->statements()).as<string>();
@@ -122,7 +123,16 @@ Any MicroPythonCompiler::visitStatement(PivotParser::StatementContext *context)
 
     if (context->action())
     {
-        result += visitAction(context->action()).as<string>();
+        result += visitAction(context->action()).as<string>() + "\n";
+    }
+    else if (context->declaration())
+    {
+        // No declaration are needed in MicroPython, so we just skip that part
+        result = "";
+    }
+    else if (context->assignment())
+    {
+        result += visitAssignment(context->assignment()).as<string>() + "\n";
     }
     else if (context->loop())
     {
@@ -141,8 +151,6 @@ Any MicroPythonCompiler::visitStatement(PivotParser::StatementContext *context)
         result += visitUntil_loop(context->until_loop()).as<string>();
     }
 
-    result += "\n";
-
     return std::move(result);
 }
 
@@ -158,13 +166,6 @@ Any MicroPythonCompiler::visitAction(PivotParser::ActionContext *context)
     // Movement actions -------------------------
     if (context->move_type)
     {
-        string speed = "V_MOYEN";
-
-        if (context->speed)
-        {
-            speed = visitNumeric_expression(context->speed).as<string>();
-        }
-
         const string moveType = context->move_type->getText();
 
         if (moveType == "forward")
@@ -184,8 +185,24 @@ Any MicroPythonCompiler::visitAction(PivotParser::ActionContext *context)
             result = "Pivoter_droite";
         }
 
-        result += "(" + speed + ")\n";
-        result += getIndentation() + "time.sleep(" + visitNumeric_expression(context->duration).as<string>() + " * 1000)";
+        result += "(";
+        const string moveSpeed = context->move_speed->getText();
+
+        if (moveSpeed == "slow")
+        {
+            result += "V_MIN";
+        }
+        else if (moveSpeed == "normal")
+        {
+            result += "V_MOYEN";
+        }
+        else if (moveSpeed == "fast")
+        {
+            result += "V_MAX";
+        }
+
+        result += ")";
+
     }
     // Stoping action ---------------------------
     else if (context->STOP())
@@ -195,7 +212,62 @@ Any MicroPythonCompiler::visitAction(PivotParser::ActionContext *context)
     // Waiting action ---------------------------
     else if (context->WAIT())
     {
-        result = "time.sleep(" + visitNumeric_expression(context->duration).as<string>() + " * 1000)";
+        result = "time.sleep(" + visitNumeric_expression(context->duration).as<string>() + ")";
+    }
+    else if (context->LED())
+    {
+        string color = "";
+
+        if (context->RGB())
+        {
+            color = visitRGB(context->RGB());
+        }
+        else if (context->RANDOMCOLOR())
+        {
+            color = "random_color()";
+        }
+        else if (context->VARIABLE())
+        {
+            color = context->VARIABLE()->getText();
+        }
+
+        result = "pycom.rgbled(" + color + ")";
+    }
+
+    return std::move(result);
+}
+
+/**
+ * @brief Returns the MicroPython representation of an assignment
+ * @param context : The tree representation of the assignment
+ * @return The string that represents the MicroPython code of the assignment
+ */
+Any MicroPythonCompiler::visitAssignment(PivotParser::AssignmentContext* context)
+{
+    string result = context->VARIABLE()->getText() + " = " + visitExpression(context->expression()).as<string>();
+    return std::move(result);
+}
+
+/**
+ * @brief Returns the MicroPython representation of an expression
+ * @param context : The tree representation of the expression
+ * @return The string that represents the MicroPython code of the expression
+ */
+Any MicroPythonCompiler::visitExpression(PivotParser::ExpressionContext* context)
+{
+    string result = "";
+
+    if (context->numeric_expression())
+    {
+        result = visitNumeric_expression(context->numeric_expression()).as<string>();
+    }
+    else if (context->boolean_expression())
+    {
+        result = visitBoolean_expression(context->boolean_expression()).as<string>();
+    }
+    else if (context->RGB())
+    {
+        result = visitRGB(context->RGB());
     }
 
     return std::move(result);
@@ -240,13 +312,13 @@ Any MicroPythonCompiler::visitWhile_loop(PivotParser::While_loopContext* context
  */
 Any MicroPythonCompiler::visitUntil_loop(PivotParser::Until_loopContext *context)
 {
-    string result = "while true :\n";
+    string result = "while True :\n";
 
     incrementIndentation();
     result += visitStatements(context->statements()).as<string>();
     result += getIndentation() + "if " + visitBoolean_expression(context->condition).as<string>() + " :\n";
         incrementIndentation();
-        result += getIndentation() + "break";
+        result += getIndentation() + "break\n";
         decrementIndentation();
     decrementIndentation();
 
@@ -353,7 +425,7 @@ Any MicroPythonCompiler::visitNumeric_inversion(PivotParser::Numeric_inversionCo
  */
 Any MicroPythonCompiler::visitNumeric_atom(PivotParser::Numeric_atomContext* context)
 {
-    if (context->NUMBER())
+    if (context->NUMBER() || context->VARIABLE())
     {
         return context->getText();
     }
@@ -493,10 +565,34 @@ Any MicroPythonCompiler::visitBoolean_atom(PivotParser::Boolean_atomContext* con
     {
         result = "(" + visitBoolean_expression(context->boolean_expression()).as<string>() + ")";
     }
-    else
+    else if (context->TRUE())
     {
-        result = context->getText();
+        result = "True";
+    }
+    else if (context->VARIABLE())
+    {
+        result = context->VARIABLE()->getText();
+    }
+    else if (context->FALSE())
+    {
+        result = "False";
+    }
+    else if (context->numeric_expression())
+    {
+        result = visitNumeric_expression(context->numeric_expression()).as<string>();
     }
 
     return std::move(result);
+}
+
+/**
+ * @brief Returns the MicroPython representation of an RGB expression
+ * @param context : The tree representation of the RGB expression
+ * @return The string that represents the MicroPython code of the RGB expression
+ */
+string MicroPythonCompiler::visitRGB(antlr4::tree::TerminalNode* node)
+{
+    string color = node->getText();
+    color.replace(0, 1, "0x");
+    return color;
 }

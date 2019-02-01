@@ -30,6 +30,8 @@ private:
     virtual Any visitStatements(PivotParser::StatementsContext* context) override;
     virtual Any visitStatement(PivotParser::StatementContext* context) override;
     virtual Any visitAction(PivotParser::ActionContext* context) override;
+    virtual Any visitAssignment(PivotParser::AssignmentContext* context) override;
+    virtual Any visitExpression(PivotParser::ExpressionContext* context) override;
     virtual Any visitLoop(PivotParser::LoopContext* context) override;
     virtual Any visitWhile_loop(PivotParser::While_loopContext* context) override;
     virtual Any visitUntil_loop(PivotParser::Until_loopContext* context) override;
@@ -47,6 +49,8 @@ private:
     virtual Any visitBoolean_comparator(PivotParser::Boolean_comparatorContext* context) override;
     virtual Any visitBoolean_not(PivotParser::Boolean_notContext* context) override;
     virtual Any visitBoolean_atom(PivotParser::Boolean_atomContext* context) override;
+
+    string visitRGB(antlr4::tree::TerminalNode* node);
 
 private:
     unsigned int indentationCount;

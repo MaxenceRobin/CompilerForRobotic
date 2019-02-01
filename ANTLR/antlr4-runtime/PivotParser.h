@@ -12,22 +12,24 @@
 class  PivotParser : public antlr4::Parser {
 public:
   enum {
-    NUMBER = 1, EQU = 2, DIF = 3, LT = 4, GT = 5, LEQ = 6, GEQ = 7, AND = 8, 
-    OR = 9, NOT = 10, AFF = 11, LPAR = 12, RPAR = 13, SEP = 14, PLUS = 15, 
-    MINUS = 16, DIV = 17, STAR = 18, POW = 19, COMMA = 20, DOT = 21, SET = 22, 
-    NEWLINE = 23, WHITESPACE = 24, FORWARD = 25, BACKWARD = 26, LEFT = 27, 
-    RIGHT = 28, STOP = 29, DURATION = 30, SPEED = 31, WAIT = 32, LOOP = 33, 
-    TIMES = 34, END = 35, IF = 36, ELIF = 37, ELSE = 38, TRUE = 39, FALSE = 40, 
-    WHILE = 41, UNTIL = 42
+    FORWARD = 1, BACKWARD = 2, LEFT = 3, RIGHT = 4, STOP = 5, DURATION = 6, 
+    NORMAL = 7, SLOW = 8, FAST = 9, WAIT = 10, LOOP = 11, TIMES = 12, END = 13, 
+    IF = 14, ELIF = 15, ELSE = 16, TRUE = 17, FALSE = 18, WHILE = 19, UNTIL = 20, 
+    LED = 21, RANDOMCOLOR = 22, VAR = 23, NUMBER = 24, RGB = 25, VARIABLE = 26, 
+    EQU = 27, DIF = 28, LT = 29, GT = 30, LEQ = 31, GEQ = 32, AND = 33, 
+    OR = 34, NOT = 35, AFF = 36, LPAR = 37, RPAR = 38, SEP = 39, PLUS = 40, 
+    MINUS = 41, DIV = 42, STAR = 43, POW = 44, COMMA = 45, SEMICOLON = 46, 
+    DOT = 47, NEWLINE = 48, WHITESPACE = 49
   };
 
   enum {
     RuleFile = 0, RuleStatements = 1, RuleStatement = 2, RuleAction = 3, 
-    RuleLoop = 4, RuleWhile_loop = 5, RuleUntil_loop = 6, RuleNumeric_expression = 7, 
-    RuleNumeric_mul_div = 8, RuleNumeric_pow = 9, RuleNumeric_inversion = 10, 
-    RuleNumeric_atom = 11, RuleIf_elif_else = 12, RuleBoolean_expression = 13, 
-    RuleBoolean_and = 14, RuleBoolean_comparator = 15, RuleBoolean_not = 16, 
-    RuleBoolean_atom = 17
+    RuleDeclaration = 4, RuleAssignment = 5, RuleExpression = 6, RuleLoop = 7, 
+    RuleWhile_loop = 8, RuleUntil_loop = 9, RuleNumeric_expression = 10, 
+    RuleNumeric_mul_div = 11, RuleNumeric_pow = 12, RuleNumeric_inversion = 13, 
+    RuleNumeric_atom = 14, RuleIf_elif_else = 15, RuleBoolean_expression = 16, 
+    RuleBoolean_and = 17, RuleBoolean_comparator = 18, RuleBoolean_not = 19, 
+    RuleBoolean_atom = 20
   };
 
   PivotParser(antlr4::TokenStream *input);
@@ -44,6 +46,9 @@ public:
   class StatementsContext;
   class StatementContext;
   class ActionContext;
+  class DeclarationContext;
+  class AssignmentContext;
+  class ExpressionContext;
   class LoopContext;
   class While_loopContext;
   class Until_loopContext;
@@ -65,6 +70,7 @@ public:
     virtual size_t getRuleIndex() const override;
     StatementsContext *statements();
     antlr4::tree::TerminalNode *EOF();
+    antlr4::tree::TerminalNode *NEWLINE();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    
@@ -92,6 +98,8 @@ public:
     StatementContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     ActionContext *action();
+    DeclarationContext *declaration();
+    AssignmentContext *assignment();
     LoopContext *loop();
     While_loopContext *while_loop();
     Until_loopContext *until_loop();
@@ -106,28 +114,72 @@ public:
   class  ActionContext : public antlr4::ParserRuleContext {
   public:
     antlr4::Token *move_type = nullptr;;
+    antlr4::Token *move_speed = nullptr;;
     PivotParser::Numeric_expressionContext *duration = nullptr;;
-    PivotParser::Numeric_expressionContext *speed = nullptr;;
     ActionContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *DURATION();
-    std::vector<antlr4::tree::TerminalNode *> AFF();
-    antlr4::tree::TerminalNode* AFF(size_t i);
-    std::vector<Numeric_expressionContext *> numeric_expression();
-    Numeric_expressionContext* numeric_expression(size_t i);
     antlr4::tree::TerminalNode *FORWARD();
     antlr4::tree::TerminalNode *BACKWARD();
     antlr4::tree::TerminalNode *LEFT();
     antlr4::tree::TerminalNode *RIGHT();
-    antlr4::tree::TerminalNode *SPEED();
+    antlr4::tree::TerminalNode *SLOW();
+    antlr4::tree::TerminalNode *NORMAL();
+    antlr4::tree::TerminalNode *FAST();
     antlr4::tree::TerminalNode *STOP();
     antlr4::tree::TerminalNode *WAIT();
+    Numeric_expressionContext *numeric_expression();
+    antlr4::tree::TerminalNode *LED();
+    antlr4::tree::TerminalNode *RGB();
+    antlr4::tree::TerminalNode *RANDOMCOLOR();
+    antlr4::tree::TerminalNode *VARIABLE();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    
   };
 
   ActionContext* action();
+
+  class  DeclarationContext : public antlr4::ParserRuleContext {
+  public:
+    DeclarationContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *VAR();
+    antlr4::tree::TerminalNode *VARIABLE();
+    antlr4::tree::TerminalNode *SEMICOLON();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  DeclarationContext* declaration();
+
+  class  AssignmentContext : public antlr4::ParserRuleContext {
+  public:
+    AssignmentContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *VARIABLE();
+    antlr4::tree::TerminalNode *AFF();
+    ExpressionContext *expression();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  AssignmentContext* assignment();
+
+  class  ExpressionContext : public antlr4::ParserRuleContext {
+  public:
+    ExpressionContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    Numeric_expressionContext *numeric_expression();
+    Boolean_expressionContext *boolean_expression();
+    antlr4::tree::TerminalNode *RGB();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ExpressionContext* expression();
 
   class  LoopContext : public antlr4::ParserRuleContext {
   public:
@@ -260,6 +312,7 @@ public:
     Numeric_atomContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *NUMBER();
+    antlr4::tree::TerminalNode *VARIABLE();
     antlr4::tree::TerminalNode *LPAR();
     Numeric_expressionContext *numeric_expression();
     antlr4::tree::TerminalNode *RPAR();
@@ -376,6 +429,8 @@ public:
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *TRUE();
     antlr4::tree::TerminalNode *FALSE();
+    antlr4::tree::TerminalNode *VARIABLE();
+    Numeric_expressionContext *numeric_expression();
     antlr4::tree::TerminalNode *LPAR();
     Boolean_expressionContext *boolean_expression();
     antlr4::tree::TerminalNode *RPAR();

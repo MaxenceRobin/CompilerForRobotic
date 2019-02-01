@@ -4,6 +4,7 @@
 // This include must go first because of the conflict between the emit method of Lexer and the Qt emit keyword
 #include "compilers/micropython/micropythoncompiler.h"
 
+#include "senders/wipy/wipysender.h"
 #include "abstractexecutor.h"
 
 #include <QClipboard>
@@ -33,7 +34,10 @@ private slots:
 
 private:
     MicroPythonCompiler compiler;
+    WipySender sender;
     QClipboard* clipboard;
+
+    QString preProgramContent;
 
     // For debugging purpose
     QHBoxLayout layout;

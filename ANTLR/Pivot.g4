@@ -2,12 +2,44 @@ grammar Pivot;
 
 // Lexer ##########################################################################################
 
-// Numbers
-fragment DIGIT          : [0-9];
-fragment NON_NULL_DIGIT : [1-9];
+// Keywords (Must be defined first to avoid conflict with oter token, such as variables)
+FORWARD     : 'forward';
+BACKWARD    : 'backward';
+LEFT        : 'left';
+RIGHT       : 'right';
+STOP        : 'stop';
+DURATION    : 'duration';
+NORMAL      : 'normal';
+SLOW        : 'slow';
+FAST        : 'fast';
+WAIT        : 'wait';
+LOOP        : 'loop';
+TIMES       : 'times';
+END         : 'end';
+IF          : 'if';
+ELIF        : 'elif';
+ELSE        : 'else';
+TRUE        : 'true';
+FALSE       : 'false';
+WHILE       : 'while';
+UNTIL       : 'until';
+LED         : 'led';
+RANDOMCOLOR : 'randomColor';
+VAR         : 'var';
+
+// Values
+fragment DIGIT          : '0'..'9';
+fragment NON_NULL_DIGIT : '1'..'9';
+fragment LOWER_LETTER   : 'a'..'z';
+fragment UPPER_LETTER   : 'A'..'Z';
+fragment LETTER         : (LOWER_LETTER | UPPER_LETTER);
 fragment INTEGER_PART   : (NON_NULL_DIGIT DIGIT* | '0');
 fragment DECIMAL_PART   : '.' DIGIT+ ([eE] [+-]? DIGIT+)?;
+fragment HEXA           : (DIGIT | 'a'.. 'f' | 'A'..'F');
+fragment TRIPLE_HEXA    : HEXA HEXA HEXA;
 NUMBER                  : INTEGER_PART (DECIMAL_PART)?;
+RGB                     : '#' TRIPLE_HEXA TRIPLE_HEXA?;
+VARIABLE                : LETTER (LETTER | DIGIT | '_')*;
 
 // Booleans
 EQU     : '==';
@@ -21,18 +53,18 @@ OR      : '||';
 NOT     : '!';
 
 // Symbols
-AFF     : '=';
-LPAR    : '(';
-RPAR    : ')';
-SEP     : ':';
-PLUS    : '+';
-MINUS   : '-';
-DIV     : '/';
-STAR    : '*';
-POW     : '^';
-COMMA   : ',';
-DOT     : '.';
-SET     : '<-';
+AFF         : '=';
+LPAR        : '(';
+RPAR        : ')';
+SEP         : ':';
+PLUS        : '+';
+MINUS       : '-';
+DIV         : '/';
+STAR        : '*';
+POW         : '^';
+COMMA       : ',';
+SEMICOLON   : ';';
+DOT         : '.';
 
 
 // Specials
@@ -40,34 +72,16 @@ NEWLINE : ('\r'? '\n' | '\r')+;
 
 WHITESPACE  : (' ' | '\t')+ -> skip;
 
-// Keywords
-FORWARD     : 'forward';
-BACKWARD    : 'backward';
-LEFT        : 'left';
-RIGHT       : 'right';
-STOP        : 'stop';
-DURATION    : 'duration';
-SPEED       : 'speed';
-WAIT        : 'wait';
-LOOP        : 'loop';
-TIMES       : 'times';
-END         : 'end';
-IF          : 'if';
-ELIF        : 'elif';
-ELSE        : 'else';
-TRUE        : 'true';
-FALSE       : 'false';
-WHILE       : 'while';
-UNTIL       : 'until';
-
 // Parser #########################################################################################
 
-file    : statements EOF;
+file    : NEWLINE? statements EOF;
 
-statements  : (statement NEWLINE)* (statement NEWLINE?)?;
+statements  : (statement NEWLINE)* statement?;
 
 // Statements types
 statement   : action
+            | declaration
+            | assignment
             | loop
             | while_loop
             | until_loop
@@ -75,10 +89,17 @@ statement   : action
             ;
 
 // Possible actions
-action  : move_type=(FORWARD|BACKWARD|LEFT|RIGHT) DURATION AFF duration=numeric_expression (SPEED AFF speed=numeric_expression)?
+action  : move_type=(FORWARD|BACKWARD|LEFT|RIGHT) move_speed=(SLOW|NORMAL|FAST)
         | STOP
-        | WAIT DURATION AFF duration=numeric_expression
+        | WAIT duration=numeric_expression
+        | LED (RGB|RANDOMCOLOR|VARIABLE)
         ;
+
+// Declarations and assignments
+declaration : VAR VARIABLE SEMICOLON;
+assignment  : VARIABLE AFF expression;
+
+expression   : numeric_expression | boolean_expression | RGB;
 
 // Loops
 loop    : LOOP TIMES AFF repetition_number=numeric_expression SEP NEWLINE statements END;
@@ -93,6 +114,7 @@ numeric_mul_div     : value+=numeric_pow (op=(STAR|DIV) value+=numeric_pow)*;
 numeric_pow         : value+=numeric_inversion (POW value+=numeric_inversion)*;
 numeric_inversion   : MINUS? numeric_atom;
 numeric_atom        : NUMBER
+                    | VARIABLE
                     | LPAR numeric_expression RPAR
                     ;
 
@@ -109,5 +131,7 @@ boolean_comparator  : left=boolean_not (comparator=(EQU|DIF|LT|GT|LEQ|GEQ) right
 boolean_not         : NOT? boolean_atom;
 boolean_atom        : TRUE
                     | FALSE
+                    | VARIABLE
+                    | numeric_expression
                     | LPAR boolean_expression RPAR
                     ;

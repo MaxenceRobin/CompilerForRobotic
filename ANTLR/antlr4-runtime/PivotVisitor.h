@@ -27,6 +27,12 @@ public:
 
     virtual antlrcpp::Any visitAction(PivotParser::ActionContext *context) = 0;
 
+    virtual antlrcpp::Any visitDeclaration(PivotParser::DeclarationContext *context) = 0;
+
+    virtual antlrcpp::Any visitAssignment(PivotParser::AssignmentContext *context) = 0;
+
+    virtual antlrcpp::Any visitExpression(PivotParser::ExpressionContext *context) = 0;
+
     virtual antlrcpp::Any visitLoop(PivotParser::LoopContext *context) = 0;
 
     virtual antlrcpp::Any visitWhile_loop(PivotParser::While_loopContext *context) = 0;

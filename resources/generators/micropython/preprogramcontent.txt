@@ -1,0 +1,10 @@
+import pycom
+import time
+import uos
+
+pycom.heartbeat(False)
+
+def random_color():
+    n = uos.urandom(3)
+    color = n[0] + n[1] * 256 + n[2] * 256 * 256
+    return color

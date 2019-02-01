@@ -53,7 +53,8 @@ SOURCES += \
     models/projecttype.cpp \
     views/createprogramview.cpp \
     models/settings.cpp \
-    editors/baseblocklyeditor.cpp
+    editors/baseblocklyeditor.cpp \
+    senders/wipy/wipysender.cpp
 
 HEADERS += \
     views/mainwindow.h \
@@ -71,7 +72,8 @@ HEADERS += \
     executors/abstractexecutor.h \
     views/createprogramview.h \
     models/settings.h \
-    editors/baseblocklyeditor.h
+    editors/baseblocklyeditor.h \
+    senders/wipy/wipysender.h
 
 FORMS += \
     views/mainwindow.ui \

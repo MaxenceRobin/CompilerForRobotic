@@ -12,13 +12,14 @@
 class  PivotLexer : public antlr4::Lexer {
 public:
   enum {
-    NUMBER = 1, EQU = 2, DIF = 3, LT = 4, GT = 5, LEQ = 6, GEQ = 7, AND = 8, 
-    OR = 9, NOT = 10, AFF = 11, LPAR = 12, RPAR = 13, SEP = 14, PLUS = 15, 
-    MINUS = 16, DIV = 17, STAR = 18, POW = 19, COMMA = 20, DOT = 21, SET = 22, 
-    NEWLINE = 23, WHITESPACE = 24, FORWARD = 25, BACKWARD = 26, LEFT = 27, 
-    RIGHT = 28, STOP = 29, DURATION = 30, SPEED = 31, WAIT = 32, LOOP = 33, 
-    TIMES = 34, END = 35, IF = 36, ELIF = 37, ELSE = 38, TRUE = 39, FALSE = 40, 
-    WHILE = 41, UNTIL = 42
+    FORWARD = 1, BACKWARD = 2, LEFT = 3, RIGHT = 4, STOP = 5, DURATION = 6, 
+    NORMAL = 7, SLOW = 8, FAST = 9, WAIT = 10, LOOP = 11, TIMES = 12, END = 13, 
+    IF = 14, ELIF = 15, ELSE = 16, TRUE = 17, FALSE = 18, WHILE = 19, UNTIL = 20, 
+    LED = 21, RANDOMCOLOR = 22, VAR = 23, NUMBER = 24, RGB = 25, VARIABLE = 26, 
+    EQU = 27, DIF = 28, LT = 29, GT = 30, LEQ = 31, GEQ = 32, AND = 33, 
+    OR = 34, NOT = 35, AFF = 36, LPAR = 37, RPAR = 38, SEP = 39, PLUS = 40, 
+    MINUS = 41, DIV = 42, STAR = 43, POW = 44, COMMA = 45, SEMICOLON = 46, 
+    DOT = 47, NEWLINE = 48, WHITESPACE = 49
   };
 
   PivotLexer(antlr4::CharStream *input);

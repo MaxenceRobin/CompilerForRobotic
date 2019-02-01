@@ -25,5 +25,5 @@ BlocklyNeutralRobotEditor::~BlocklyNeutralRobotEditor()
  */
 void BlocklyNeutralRobotEditor::toggleDebugMode()
 {
-    setVisible(isHidden());
+    //setVisible(isHidden());
 }

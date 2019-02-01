@@ -1,7 +1,12 @@
 #include "micropythongeneratorexecutor.h"
 
+#include "models/programfile.h"
+#include <QFile>
+
 #include <QApplication>
 #include <QDebug>
+
+#define GENERATION(name) QApplication::applicationDirPath() + "/Generation/" + name
 
 /**
  * @brief Constructor of the executor
@@ -21,11 +26,22 @@ MicroPythonGeneratorExecutor::MicroPythonGeneratorExecutor()
 
     setLayout(&layout);
 
+    // Loading of the pre program content
+    QFile preProgramContentFile(":/generators/micropython/preprogramcontent");
+
+    if (preProgramContentFile.open(QFile::Text | QFile::ReadOnly))
+    {
+        preProgramContent = preProgramContentFile.readAll();
+        preProgramContentFile.close();
+    }
+
+    qDebug() << "content = " << preProgramContent;
+
     // Settings
     inputCode.setFont(QFont("Consolas", 14));
-    inputCode.setTabStopWidth(30);
+    inputCode.setTabStopDistance(30);
     outputCode.setFont(QFont("Consolas", 14));
-    outputCode.setTabStopWidth(30);
+    outputCode.setTabStopDistance(30);
 
     // Connections
     connect(&translateButton, &QPushButton::clicked, this, &MicroPythonGeneratorExecutor::translateManualCode);
@@ -64,10 +80,21 @@ void MicroPythonGeneratorExecutor::execute(const QString &pivot)
 {
     inputCode.setText(pivot);
 
-    const QString result = QString::fromStdString(
+    QString result = QString::fromStdString(
                 compiler.getMicroPythonFromPivot(pivot.toStdString())
                 );
 
     clipboard->setText(result);
     outputCode.setText(result);
+
+    result = preProgramContent + "\n" + result;
+
+    // Creation of the source file to be copied on the Wipy card
+    ProgramFile sourceFile(GENERATION("main.py"));
+    sourceFile.setContent(result);
+    sourceFile.saveOnDisk();
+
+
+    // Sending the program to the card
+    sender.send(GENERATION("main.py"), "/flash/main.py");
 }

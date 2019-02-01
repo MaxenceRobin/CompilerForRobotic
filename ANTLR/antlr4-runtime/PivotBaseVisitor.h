@@ -31,6 +31,18 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitDeclaration(PivotParser::DeclarationContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitAssignment(PivotParser::AssignmentContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitExpression(PivotParser::ExpressionContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitLoop(PivotParser::LoopContext *ctx) override {
     return visitChildren(ctx);
   }
