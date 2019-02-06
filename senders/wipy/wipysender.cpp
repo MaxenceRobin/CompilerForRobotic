@@ -1,5 +1,10 @@
 #include "wipysender.h"
 
+#include <QSerialPortInfo>
+#include <QToolTip>
+#include <QCursor>
+#include <QDebug>
+
 /**
  * @brief WipySender::WipySender
  */
@@ -18,22 +23,44 @@ WipySender::WipySender()
  */
 void WipySender::send(const QString &file, const QString &location)
 {
-    // TODO : remplacer la sélection du port par une détection automatique
-    const QString port = "COM3";
+    QString portName = "";
+
+    const auto& portList = QSerialPortInfo::availablePorts();
+
+    for (const auto& port : portList)
+    {
+
+        // The first valid port is chosed as the port on which to communicate
+        if (!port.isNull())
+        {
+            portName = port.portName();
+            break;
+        }
+    }
+
+    // If there is no port found, an error message is displayed and the program is not sent
+    if (portName.isEmpty())
+    {
+        QToolTip::showText(QCursor::pos(), "Impossible d'envoyer le programme :\nAucune carte connectée");
+        return;
+    }
 
     // A first reset is done because the currenct execution has to be stopped before sending the new program
+    QToolTip::showText(QCursor::pos(), "Envoi du programme... (0%)");
     process.start(
                 QString("ampy --port %1 reset")
-                .arg(port));
+                .arg(portName));
 
     blockingLoop.exec();
+    QToolTip::showText(QCursor::pos(), "Envoi du programme... (50%)");
 
     // The new program is then sent
     process.start(
                 QString("ampy --port %1 put %2 %3")
-                .arg(port)
+                .arg(portName)
                 .arg(file)
                 .arg(location));
 
     blockingLoop.exec();
+    QToolTip::showText(QCursor::pos(), "Envoi du programme terminé (100%)");
 }

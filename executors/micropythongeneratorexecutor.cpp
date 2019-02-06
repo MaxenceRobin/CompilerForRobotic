@@ -35,8 +35,6 @@ MicroPythonGeneratorExecutor::MicroPythonGeneratorExecutor()
         preProgramContentFile.close();
     }
 
-    qDebug() << "content = " << preProgramContent;
-
     // Settings
     inputCode.setFont(QFont("Consolas", 14));
     inputCode.setTabStopDistance(30);

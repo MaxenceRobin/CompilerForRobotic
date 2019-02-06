@@ -8,7 +8,8 @@ QT       += core gui webenginewidgets webchannel
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += \
     widgets \
-    webenginewidgets
+    webenginewidgets \
+    serialport
 
 TARGET = PRD
 TEMPLATE = app
