@@ -85,14 +85,9 @@ string MicroPythonCompiler::getMicroPythonFromPivot(const string &pivot)
  */
 Any MicroPythonCompiler::visitFile(PivotParser::FileContext *context)
 {
-    string result = "if __name__ == \"__main__\" :\n";
-    //string result = "";
-
-    incrementIndentation();
-    result += visitStatements(context->statements()).as<string>();
-    decrementIndentation();
-
-    return std::move(result);
+    /*string result = visitStatements(context->statements()).as<string>();
+    return std::move(result);*/
+    return visitStatements(context->statements());
 }
 
 /**

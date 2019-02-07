@@ -14,7 +14,6 @@ SLOW        : 'slow';
 FAST        : 'fast';
 WAIT        : 'wait';
 LOOP        : 'loop';
-TIMES       : 'times';
 END         : 'end';
 IF          : 'if';
 ELIF        : 'elif';
@@ -102,7 +101,7 @@ assignment  : VARIABLE AFF expression;
 expression   : numeric_expression | boolean_expression | RGB;
 
 // Loops
-loop    : LOOP TIMES AFF repetition_number=numeric_expression SEP NEWLINE statements END;
+loop    : LOOP repetition_number=numeric_expression SEP NEWLINE statements END;
 
 while_loop  : WHILE condition=boolean_expression SEP NEWLINE statements END;
 
