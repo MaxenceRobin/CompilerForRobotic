@@ -32,11 +32,14 @@ public:
 private:
     void closeEvent(QCloseEvent* event);
 
+    void loadEnvironment(AbstractEditor* newEditor, AbstractExecutor* newExecutor);
+    void removeEnvironment();
+
     void processBeforeQuitting();
-    void replaceEnvironment(QWidget* newEditor, QWidget* newExecutor);
     void loadProgram(const QString& fileName);
 
 private:
+    void replaceEnvironment(QWidget* newEditor, QWidget* newExecutor);
     void setProjectMode(bool mode);
 
 private slots:

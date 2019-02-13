@@ -1,5 +1,5 @@
 
-// Generated from d:\Programmes\Qt\Projets\PRD\PRD\ANTLR\Pivot.g4 by ANTLR 4.7.1
+// Generated from .\Pivot.g4 by ANTLR 4.7.1
 
 #pragma once
 
@@ -141,11 +141,16 @@ public:
 
   class  DeclarationContext : public antlr4::ParserRuleContext {
   public:
+    antlr4::Token *variableToken = nullptr;;
+    std::vector<antlr4::Token *> var_name;;
     DeclarationContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *VAR();
-    antlr4::tree::TerminalNode *VARIABLE();
     antlr4::tree::TerminalNode *SEMICOLON();
+    std::vector<antlr4::tree::TerminalNode *> VARIABLE();
+    antlr4::tree::TerminalNode* VARIABLE(size_t i);
+    std::vector<antlr4::tree::TerminalNode *> COMMA();
+    antlr4::tree::TerminalNode* COMMA(size_t i);
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
    

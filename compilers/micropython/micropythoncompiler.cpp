@@ -122,8 +122,7 @@ Any MicroPythonCompiler::visitStatement(PivotParser::StatementContext *context)
     }
     else if (context->declaration())
     {
-        // No declaration are needed in MicroPython, so we just skip that part
-        result = "";
+        result += visitDeclaration(context->declaration()).as<string>() + "\n";
     }
     else if (context->assignment())
     {
@@ -240,6 +239,18 @@ Any MicroPythonCompiler::visitAction(PivotParser::ActionContext *context)
 Any MicroPythonCompiler::visitDeclaration(PivotParser::DeclarationContext* context)
 {
     string result = "";
+
+    bool first = true;
+    for (auto variable : context->var_name)
+    {
+        if (!first)
+        {
+            result += "\n" + getIndentation();
+        }
+
+        result += variable->getText() + " = 0";
+        first = false;
+    }
 
     return std::move(result);
 }

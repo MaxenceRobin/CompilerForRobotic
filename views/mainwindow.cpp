@@ -98,6 +98,24 @@ void MainWindow::replaceEnvironment(QWidget *newEditor, QWidget *newExecutor)
 }
 
 /**
+ * @brief Loads a new environment composed of an AbstractEditor and an AbstractExecutor in the application.
+ * @param newEditor : The new editor widget
+ * @param newExecutor : The new executor widget
+ */
+void MainWindow::loadEnvironment(AbstractEditor *newEditor, AbstractExecutor *newExecutor)
+{
+    replaceEnvironment(newEditor, newExecutor);
+}
+
+/**
+ * @brief Removes the current environmnet by replacing the current editor and executor by empty widgets
+ */
+void MainWindow::removeEnvironment()
+{
+    replaceEnvironment(new QWidget, new QWidget);
+}
+
+/**
  * @brief Enables ro disables the project mode (define which actions are visible or not)
  * @param mode : true to enabled to project mode, false to disable it
  */
@@ -138,7 +156,7 @@ void MainWindow::loadProgram(const QString &fileName)
     connect(ui->debugAction, &QAction::triggered, newExecutor, &AbstractExecutor::toggleDebugMode);
 
     // The editor and executor are setted
-    replaceEnvironment(newEditor, newExecutor);
+    loadEnvironment(newEditor, newExecutor);
     setProjectMode(true);
     projectOpen = true;
 }
@@ -198,8 +216,7 @@ void MainWindow::closeProgram()
     saveProgram();
     setProjectMode(false);
     projectOpen = false;
-    replaceEnvironment(new QWidget, new QWidget);
-
+    removeEnvironment();
 }
 
 /**

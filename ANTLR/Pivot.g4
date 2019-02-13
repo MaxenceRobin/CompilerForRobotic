@@ -95,7 +95,7 @@ action  : move_type=(FORWARD|BACKWARD|LEFT|RIGHT) move_speed=(SLOW|NORMAL|FAST)
         ;
 
 // Declarations and assignments
-declaration : VAR VARIABLE SEMICOLON;
+declaration : VAR var_name+=VARIABLE (COMMA var_name+=VARIABLE)* SEMICOLON;
 assignment  : VARIABLE AFF expression;
 
 expression   : numeric_expression | boolean_expression | RGB;
