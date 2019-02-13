@@ -237,6 +237,18 @@ Any MicroPythonCompiler::visitAction(PivotParser::ActionContext *context)
  * @param context : The tree representation of the assignment
  * @return The string that represents the MicroPython code of the assignment
  */
+Any MicroPythonCompiler::visitDeclaration(PivotParser::DeclarationContext* context)
+{
+    string result = "";
+
+    return std::move(result);
+}
+
+/**
+ * @brief Returns the MicroPython representation of an assignment
+ * @param context : The tree representation of the assignment
+ * @return The string that represents the MicroPython code of the assignment
+ */
 Any MicroPythonCompiler::visitAssignment(PivotParser::AssignmentContext* context)
 {
     string result = context->VARIABLE()->getText() + " = " + visitExpression(context->expression()).as<string>();

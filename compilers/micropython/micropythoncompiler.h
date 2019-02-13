@@ -30,6 +30,7 @@ private:
     virtual Any visitStatements(PivotParser::StatementsContext* context) override;
     virtual Any visitStatement(PivotParser::StatementContext* context) override;
     virtual Any visitAction(PivotParser::ActionContext* context) override;
+    virtual Any visitDeclaration(PivotParser::DeclarationContext* context) override;
     virtual Any visitAssignment(PivotParser::AssignmentContext* context) override;
     virtual Any visitExpression(PivotParser::ExpressionContext* context) override;
     virtual Any visitLoop(PivotParser::LoopContext* context) override;

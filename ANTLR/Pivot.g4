@@ -34,7 +34,7 @@ fragment UPPER_LETTER   : 'A'..'Z';
 fragment LETTER         : (LOWER_LETTER | UPPER_LETTER);
 fragment INTEGER_PART   : (NON_NULL_DIGIT DIGIT* | '0');
 fragment DECIMAL_PART   : '.' DIGIT+ ([eE] [+-]? DIGIT+)?;
-fragment HEXA           : (DIGIT | 'a'.. 'f' | 'A'..'F');
+fragment HEXA           : (DIGIT | 'a'..'f' | 'A'..'F');
 fragment TRIPLE_HEXA    : HEXA HEXA HEXA;
 NUMBER                  : INTEGER_PART (DECIMAL_PART)?;
 RGB                     : '#' TRIPLE_HEXA TRIPLE_HEXA?;
