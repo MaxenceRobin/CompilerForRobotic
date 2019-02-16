@@ -14,6 +14,9 @@ public:
 
     virtual void execute(const QString& pivot) = 0;
 
+protected:
+    void showMessage(const QString& message, const QString& color = "black");
+
 public slots:
     virtual void toggleDebugMode() = 0;
 };

@@ -1,7 +1,7 @@
 #ifndef ABSTRACTBLOCKLYEDITOR_H
 #define ABSTRACTBLOCKLYEDITOR_H
 
-#include "abstracteditor.h"
+#include "editors/abstracteditor.h"
 
 #include <QWebEngineView>
 #include <QHBoxLayout>

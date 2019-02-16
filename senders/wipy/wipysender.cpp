@@ -1,66 +1,91 @@
 #include "wipysender.h"
 
-#include <QSerialPortInfo>
-#include <QToolTip>
-#include <QCursor>
+#include <QObject>
+#include <QFileInfo>
 #include <QDebug>
 
 /**
  * @brief WipySender::WipySender
  */
 WipySender::WipySender()
-    : QObject()
+    : AbstractSender()
 {
-    connect(&process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), &blockingLoop, &QEventLoop::quit);
+    QObject::connect(&process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), &blockingLoop, &QEventLoop::quit);
 }
 
 // Methods ----------------------------------------------------------------------------------------
 
 /**
+ * @brief Runs a command on the wipy card
+ * @param command : The command to run on the wipy card
+ * @return true if the operation was successful, false otherwise
+ */
+bool WipySender::execute(const QString &command)
+{
+    process.start(command);
+    blockingLoop.exec();
+
+    // UnknownError if the default value when no error has occured
+    return process.error() == QProcess::UnknownError;
+}
+
+/**
+ * @brief Resets the card
+ */
+void WipySender::reset()
+{
+    execute(QString("ampy --port %1 reset")
+            .arg(getPortName()));
+}
+
+/**
  * @brief Sends a file to the given location on the wipy card
  * @param file : The local file on the computer to send
  * @param location : The location on the wipy in which to send the file. This location may contain a file name that will represent the file on the wipy card
+ * @return 'true' if the sending was successful, 'false' otherwise
  */
-void WipySender::send(const QString &file, const QString &location)
+bool WipySender::put(const QString &file, const QString &location)
 {
-    QString portName = "";
+    return execute(QString("ampy --port %1 put %2 %3")
+                   .arg(getPortName())
+                   .arg(file)
+                   .arg(location));
+}
 
-    const auto& portList = QSerialPortInfo::availablePorts();
+/**
+ * @brief Returns the content of a file on the wipy card
+ * @param file : The file on the wipy card for which to get the content
+ * @return The content of the specified file
+ */
+QString WipySender::get(const QString &file)
+{
+    execute(QString("ampy --port %1 get %2")
+            .arg(getPortName())
+            .arg(file));
 
-    for (const auto& port : portList)
+    return process.readAllStandardOutput();
+}
+
+/**
+ * @brief Returns the list of all present files on the wipy card at the given location
+ * @param location : The location on the wipy card for which to get the list of files
+ * @return The list of files at the specified location on the wipy card
+ */
+QStringList WipySender::list(const QString &location)
+{
+    execute(QString("ampy --port %1 ls %2")
+            .arg(getPortName())
+            .arg(location));
+
+    QString processOutput = process.readAllStandardOutput();
+    QStringList filesList = processOutput.split("\r\n", QString::SkipEmptyParts);
+
+    // The location of the file is included in its name, so we have to remove it and keep only the last part of the returned path
+    for (auto& file : filesList)
     {
-
-        // The first valid port is chosed as the port on which to communicate
-        if (!port.isNull())
-        {
-            portName = port.portName();
-            break;
-        }
+        // We use QFileInfo::fileName() method to directly get the file name corresponding to the given file location
+        file = QFileInfo(file).fileName();
     }
 
-    // If there is no port found, an error message is displayed and the program is not sent
-    if (portName.isEmpty())
-    {
-        QToolTip::showText(QCursor::pos(), "Impossible d'envoyer le programme :\nAucune carte connectée");
-        return;
-    }
-
-    // A first reset is done because the currenct execution has to be stopped before sending the new program
-    QToolTip::showText(QCursor::pos(), "Envoi du programme... (0%)");
-    process.start(
-                QString("ampy --port %1 reset")
-                .arg(portName));
-
-    blockingLoop.exec();
-    QToolTip::showText(QCursor::pos(), "Envoi du programme... (50%)");
-
-    // The new program is then sent
-    process.start(
-                QString("ampy --port %1 put %2 %3")
-                .arg(portName)
-                .arg(file)
-                .arg(location));
-
-    blockingLoop.exec();
-    QToolTip::showText(QCursor::pos(), "Envoi du programme terminé (100%)");
+    return filesList;
 }

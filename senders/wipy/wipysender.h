@@ -1,23 +1,27 @@
 #ifndef WIPYSENDER_H
 #define WIPYSENDER_H
 
-#include <QObject>
+#include "senders/abstractsender.h"
+
 #include <QString>
 #include <QProcess>
 #include <QEventLoop>
 
 /**
  * @brief This class is used to send files to a Wipy esp32 card
- * Is assumes that only one Wipy card is connected to the computer
  */
-class WipySender : public QObject
+class WipySender : public AbstractSender
 {
-    Q_OBJECT
-
 public:
     WipySender();
 
-    void send(const QString& file, const QString& location);
+    void reset();
+    bool put(const QString& file, const QString& location);
+    QString get(const QString& file);
+    QStringList list(const QString& location);
+
+protected:
+    virtual bool execute(const QString& command) override;
 
 private:
     QProcess process;

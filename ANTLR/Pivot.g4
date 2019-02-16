@@ -23,22 +23,14 @@ FALSE       : 'false';
 WHILE       : 'while';
 UNTIL       : 'until';
 LED         : 'led';
-RANDOMCOLOR : 'randomColor';
+RANDOMCOLOR : 'random_color';
 VAR         : 'var';
 
-// Values
-fragment DIGIT          : '0'..'9';
-fragment NON_NULL_DIGIT : '1'..'9';
-fragment LOWER_LETTER   : 'a'..'z';
-fragment UPPER_LETTER   : 'A'..'Z';
-fragment LETTER         : (LOWER_LETTER | UPPER_LETTER);
-fragment INTEGER_PART   : (NON_NULL_DIGIT DIGIT* | '0');
-fragment DECIMAL_PART   : '.' DIGIT+ ([eE] [+-]? DIGIT+)?;
-fragment HEXA           : (DIGIT | 'a'..'f' | 'A'..'F');
-fragment TRIPLE_HEXA    : HEXA HEXA HEXA;
-NUMBER                  : INTEGER_PART (DECIMAL_PART)?;
-RGB                     : '#' TRIPLE_HEXA TRIPLE_HEXA?;
-VARIABLE                : LETTER (LETTER | DIGIT | '_')*;
+LEFT_SENSOR     : 'left_sensor';
+CENTER_SENSOR  : 'center_sensor';
+RIGHT_SENSOR    : 'right_sensor';
+VERYCLOSE       : 'very_close';
+CLOSE           : 'close';
 
 // Booleans
 EQU     : '==';
@@ -64,7 +56,21 @@ POW         : '^';
 COMMA       : ',';
 SEMICOLON   : ';';
 DOT         : '.';
+UNDERSCORE  : '_';
 
+// Values
+fragment DIGIT          : '0'..'9';
+fragment NON_NULL_DIGIT : '1'..'9';
+fragment LOWER_LETTER   : 'a'..'z';
+fragment UPPER_LETTER   : 'A'..'Z';
+fragment LETTER         : (LOWER_LETTER | UPPER_LETTER);
+fragment INTEGER_PART   : (NON_NULL_DIGIT DIGIT* | '0');
+fragment DECIMAL_PART   : '.' DIGIT+ ([eE] [+-]? DIGIT+)?;
+fragment HEXA           : (DIGIT | 'a'..'f' | 'A'..'F');
+fragment TRIPLE_HEXA    : HEXA HEXA HEXA;
+NUMBER                  : INTEGER_PART (DECIMAL_PART)?;
+RGB                     : '#' TRIPLE_HEXA TRIPLE_HEXA?;
+VARIABLE                : LETTER (LETTER | DIGIT | UNDERSCORE)*;
 
 // Specials
 NEWLINE : ('\r'? '\n' | '\r')+;
@@ -91,8 +97,10 @@ statement   : action
 action  : move_type=(FORWARD|BACKWARD|LEFT|RIGHT) move_speed=(SLOW|NORMAL|FAST)
         | STOP
         | WAIT duration=numeric_expression
-        | LED (RGB|RANDOMCOLOR|VARIABLE)
+        | LED (RGB|special_color|VARIABLE)
         ;
+
+special_color   : RANDOMCOLOR;
 
 // Declarations and assignments
 declaration : VAR var_name+=VARIABLE (COMMA var_name+=VARIABLE)* SEMICOLON;
@@ -108,13 +116,21 @@ while_loop  : WHILE condition=boolean_expression SEP NEWLINE statements END;
 until_loop  : UNTIL condition=boolean_expression SEP NEWLINE statements END;
 
 // Numeric expressions
-numeric_expression  : value+=numeric_mul_div (op=(PLUS|MINUS) value+=numeric_mul_div)*;
-numeric_mul_div     : value+=numeric_pow (op=(STAR|DIV) value+=numeric_pow)*;
+numeric_expression  : value+=numeric_mul_div (op+=(PLUS|MINUS) value+=numeric_mul_div)*;
+numeric_mul_div     : value+=numeric_pow (op+=(STAR|DIV) value+=numeric_pow)*;
 numeric_pow         : value+=numeric_inversion (POW value+=numeric_inversion)*;
 numeric_inversion   : MINUS? numeric_atom;
 numeric_atom        : NUMBER
                     | VARIABLE
+                    | special_numerics
                     | LPAR numeric_expression RPAR
+                    ;
+
+special_numerics    : VERYCLOSE
+                    | CLOSE
+                    | LEFT_SENSOR
+                    | CENTER_SENSOR
+                    | RIGHT_SENSOR
                     ;
 
 // Conditions

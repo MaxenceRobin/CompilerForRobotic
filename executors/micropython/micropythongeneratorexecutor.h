@@ -5,8 +5,9 @@
 #include "compilers/micropython/micropythoncompiler.h"
 
 #include "senders/wipy/wipysender.h"
-#include "abstractexecutor.h"
+#include "executors/abstractexecutor.h"
 
+#include <QDir>
 #include <QClipboard>
 
 #include <QHBoxLayout>
@@ -26,6 +27,9 @@ public:
 
     virtual void execute(const QString& pivot) override;
 
+private:
+    bool sendLibraries();
+
 public slots:
     virtual void toggleDebugMode() override;
 
@@ -37,6 +41,7 @@ private:
     WipySender sender;
     QClipboard* clipboard;
 
+    QDir libFolder;
     QString preProgramContent;
 
     // For debugging purpose

@@ -15,21 +15,22 @@ public:
     FORWARD = 1, BACKWARD = 2, LEFT = 3, RIGHT = 4, STOP = 5, DURATION = 6, 
     NORMAL = 7, SLOW = 8, FAST = 9, WAIT = 10, LOOP = 11, END = 12, IF = 13, 
     ELIF = 14, ELSE = 15, TRUE = 16, FALSE = 17, WHILE = 18, UNTIL = 19, 
-    LED = 20, RANDOMCOLOR = 21, VAR = 22, NUMBER = 23, RGB = 24, VARIABLE = 25, 
-    EQU = 26, DIF = 27, LT = 28, GT = 29, LEQ = 30, GEQ = 31, AND = 32, 
-    OR = 33, NOT = 34, AFF = 35, LPAR = 36, RPAR = 37, SEP = 38, PLUS = 39, 
-    MINUS = 40, DIV = 41, STAR = 42, POW = 43, COMMA = 44, SEMICOLON = 45, 
-    DOT = 46, NEWLINE = 47, WHITESPACE = 48
+    LED = 20, RANDOMCOLOR = 21, VAR = 22, LEFT_SENSOR = 23, CENTER_SENSOR = 24, 
+    RIGHT_SENSOR = 25, VERYCLOSE = 26, CLOSE = 27, EQU = 28, DIF = 29, LT = 30, 
+    GT = 31, LEQ = 32, GEQ = 33, AND = 34, OR = 35, NOT = 36, AFF = 37, 
+    LPAR = 38, RPAR = 39, SEP = 40, PLUS = 41, MINUS = 42, DIV = 43, STAR = 44, 
+    POW = 45, COMMA = 46, SEMICOLON = 47, DOT = 48, UNDERSCORE = 49, NUMBER = 50, 
+    RGB = 51, VARIABLE = 52, NEWLINE = 53, WHITESPACE = 54
   };
 
   enum {
     RuleFile = 0, RuleStatements = 1, RuleStatement = 2, RuleAction = 3, 
-    RuleDeclaration = 4, RuleAssignment = 5, RuleExpression = 6, RuleLoop = 7, 
-    RuleWhile_loop = 8, RuleUntil_loop = 9, RuleNumeric_expression = 10, 
-    RuleNumeric_mul_div = 11, RuleNumeric_pow = 12, RuleNumeric_inversion = 13, 
-    RuleNumeric_atom = 14, RuleIf_elif_else = 15, RuleBoolean_expression = 16, 
-    RuleBoolean_and = 17, RuleBoolean_comparator = 18, RuleBoolean_not = 19, 
-    RuleBoolean_atom = 20
+    RuleSpecial_color = 4, RuleDeclaration = 5, RuleAssignment = 6, RuleExpression = 7, 
+    RuleLoop = 8, RuleWhile_loop = 9, RuleUntil_loop = 10, RuleNumeric_expression = 11, 
+    RuleNumeric_mul_div = 12, RuleNumeric_pow = 13, RuleNumeric_inversion = 14, 
+    RuleNumeric_atom = 15, RuleSpecial_numerics = 16, RuleIf_elif_else = 17, 
+    RuleBoolean_expression = 18, RuleBoolean_and = 19, RuleBoolean_comparator = 20, 
+    RuleBoolean_not = 21, RuleBoolean_atom = 22
   };
 
   PivotParser(antlr4::TokenStream *input);
@@ -46,6 +47,7 @@ public:
   class StatementsContext;
   class StatementContext;
   class ActionContext;
+  class Special_colorContext;
   class DeclarationContext;
   class AssignmentContext;
   class ExpressionContext;
@@ -57,6 +59,7 @@ public:
   class Numeric_powContext;
   class Numeric_inversionContext;
   class Numeric_atomContext;
+  class Special_numericsContext;
   class If_elif_elseContext;
   class Boolean_expressionContext;
   class Boolean_andContext;
@@ -130,7 +133,7 @@ public:
     Numeric_expressionContext *numeric_expression();
     antlr4::tree::TerminalNode *LED();
     antlr4::tree::TerminalNode *RGB();
-    antlr4::tree::TerminalNode *RANDOMCOLOR();
+    Special_colorContext *special_color();
     antlr4::tree::TerminalNode *VARIABLE();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -138,6 +141,18 @@ public:
   };
 
   ActionContext* action();
+
+  class  Special_colorContext : public antlr4::ParserRuleContext {
+  public:
+    Special_colorContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *RANDOMCOLOR();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Special_colorContext* special_color();
 
   class  DeclarationContext : public antlr4::ParserRuleContext {
   public:
@@ -244,7 +259,10 @@ public:
   public:
     PivotParser::Numeric_mul_divContext *numeric_mul_divContext = nullptr;;
     std::vector<Numeric_mul_divContext *> value;;
-    antlr4::Token *op = nullptr;;
+    antlr4::Token *plusToken = nullptr;;
+    std::vector<antlr4::Token *> op;;
+    antlr4::Token *minusToken = nullptr;;
+    antlr4::Token *_tset821 = nullptr;;
     Numeric_expressionContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     std::vector<Numeric_mul_divContext *> numeric_mul_div();
@@ -264,7 +282,10 @@ public:
   public:
     PivotParser::Numeric_powContext *numeric_powContext = nullptr;;
     std::vector<Numeric_powContext *> value;;
-    antlr4::Token *op = nullptr;;
+    antlr4::Token *starToken = nullptr;;
+    std::vector<antlr4::Token *> op;;
+    antlr4::Token *divToken = nullptr;;
+    antlr4::Token *_tset845 = nullptr;;
     Numeric_mul_divContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     std::vector<Numeric_powContext *> numeric_pow();
@@ -316,6 +337,7 @@ public:
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *NUMBER();
     antlr4::tree::TerminalNode *VARIABLE();
+    Special_numericsContext *special_numerics();
     antlr4::tree::TerminalNode *LPAR();
     Numeric_expressionContext *numeric_expression();
     antlr4::tree::TerminalNode *RPAR();
@@ -325,6 +347,22 @@ public:
   };
 
   Numeric_atomContext* numeric_atom();
+
+  class  Special_numericsContext : public antlr4::ParserRuleContext {
+  public:
+    Special_numericsContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *VERYCLOSE();
+    antlr4::tree::TerminalNode *CLOSE();
+    antlr4::tree::TerminalNode *LEFT_SENSOR();
+    antlr4::tree::TerminalNode *CENTER_SENSOR();
+    antlr4::tree::TerminalNode *RIGHT_SENSOR();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  Special_numericsContext* special_numerics();
 
   class  If_elif_elseContext : public antlr4::ParserRuleContext {
   public:

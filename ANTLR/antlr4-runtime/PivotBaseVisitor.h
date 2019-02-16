@@ -31,6 +31,10 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitSpecial_color(PivotParser::Special_colorContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitDeclaration(PivotParser::DeclarationContext *ctx) override {
     return visitChildren(ctx);
   }
@@ -72,6 +76,10 @@ public:
   }
 
   virtual antlrcpp::Any visitNumeric_atom(PivotParser::Numeric_atomContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitSpecial_numerics(PivotParser::Special_numericsContext *ctx) override {
     return visitChildren(ctx);
   }
 

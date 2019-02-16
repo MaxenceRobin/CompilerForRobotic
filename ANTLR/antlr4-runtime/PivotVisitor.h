@@ -27,6 +27,8 @@ public:
 
     virtual antlrcpp::Any visitAction(PivotParser::ActionContext *context) = 0;
 
+    virtual antlrcpp::Any visitSpecial_color(PivotParser::Special_colorContext *context) = 0;
+
     virtual antlrcpp::Any visitDeclaration(PivotParser::DeclarationContext *context) = 0;
 
     virtual antlrcpp::Any visitAssignment(PivotParser::AssignmentContext *context) = 0;
@@ -48,6 +50,8 @@ public:
     virtual antlrcpp::Any visitNumeric_inversion(PivotParser::Numeric_inversionContext *context) = 0;
 
     virtual antlrcpp::Any visitNumeric_atom(PivotParser::Numeric_atomContext *context) = 0;
+
+    virtual antlrcpp::Any visitSpecial_numerics(PivotParser::Special_numericsContext *context) = 0;
 
     virtual antlrcpp::Any visitIf_elif_else(PivotParser::If_elif_elseContext *context) = 0;
 

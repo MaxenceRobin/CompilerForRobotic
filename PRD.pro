@@ -47,15 +47,16 @@ SOURCES += \
     compilers/micropython/micropythoncompiler.cpp \
     models/programfile.cpp \
     models/projecttypelist.cpp \
-    editors/blocklyneutralroboteditor.cpp \
-    executors/micropythongeneratorexecutor.cpp \
+    editors/blockly/blocklyneutralroboteditor.cpp \
+    executors/micropython/micropythongeneratorexecutor.cpp \
     editors/abstracteditor.cpp \
     executors/abstractexecutor.cpp \
     models/projecttype.cpp \
     views/createprogramview.cpp \
     models/settings.cpp \
-    editors/baseblocklyeditor.cpp \
-    senders/wipy/wipysender.cpp
+    editors/blockly/baseblocklyeditor.cpp \
+    senders/wipy/wipysender.cpp \
+    senders/abstractsender.cpp
 
 HEADERS += \
     views/mainwindow.h \
@@ -67,14 +68,15 @@ HEADERS += \
     models/programfile.h \
     models/projecttype.h \
     models/projecttypelist.h \
-    editors/blocklyneutralroboteditor.h \
-    executors/micropythongeneratorexecutor.h \
+    editors/blockly/blocklyneutralroboteditor.h \
+    executors/micropython/micropythongeneratorexecutor.h \
     editors/abstracteditor.h \
     executors/abstractexecutor.h \
     views/createprogramview.h \
     models/settings.h \
-    editors/baseblocklyeditor.h \
-    senders/wipy/wipysender.h
+    editors/blockly/baseblocklyeditor.h \
+    senders/wipy/wipysender.h \
+    senders/abstractsender.h
 
 FORMS += \
     views/mainwindow.ui \

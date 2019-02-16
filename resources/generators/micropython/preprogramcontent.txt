@@ -1,25 +1,66 @@
-import pycom
-import time
-import uos
-
+from micropython import const
+from machine import I2C
+from machine import Pin
+from machine import Timer
+from machine import SD
+from machine import RTC
+from BME280 import *
 from DRV8833 import *
+from VL6180X import *
+import time
+import math
+import os
+import uos
+from math import cos
+from math import sin
+from math import fmod
 
+MODE_DEBUG = const(1)
+def Time_Variation (nb_octets, intervalle) :
+    n = uos.urandom(nb_octets)
+    x = n[0] | n[1] << 8
+    x %=  intervalle
+    return (x)
+temperature = 0.0
+pression = 0.0
+humidity = 0.0
+Id = 0
+data_registre = ""
+date_heure_init = (2018, 11, 09, 10 ,27, 0, 0, 0)
+
+SD_Flag = True
 DRV8833_Sleep_pin = 'P5'
 DRV8833_AIN1 = 'P11'
 DRV8833_AIN2 = 'P12'
 DRV8833_BIN1 = 'P21'
 DRV8833_BIN2 = 'P22'
-
-V_MAX = 0.6
+V_MAX = 0.5
 V_MOYEN = 0.4
 V_MIN = 0.2
+Distance = [-1, -1, -1, -1]
+Luminosite = [-1.0, -1.0, -1.0, -1.0]
 
+VL6180X_CE_Pin = ('P6', 'P7', 'P19', 'P20')
+VL6180X_I2C_adr_defaut = const(0x29)
+VL6180X_I2C_Adr = (const(0x2A), const(0x2B), const(0x2C), const(0x2D))
+N_VL6180X = const(3)
+d_Thd1 = const(80)
+d_Thd2 = const(200)
+RESOLUTION_CODEUR_ROUE = 1400
+RAYON_ROUE = 5.1
+L = 8.35
 C_g = 0
 C_d = 0
+x_pos = 0.0
+y_pos = 0.0
+theta = 0.0
+ticks_Md_EncA = 0
+ticks_Md_EncB = 0
+ticks_Mg_EncA = 0
+ticks_Mg_EncB = 0
 
-Moteur_Gauche = DRV8833 (DRV8833_AIN1, DRV8833_AIN2, DRV8833_Sleep_pin, 1, 500, 0, 1)
-Moteur_Droit = DRV8833 (DRV8833_BIN1, DRV8833_BIN2, DRV8833_Sleep_pin, 1, 500, 2, 3)
-
+Odometrie_Flag = False
+Acquisition_Data_Flag = False
 def Avancer_droit (vitesse) :
     global C_g
     global C_d
@@ -51,6 +92,125 @@ def Pivoter_gauche (vitesse) :
 def Arret () :
     Moteur_Droit.Arret_moteur()
     Moteur_Gauche.Arret_moteur()
+def IT_Moteur_droit_EncodeurA (arg) :
+    global ticks_Md_EncA
+    global C_d
+    if C_d == 1 :
+        ticks_Md_EncA += 1
+    else :
+        ticks_Md_EncA -= 1
+def IT_Moteur_droit_EncodeurB (arg) :
+    global ticks_Md_EncB
+    global C_d
+
+    if C_d == 1 :
+        ticks_Md_EncB += 1
+    else :
+        ticks_Md_EncB -= 1
+def IT_Moteur_gauche_EncodeurA (arg) :
+    global ticks_Mg_EncA
+    global C_g
+
+    if C_g == 1 :
+        ticks_Mg_EncA += 1
+    else :
+        ticks_Mg_EncA -= 1
+def IT_Moteur_gauche_EncodeurB (arg) :
+    global ticks_Mg_EncB
+    global C_g
+
+    if C_g == 1 :
+        ticks_Mg_EncB += 1
+    else :
+        ticks_Mg_EncB -= 1
+def IT_Encodeur_Data (arg) :
+    global Odometrie_Flag
+
+    Odometrie_Flag = True
+def IT_Environnement_Data (arg) :
+    global Acquisition_Data_Flag
+
+    Acquisition_Data_Flag = True
+def Pos_Orient_Robot () :
+    global ticks_Md_EncA
+    global ticks_Md_EncB
+    global ticks_Mg_EncA
+    global ticks_Mg_EncB
+
+    global x_pos
+    global y_pos
+    global theta
+
+    ticks_Md_EncA_copy = ticks_Md_EncA
+    ticks_Md_EncB_copy = ticks_Md_EncB
+    ticks_Mg_EncA_copy = ticks_Mg_EncA
+    ticks_Mg_EncB_copy = ticks_Mg_EncB
+    ticks_Md_EncA = 0
+    ticks_Md_EncB = 0
+    ticks_Mg_EncA = 0
+    ticks_Mg_EncB = 0
+
+    p = 2 * math.pi * RAYON_ROUE
+
+    delta_l_roue_gauche = p * (ticks_Mg_EncA_copy + ticks_Mg_EncB_copy) * 0.5 / RESOLUTION_CODEUR_ROUE
+    delta_l_roue_droite = p * (ticks_Md_EncA_copy + ticks_Md_EncB_copy) * 0.5 / RESOLUTION_CODEUR_ROUE
+    delta_l_moyen = 0.5 * (delta_l_roue_droite + delta_l_roue_gauche)
+
+    delta_x_pos = delta_l_moyen * cos(theta)
+    delta_y_pos = delta_l_moyen * sin(theta)
+    delta_theta = (delta_l_roue_droite - delta_l_roue_gauche) / L
+    x_pos += delta_x_pos
+    y_pos += delta_y_pos
+    theta += delta_theta
+    theta = fmod(theta, math.pi)
+
+Moteur_Gauche = DRV8833 (DRV8833_AIN1, DRV8833_AIN2, DRV8833_Sleep_pin, 1, 500, 0, 1)
+Moteur_Droit = DRV8833 (DRV8833_BIN1, DRV8833_BIN2, DRV8833_Sleep_pin, 1, 500, 2, 3)
+Arret()
+
+Mot_Droit_EncodeurA = Pin('P13', mode = Pin.IN, pull=Pin.PULL_UP)
+Mot_Droit_EncodeurB = Pin('P15', mode = Pin.IN, pull=Pin.PULL_UP)
+Mot_Gauche_EncodeurA = Pin('P17', mode = Pin.IN, pull=Pin.PULL_UP)
+Mot_Gauche_EncodeurB = Pin('P18', mode = Pin.IN, pull=Pin.PULL_UP)
+
+
+Mot_Droit_EncodeurA.callback(Pin.IRQ_RISING | Pin.IRQ_FALLING, IT_Moteur_droit_EncodeurA)
+Mot_Droit_EncodeurB.callback(Pin.IRQ_RISING | Pin.IRQ_FALLING, IT_Moteur_droit_EncodeurB)
+Mot_Gauche_EncodeurA.callback(Pin.IRQ_RISING | Pin.IRQ_FALLING, IT_Moteur_gauche_EncodeurA)
+Mot_Gauche_EncodeurB.callback(Pin.IRQ_RISING | Pin.IRQ_FALLING, IT_Moteur_gauche_EncodeurB)
+Timer.Alarm(IT_Encodeur_Data, ms=20, periodic=True)
+Timer.Alarm(IT_Environnement_Data, ms=5000, periodic=True)
+
+VL6180X_GPIO_CE_Pin = []
+for pin in  VL6180X_CE_Pin :
+    VL6180X_GPIO_CE_Pin.append(Pin(pin, mode=Pin.OUT))
+    VL6180X_GPIO_CE_Pin[-1].value(0)
+
+i2c = I2C(0, I2C.MASTER, baudrate = 400000)
+
+adr = i2c.scan()
+
+Id_BME280 = i2c.readfrom_mem(BME280_I2C_ADR, BME280_CHIP_ID_ADDR, 1)
+
+
+capteur_t_p_h_BME280 = BME280 (BME280_OVERSAMPLING_16X, BME280_OVERSAMPLING_16X, BME280_OVERSAMPLING_16X, BME280_FILTER_COEFF_2,
+                                BME280_STANDBY_TIME_125_MS, BME280_NORMAL_MODE, BME280_I2C_ADR, i2c)
+
+
+capteur_t_p_h_BME280.Calibration_Param_Load()
+
+
+capteur_d_l_VL6180X = []
+for i in range (N_VL6180X) :
+    VL6180X_GPIO_CE_Pin[i].value(1)
+    time.sleep(0.002)
+    capteur_d_l_VL6180X.append(VL6180X(VL6180X_I2C_adr_defaut, i2c))
+    capteur_d_l_VL6180X[i].Modif_Adr_I2C(VL6180X_GPIO_CE_Pin[i], VL6180X_I2C_Adr[i], VL6180X_I2C_adr_defaut)
+
+adr = i2c.scan()
+
+
+import pycom
 
 def random_color():
     n = uos.urandom(3)

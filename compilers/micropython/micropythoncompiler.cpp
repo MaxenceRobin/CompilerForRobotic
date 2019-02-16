@@ -216,9 +216,9 @@ Any MicroPythonCompiler::visitAction(PivotParser::ActionContext *context)
         {
             color = visitRGB(context->RGB());
         }
-        else if (context->RANDOMCOLOR())
+        else if (context->special_color())
         {
-            color = "random_color()";
+            color = visitSpecial_color(context->special_color()).as<string>();
         }
         else if (context->VARIABLE())
         {
@@ -226,6 +226,23 @@ Any MicroPythonCompiler::visitAction(PivotParser::ActionContext *context)
         }
 
         result = "pycom.rgbled(" + color + ")";
+    }
+
+    return std::move(result);
+}
+
+/**
+ * @brief Returns the MicroPython representation of a special color expression
+ * @param context : The tree representation of the special color expression
+ * @return The string that represents the MicroPython code of the special color expression
+ */
+Any MicroPythonCompiler::visitSpecial_color(PivotParser::Special_colorContext* context)
+{
+    string result = "";
+
+    if (context->RANDOMCOLOR())
+    {
+        result = "random_color()";
     }
 
     return std::move(result);
@@ -358,7 +375,7 @@ Any MicroPythonCompiler::visitNumeric_expression(PivotParser::Numeric_expression
     {
         if (!first)
         {
-            result += context->op[operatorNumber].getText();
+            result += context->op[operatorNumber]->getText();
             operatorNumber++;
         }
 
@@ -384,7 +401,7 @@ Any MicroPythonCompiler::visitNumeric_mul_div(PivotParser::Numeric_mul_divContex
     {
         if (!first)
         {
-            result += context->op[operatorNumber].getText();
+            result += context->op[operatorNumber]->getText();
             operatorNumber++;
         }
 
@@ -443,14 +460,58 @@ Any MicroPythonCompiler::visitNumeric_inversion(PivotParser::Numeric_inversionCo
  */
 Any MicroPythonCompiler::visitNumeric_atom(PivotParser::Numeric_atomContext* context)
 {
+    string result = "";
+
     if (context->NUMBER() || context->VARIABLE())
     {
-        return context->getText();
+        result = context->getText();
+    }
+    else if (context->special_numerics())
+    {
+        result = visitSpecial_numerics(context->special_numerics()).as<string>();
     }
     else
     {
-        return "(" + visitNumeric_expression(context->numeric_expression()).as<string>() + ")";
+        result = "(" + visitNumeric_expression(context->numeric_expression()).as<string>() + ")";
     }
+
+    return std::move(result);
+}
+
+/**
+ * @brief Returns the MicroPython representation of a special numeric element
+ * @param context : The tree representation of the special numeric element
+ * @return The string that represents the MicroPython code of the special numeric element
+ */
+Any MicroPythonCompiler::visitSpecial_numerics(PivotParser::Special_numericsContext* context)
+{
+    string result = "";
+
+    if (context->VERYCLOSE())
+    {
+        result = "d_Thd1";
+    }
+    else if (context->CLOSE())
+    {
+        result = "d_Thd2";
+    }
+    else if (context->LEFT_SENSOR())
+    {
+        result = "Distance[0]";
+        //result = "capteur_d_l_VL6180X[0].range_mesure()";
+    }
+    else if (context->CENTER_SENSOR())
+    {
+        result = "Distance[1]";
+        //result = "capteur_d_l_VL6180X[1].range_mesure()";
+    }
+    else if (context->RIGHT_SENSOR())
+    {
+        result = "Distance[2]";
+        //result = "capteur_d_l_VL6180X[3].range_mesure()";
+    }
+
+    return std::move(result);
 }
 
 /**

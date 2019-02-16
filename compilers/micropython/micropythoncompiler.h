@@ -30,6 +30,7 @@ private:
     virtual Any visitStatements(PivotParser::StatementsContext* context) override;
     virtual Any visitStatement(PivotParser::StatementContext* context) override;
     virtual Any visitAction(PivotParser::ActionContext* context) override;
+    virtual Any visitSpecial_color(PivotParser::Special_colorContext* context) override;
     virtual Any visitDeclaration(PivotParser::DeclarationContext* context) override;
     virtual Any visitAssignment(PivotParser::AssignmentContext* context) override;
     virtual Any visitExpression(PivotParser::ExpressionContext* context) override;
@@ -42,6 +43,7 @@ private:
     virtual Any visitNumeric_pow(PivotParser::Numeric_powContext* context) override;
     virtual Any visitNumeric_inversion(PivotParser::Numeric_inversionContext* context) override;
     virtual Any visitNumeric_atom(PivotParser::Numeric_atomContext* context) override;
+    virtual Any visitSpecial_numerics(PivotParser::Special_numericsContext* context) override;
 
     virtual Any visitIf_elif_else(PivotParser::If_elif_elseContext* context) override;
 
