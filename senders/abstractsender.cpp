@@ -25,10 +25,8 @@ AbstractSender::~AbstractSender()
  */
 bool AbstractSender::execute(const QString &command)
 {
-    qDebug() << command;
     process.start(command);
     blockingLoop.exec();
-    qDebug() << "process terminé";
 
     // UnknownError if the default value when no error has occured
     return process.error() == QProcess::UnknownError;
