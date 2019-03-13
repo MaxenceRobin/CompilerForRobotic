@@ -1,9 +1,10 @@
 // This include must go first because it is dependant of the MicroPythonCompiler file
-#include "executors/micropythongeneratorexecutor.h"
+#include "executors/micropython/micropythongeneratorexecutor.h"
 
 #include "projecttypelist.h"
 
-#include "editors/blocklyneutralroboteditor.h"
+#include "editors/blockly/simplifiedblocklyneutralroboteditor.h"
+#include "editors/blockly/blocklyneutralroboteditor.h"
 
 /**
  * @brief Constructor of the list
@@ -11,7 +12,11 @@
 ProjectTypeList::ProjectTypeList()
 {
     // Creation of the types
-    types   << new ProjectType<BlocklyNeutralRobotEditor, MicroPythonGeneratorExecutor>("Blockly for MicroPython", "bkmp", ":/icons/blocklyneutralrobot");
+    types   << new ProjectType<SimplifiedBlocklyNeutralRobotEditor, MicroPythonGeneratorExecutor>
+            ("Blockly pour MicroPython simplifié", "sbkmp", ":/icons/blocklyneutralrobot")
+
+            << new ProjectType<BlocklyNeutralRobotEditor, MicroPythonGeneratorExecutor>
+            ("Blockly pour MicroPython", "bkmp", ":/icons/blocklyneutralrobot");
 }
 
 /**

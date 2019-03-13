@@ -9,8 +9,8 @@
         <file alias="close">resources/icons/close.png</file>
         <file alias="multicoding">resources/icons/multicoding.png</file>
         <file alias="blocklyneutralrobot">resources/icons/blocklyneutralrobot.png</file>
-    </qresource>
-    <qresource prefix="/generators/micropython">
-        <file alias="preprogramcontent">resources/generators/micropython/preprogramcontent.txt</file>
+        <file alias="upload">resources/icons/upload.png</file>
+        <file alias="startprogram">resources/icons/start.png</file>
+        <file alias="stopprogram">resources/icons/stop.png</file>
     </qresource>
 </RCC>

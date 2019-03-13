@@ -80,8 +80,7 @@
    <addaction name="openProgramAction"/>
    <addaction name="closeProgramAction"/>
    <addaction name="saveAction"/>
-   <addaction name="separator"/>
-   <addaction name="sendProgramAction"/>
+   <addaction name="executeProgramAction"/>
   </widget>
   <action name="openProgramAction">
    <property name="icon">
@@ -125,13 +124,9 @@
     <string>Quitter</string>
    </property>
   </action>
-  <action name="sendProgramAction">
-   <property name="icon">
-    <iconset resource="../resources.qrc">
-     <normaloff>:/icons/send</normaloff>:/icons/send</iconset>
-   </property>
+  <action name="executeProgramAction">
    <property name="text">
-    <string>Envoyer le programme vers le robot</string>
+    <string> </string>
    </property>
   </action>
   <action name="closeProgramAction">

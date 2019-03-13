@@ -1,11 +1,13 @@
 #include "abstractsender.h"
 
 #include <QSerialPortInfo>
+#include <QDebug>
 
 // Constructors and destructor --------------------------------------------------------------------
 AbstractSender::AbstractSender()
     : portName("")
 {
+    QObject::connect(&process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), &blockingLoop, &QEventLoop::quit);
 }
 
 
@@ -14,6 +16,23 @@ AbstractSender::~AbstractSender()
 }
 
 // Methods ----------------------------------------------------------------------------------------
+
+
+/**
+ * @brief Runs a command on the wipy card
+ * @param command : The command to run on the wipy card
+ * @return true if the operation was successful, false otherwise
+ */
+bool AbstractSender::execute(const QString &command)
+{
+    qDebug() << command;
+    process.start(command);
+    blockingLoop.exec();
+    qDebug() << "process terminé";
+
+    // UnknownError if the default value when no error has occured
+    return process.error() == QProcess::UnknownError;
+}
 
 /**
  * @brief Returns the list of all the available serial ports

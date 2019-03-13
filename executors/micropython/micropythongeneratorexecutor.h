@@ -26,8 +26,11 @@ public:
     virtual ~MicroPythonGeneratorExecutor() override;
 
     virtual void execute(const QString& pivot) override;
+    virtual const QIcon getIcon() override;
+    virtual const QString getToolTip() override;
 
 private:
+    bool initSenderPort();
     bool sendLibraries();
 
 public slots:
@@ -35,6 +38,10 @@ public slots:
 
 private slots:
     void translateManualCode();
+    void startProgram();
+    void stopProgram();
+
+    void saveCode();
 
 private:
     MicroPythonCompiler compiler;
@@ -43,11 +50,17 @@ private:
 
     QDir libFolder;
     QString preProgramContent;
+    QString postProgramContent;
+
+    // Associated actions
+    QAction startProgramAction;
+    QAction stopProgramAction;
 
     // For debugging purpose
     QHBoxLayout layout;
     QTextEdit inputCode;
     QPushButton translateButton;
+    QPushButton saveButton;
     QTextEdit outputCode;
 };
 

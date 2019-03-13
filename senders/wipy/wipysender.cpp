@@ -10,24 +10,9 @@
 WipySender::WipySender()
     : AbstractSender()
 {
-    QObject::connect(&process, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), &blockingLoop, &QEventLoop::quit);
 }
 
 // Methods ----------------------------------------------------------------------------------------
-
-/**
- * @brief Runs a command on the wipy card
- * @param command : The command to run on the wipy card
- * @return true if the operation was successful, false otherwise
- */
-bool WipySender::execute(const QString &command)
-{
-    process.start(command);
-    blockingLoop.exec();
-
-    // UnknownError if the default value when no error has occured
-    return process.error() == QProcess::UnknownError;
-}
 
 /**
  * @brief Resets the card
@@ -46,10 +31,12 @@ void WipySender::reset()
  */
 bool WipySender::put(const QString &file, const QString &location)
 {
-    return execute(QString("ampy --port %1 put %2 %3")
+    bool result = execute(QString("ampy --port %1 put %2 %3")
                    .arg(getPortName())
                    .arg(file)
                    .arg(location));
+
+    return result;
 }
 
 /**
@@ -88,4 +75,12 @@ QStringList WipySender::list(const QString &location)
     }
 
     return filesList;
+}
+
+/**
+ * @brief Stop the current process
+ */
+void WipySender::stop()
+{
+    blockingLoop.quit();
 }

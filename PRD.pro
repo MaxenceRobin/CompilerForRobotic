@@ -56,7 +56,8 @@ SOURCES += \
     models/settings.cpp \
     editors/blockly/baseblocklyeditor.cpp \
     senders/wipy/wipysender.cpp \
-    senders/abstractsender.cpp
+    senders/abstractsender.cpp \
+    editors/blockly/simplifiedblocklyneutralroboteditor.cpp
 
 HEADERS += \
     views/mainwindow.h \
@@ -76,7 +77,8 @@ HEADERS += \
     models/settings.h \
     editors/blockly/baseblocklyeditor.h \
     senders/wipy/wipysender.h \
-    senders/abstractsender.h
+    senders/abstractsender.h \
+    editors/blockly/simplifiedblocklyneutralroboteditor.h
 
 FORMS += \
     views/mainwindow.ui \

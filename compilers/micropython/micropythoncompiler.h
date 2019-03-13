@@ -22,8 +22,6 @@ protected:
     void incrementIndentation();
     void decrementIndentation();
     string getIndentation();
-    string enterLoop();
-    void leaveLoop();
 
 private:
     virtual Any visitFile(PivotParser::FileContext* context) override;

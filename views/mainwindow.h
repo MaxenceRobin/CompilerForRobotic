@@ -52,6 +52,9 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
+    QToolBar* editorToolBar;
+    QToolBar* executorToolBar;
+
     QWidget* editor;
     QWidget* executor;
 

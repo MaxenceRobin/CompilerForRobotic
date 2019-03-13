@@ -21,6 +21,15 @@ AbstractEditor::~AbstractEditor()
 // Methods ----------------------------------------------------------------------------------------
 
 /**
+ * @brief Returns the list of associated actions of the editor
+ * @return The list of the associated actions of the editor
+ */
+const QList<QAction*>& AbstractEditor::getActions()
+{
+    return actionsList;
+}
+
+/**
  * @brief Grants access to the file
  * @return The internal ProgramFile object as a reference
  */

@@ -180,19 +180,26 @@ Any MicroPythonCompiler::visitAction(PivotParser::ActionContext *context)
         }
 
         result += "(";
-        const string moveSpeed = context->move_speed->getText();
+        if (context->move_speed)
+        {
+            const string moveSpeed = context->move_speed->getText();
 
-        if (moveSpeed == "slow")
-        {
-            result += "V_MIN";
+            if (moveSpeed == "slow")
+            {
+                result += "V_MIN";
+            }
+            else if (moveSpeed == "normal")
+            {
+                result += "V_MOYEN";
+            }
+            else if (moveSpeed == "fast")
+            {
+                result += "V_MAX";
+            }
         }
-        else if (moveSpeed == "normal")
+        else
         {
-            result += "V_MOYEN";
-        }
-        else if (moveSpeed == "fast")
-        {
-            result += "V_MAX";
+            result += visitNumeric_expression(context->numeric_expression()).as<string>();
         }
 
         result += ")";
@@ -495,20 +502,21 @@ Any MicroPythonCompiler::visitSpecial_numerics(PivotParser::Special_numericsCont
     {
         result = "d_Thd2";
     }
-    else if (context->LEFT_SENSOR())
+    else if (context->SENSOR_ONE())
     {
-        result = "Distance[0]";
-        //result = "capteur_d_l_VL6180X[0].range_mesure()";
+        result = "getDistance(0)";
     }
-    else if (context->CENTER_SENSOR())
+    else if (context->SENSOR_TWO())
     {
-        result = "Distance[1]";
-        //result = "capteur_d_l_VL6180X[1].range_mesure()";
+        result = "getDistance(1)";
     }
-    else if (context->RIGHT_SENSOR())
+    else if (context->SENSOR_THREE())
     {
-        result = "Distance[2]";
-        //result = "capteur_d_l_VL6180X[3].range_mesure()";
+        result = "getDistance(2)";
+    }
+    else if (context->SENSOR_FOUR())
+    {
+        result = "getDistance(3)";
     }
 
     return std::move(result);

@@ -21,7 +21,7 @@ BlocklyNeutralRobotEditor::~BlocklyNeutralRobotEditor()
 // Methods ----------------------------------------------------------------------------------------
 
 /**
- * @brief Toggle the debug mode
+ * @brief Toggles the debug mode
  */
 void BlocklyNeutralRobotEditor::toggleDebugMode()
 {

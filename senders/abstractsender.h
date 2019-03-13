@@ -3,6 +3,9 @@
 
 #include <QString>
 
+#include <QProcess>
+#include <QEventLoop>
+
 /**
  * @brief This class represents an abstract sender that can scan the available serial ports and exchange data with an extern device
  */
@@ -12,12 +15,15 @@ public:
     AbstractSender();
     virtual ~AbstractSender();
 
+    virtual bool execute(const QString& command);
+
     QStringList getPortNameList();
     void setPort(const QString& newPortName);
     const QString& getPortName() const;
 
 protected:
-    virtual bool execute(const QString& command) = 0;
+    QProcess process;
+    QEventLoop blockingLoop;
 
 private:
     QString portName;

@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include "editors/blocklyneutralroboteditor.h"
+#include "editors/blockly/baseblocklyeditor.h"
 #include "models/projecttypelist.h"
 #include "models/settings.h"
 
@@ -25,6 +25,15 @@ MainWindow::MainWindow(QWidget *parent) :
     // Initialization -------------------------------------
     setProjectMode(false);
 
+    // Tool bars
+    editorToolBar = new QToolBar;
+    editorToolBar->setIconSize(QSize(50, 50));
+    executorToolBar = new QToolBar;
+    executorToolBar->setIconSize(QSize(50, 50));
+
+    ui->mainToolBar->addWidget(editorToolBar);
+    ui->mainToolBar->addWidget(executorToolBar);
+
     // Environment
     editor = new QWidget;
     executor = new QWidget;
@@ -40,7 +49,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->openProgramAction, &QAction::triggered, this, &MainWindow::openProgram);
     connect(ui->closeProgramAction, &QAction::triggered, this, &MainWindow::closeProgram);
     connect(ui->saveAction, &QAction::triggered, this, &MainWindow::saveProgram);
-    connect(ui->sendProgramAction, &QAction::triggered, this, &MainWindow::sendProgram);
+    connect(ui->executeProgramAction, &QAction::triggered, this, &MainWindow::sendProgram);
 }
 
 /**
@@ -105,6 +114,16 @@ void MainWindow::replaceEnvironment(QWidget *newEditor, QWidget *newExecutor)
 void MainWindow::loadEnvironment(AbstractEditor *newEditor, AbstractExecutor *newExecutor)
 {
     replaceEnvironment(newEditor, newExecutor);
+
+    ui->executeProgramAction->setIcon(newExecutor->getIcon());
+    ui->executeProgramAction->setToolTip(newExecutor->getToolTip());
+
+    // Updating the editor and executor tool bars
+    editorToolBar->clear();
+    editorToolBar->addActions(newEditor->getActions());
+
+    executorToolBar->clear();
+    executorToolBar->addActions(newExecutor->getActions());
 }
 
 /**
@@ -116,17 +135,17 @@ void MainWindow::removeEnvironment()
 }
 
 /**
- * @brief Enables ro disables the project mode (define which actions are visible or not)
+ * @brief Enables or disables the project mode (define which actions are visible or not)
  * @param mode : true to enabled to project mode, false to disable it
  */
 void MainWindow::setProjectMode(bool mode)
 {
-    ui->createNewProgramAction->setEnabled(!mode);
-    ui->openProgramAction->setEnabled(!mode);
+    ui->createNewProgramAction->setVisible(!mode);
+    ui->openProgramAction->setVisible(!mode);
 
-    ui->closeProgramAction->setEnabled(mode);
-    ui->saveAction->setEnabled(mode);
-    ui->sendProgramAction->setEnabled(mode);
+    ui->closeProgramAction->setVisible(mode);
+    ui->saveAction->setVisible(mode);
+    ui->executeProgramAction->setVisible(mode);
 }
 
 /**

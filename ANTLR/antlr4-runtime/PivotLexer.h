@@ -1,5 +1,5 @@
 
-// Generated from .\Pivot.g4 by ANTLR 4.7.1
+// Generated from d:\Programmes\Qt\Projets\PRD\PRD\ANTLR\Pivot.g4 by ANTLR 4.7.1
 
 #pragma once
 
@@ -16,11 +16,12 @@ public:
     NORMAL = 7, SLOW = 8, FAST = 9, WAIT = 10, LOOP = 11, END = 12, IF = 13, 
     ELIF = 14, ELSE = 15, TRUE = 16, FALSE = 17, WHILE = 18, UNTIL = 19, 
     LED = 20, RANDOMCOLOR = 21, VAR = 22, LEFT_SENSOR = 23, CENTER_SENSOR = 24, 
-    RIGHT_SENSOR = 25, VERYCLOSE = 26, CLOSE = 27, EQU = 28, DIF = 29, LT = 30, 
-    GT = 31, LEQ = 32, GEQ = 33, AND = 34, OR = 35, NOT = 36, AFF = 37, 
-    LPAR = 38, RPAR = 39, SEP = 40, PLUS = 41, MINUS = 42, DIV = 43, STAR = 44, 
-    POW = 45, COMMA = 46, SEMICOLON = 47, DOT = 48, UNDERSCORE = 49, NUMBER = 50, 
-    RGB = 51, VARIABLE = 52, NEWLINE = 53, WHITESPACE = 54
+    RIGHT_SENSOR = 25, VERYCLOSE = 26, CLOSE = 27, SENSOR_ONE = 28, SENSOR_TWO = 29, 
+    SENSOR_THREE = 30, SENSOR_FOUR = 31, EQU = 32, DIF = 33, LT = 34, GT = 35, 
+    LEQ = 36, GEQ = 37, AND = 38, OR = 39, NOT = 40, AFF = 41, LPAR = 42, 
+    RPAR = 43, SEP = 44, PLUS = 45, MINUS = 46, DIV = 47, STAR = 48, POW = 49, 
+    COMMA = 50, SEMICOLON = 51, DOT = 52, UNDERSCORE = 53, NUMBER = 54, 
+    RGB = 55, VARIABLE = 56, NEWLINE = 57, WHITESPACE = 58
   };
 
   PivotLexer(antlr4::CharStream *input);

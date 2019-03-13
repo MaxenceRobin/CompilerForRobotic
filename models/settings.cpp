@@ -4,7 +4,7 @@
 #include <QDir>
 
 #include <QApplication>
-#define URI(path) QApplication::applicationDirPath() + "/" + path
+#define URI(path) QApplication::applicationDirPath() + "/Ressources/" + path
 
 // Definitions ------------------------------------------------------------------------------------
 

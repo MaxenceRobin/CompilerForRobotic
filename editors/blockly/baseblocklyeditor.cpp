@@ -3,7 +3,7 @@
 #include <QEventLoop>
 
 #include <QApplication>
-#define BLOCKLY(name) QApplication::applicationDirPath() + "/Blockly/" + name
+#define BLOCKLY(name) QApplication::applicationDirPath() + "/Ressources/Blockly/" + name
 
 
 #define JS_COMMAND_GET_BLOCKLY_CODE "Blockly.JavaScript.workspaceToCode(workspace);"

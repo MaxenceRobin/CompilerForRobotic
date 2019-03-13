@@ -4,6 +4,7 @@
 #include "models/programfile.h"
 
 #include <QWidget>
+#include <QAction>
 
 /**
  * @brief Base class for all the editors
@@ -13,6 +14,8 @@ class AbstractEditor : public QWidget
 public:
     AbstractEditor(const QString& fileName);
     virtual ~AbstractEditor();
+
+    const QList<QAction*>& getActions();
 
     ProgramFile& getFile();
 
@@ -24,6 +27,7 @@ public slots:
 
 private:
     ProgramFile programFile;
+    QList<QAction*> actionsList;
 };
 
 #endif // BASEEDITOR_H

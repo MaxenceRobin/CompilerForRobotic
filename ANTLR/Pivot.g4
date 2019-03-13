@@ -27,10 +27,14 @@ RANDOMCOLOR : 'random_color';
 VAR         : 'var';
 
 LEFT_SENSOR     : 'left_sensor';
-CENTER_SENSOR  : 'center_sensor';
+CENTER_SENSOR   : 'center_sensor';
 RIGHT_SENSOR    : 'right_sensor';
 VERYCLOSE       : 'very_close';
 CLOSE           : 'close';
+SENSOR_ONE      : 'sensor_one';
+SENSOR_TWO      : 'sensor_two';
+SENSOR_THREE    : 'sensor_three';
+SENSOR_FOUR     : 'sensor_four';
 
 // Booleans
 EQU     : '==';
@@ -79,7 +83,7 @@ WHITESPACE  : (' ' | '\t')+ -> skip;
 
 // Parser #########################################################################################
 
-file    : NEWLINE? statements EOF;
+file    : NEWLINE* statements EOF;
 
 statements  : (statement NEWLINE)* statement?;
 
@@ -94,7 +98,7 @@ statement   : action
             ;
 
 // Possible actions
-action  : move_type=(FORWARD|BACKWARD|LEFT|RIGHT) move_speed=(SLOW|NORMAL|FAST)
+action  : move_type=(FORWARD|BACKWARD|LEFT|RIGHT) (move_speed=(SLOW|NORMAL|FAST) | numeric_expression)
         | STOP
         | WAIT duration=numeric_expression
         | LED (RGB|special_color|VARIABLE)
@@ -128,9 +132,10 @@ numeric_atom        : NUMBER
 
 special_numerics    : VERYCLOSE
                     | CLOSE
-                    | LEFT_SENSOR
-                    | CENTER_SENSOR
-                    | RIGHT_SENSOR
+                    | SENSOR_ONE
+                    | SENSOR_TWO
+                    | SENSOR_THREE
+                    | SENSOR_FOUR
                     ;
 
 // Conditions
